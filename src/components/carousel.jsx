@@ -1,35 +1,45 @@
 import { useEffect, useRef } from 'react';
+import useSWR from "swr";
 import Glide from '@glidejs/glide';
 import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 import Banner from "@/components/banner";
 
-const Carousel = ({ slides }) => {
+const fetcher = (...args) => fetch(...args).then(res => res.json());
+
+const Carousel = () => {
   const glideRef = useRef(null);
   const sliderRef = useRef(null);
 
+  const { data: slides = [], error, isLoading } = useSWR('/slides.json', fetcher);
+
   useEffect(() => {
     const glide = new Glide(sliderRef.current, {
-      type: 'slider',
+      type: 'carousel',
       perView: 1,
       focusAt: 'center',
       keyboard: true,
       gap: 0,
-      animationDuration: 500,
-      rewind: false
+      animationDuration: 500
     });
 
     glide.mount();
     glideRef.current = glide;
 
     return () => glide.destroy();
-  }, []);
+  }, [slides]);
+
+  const handleControlClick = (direction) => {
+    if (glideRef.current) {
+      glideRef.current.go(direction);
+    }
+  };
 
   const Arrow = ({ direction }) => (
     <button
-      className={`glide__arrow glide__arrow--${direction} absolute top-1/2 z-10 p-2 bg-black/30 hover:bg-black/50 transition-colors transform -translate-y-1/2 rounded-full w-12 h-12 flex items-center justify-center ${
+      className={`absolute top-1/2 z-10 p-2 bg-black/30 hover:bg-black/50 transition-colors transform -translate-y-1/2 rounded-full w-12 h-12 flex items-center justify-center ${
         direction === 'left' ? 'left-4' : 'right-4'
       }`}
-      data-glide-dir={direction === 'left' ? '<' : '>'}
+      onClick={() => handleControlClick(direction === 'left' ? '<' : '>')}
       aria-label={`${direction} arrow`}
     >
       {direction === 'left' ? (
@@ -50,16 +60,15 @@ const Carousel = ({ slides }) => {
                 heading={slide.heading}
                 body={slide.body}
                 image={slide.image}
+                cta={slide.cta}
               />
             </li>
           ))}
         </ul>
       </div>
       
-      <div className="glide__arrows" data-glide-el="controls">
-        <Arrow direction="left" />
-        <Arrow direction="right" />
-      </div>
+      <Arrow direction="left" />
+      <Arrow direction="right" />
     </div>
   );
 };

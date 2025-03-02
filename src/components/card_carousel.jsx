@@ -33,10 +33,11 @@ const CardCarousel = ({ category, ids, perView, onViewAll }) => {
       if (!trackElement) return;
 
       const glide = new Glide(carouselRef.current, {
-        type: "carousel",
+        type: "slider",
         startAt: 0,
         perView: perView,
         gap: 24,
+        bound: true,
         breakpoints: {
           1024: { perView: 2 },
           768: { perView: 1 }

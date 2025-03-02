@@ -171,7 +171,7 @@ const CardSection = ({
                   transition: { staggerChildren: 0.05 }
                 }
               }}
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6 mb-12 items-stretch`}
+              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6 items-stretch`}
               role="list"
             >
               {currentCards.map((card, index) => (

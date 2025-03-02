@@ -13,7 +13,7 @@ const Banner = ({ heading, body, image, cta, fullScreen }) => {
                         <div className="mx-auto max-w-7xl px-8 w-full">
                             <h2 className="text-4xl font-semibold tracking-tight text-white">{heading}</h2>
                             {body && <p className="text-white mt-4 mb-6">{body}</p>}
-                            {cta && <Button as="a" href="/discover">{cta}</Button>}
+                            {cta && <Button as="a" href={cta.href}>{cta.label}</Button>}
                         </div>
                     </div>
             </div>
