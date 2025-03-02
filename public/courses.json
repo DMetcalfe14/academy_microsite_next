@@ -7,7 +7,23 @@
     "thumbnail": "/images/pexels-photo-3184298.webp",
     "alt": "Thumbnail showing a leader presenting a strategic plan to a team",
     "duration": 180,
-    "type": "elearning"
+    "type": "elearning",
+    "faqs": [
+      {
+        "question": "Question",
+        "answer": "This is the answer"
+      },
+      {
+        "question": "Second Question",
+        "answer": "Second answer"
+      }
+    ],
+    "instructors": [
+      {
+        "name": "Jane Smith",
+        "profile": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      }
+    ]
   },
   {
     "id": 2,
@@ -36,7 +52,7 @@
     "categories": ["Productivity"],
     "thumbnail": "/images/pexels-photo-3184311.jpeg",
     "alt": "Thumbnail showing a clock and a notebook on a desk",
-    "duration": null,
+    "duration": 15,
     "type": "eBook"
   },
   {
