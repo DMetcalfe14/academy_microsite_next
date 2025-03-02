@@ -1,18 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import useSWR from "swr";
 import { NavArrowLeft, NavArrowRight, ArrowRight } from "iconoir-react";
+
 import Card from "./card";
 import CardCarousel from "./card_carousel";
-
-const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 const filterRules = {
   topN: (courses, n) => (n ? courses.slice(0, n) : courses),
   byCategory: (courses, categories) =>
-    categories?.length > 0
+    categories.length > 0
       ? courses.filter((course) =>
         categories.some((category) => course.categories.includes(category))
       )
@@ -22,7 +19,7 @@ const filterRules = {
   byMinDuration: (courses, minDuration) =>
     minDuration ? courses.filter((course) => course.duration >= minDuration) : courses,
   byType: (courses, types) =>
-    types?.length > 0
+    types.length > 0
       ? courses.filter((course) =>
         types.some((type) => course.type.includes(type))
       )
@@ -40,54 +37,39 @@ const filterRules = {
   byId: (courses, ids) => (ids ? courses.filter((course) => ids.includes(course.id)) : courses),
 };
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { 
-      duration: 0.4,
-      ease: "easeOut"
-    }
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: { duration: 0.2 }
-  }
-};
-
-import LoadingSpinner from "./loading_spinner";
-
 const CardSection = ({
   title,
   description,
+  cards,
   filters,
   paginated,
   useCarousel = false,
   perRow = 4,
   onViewAll
 }) => {
-  const { data, error, isLoading, isValidating } = useSWR("/courses.json", fetcher, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false
-  });
-
   const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = paginated ? 6 : data?.length || 0;
-  
+  const cardsPerPage = paginated ? 6 : cards.length;
+
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filtered.slice(indexOfFirstCard, indexOfLastCard);
   const totalPages = Math.ceil(filtered.length / cardsPerPage);
-  const shouldShowPagination = !useCarousel && totalPages > 1 && paginated;
 
-  const applyFilters = (courses, rules) => {
+  useEffect(() => {
+    if (filters) {
+      const result = applyFilters(cards, filters);
+      setFiltered(result);
+    } else {
+      setFiltered(cards);
+    }
+  }, [cards, filters]);
+
+  const applyFilters = (cards, rules) => {
     return Object.entries(rules).reduce((filtered, [ruleKey, ruleValue]) => {
       const filterFunction = filterRules[ruleKey];
       return filterFunction ? filterFunction(filtered, ruleValue) : filtered;
-    }, courses);
+    }, cards);
   };
 
   const handleNextPage = () => {
@@ -102,138 +84,73 @@ const CardSection = ({
     }
   };
 
-  useEffect(() => {
-    if (data && filters) {
-      const result = applyFilters(data, filters);
-      setFiltered(result);
-    } else if (data) {
-      setFiltered(data);
-    }
-  }, [data, filters]);
-
-  return (
-    <div 
-      className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 mb-8 min-h-[300px]"
-      role="region"
-      aria-labelledby={title ? "card-section-title" : undefined}
-      aria-live="polite"
-      aria-busy={isLoading || isValidating}
-    >
-      {title && (
-        <h1 
-          id="card-section-title"
-          className="text-2xl font-semibold mb-4"
-        >
-          {title}
-        </h1>
-      )}
-      
-      {description && (
-        <p className="mb-6" aria-describedby="card-section-title">
-          {description}
+  const html = (
+    <>
+      {title && <h1 className="text-2xl font-semibold mb-4">{title}</h1>}
+      {description && <p className="mb-6">{description}</p>}
+      {filtered.length > 0 && paginated && !useCarousel && (
+        <p className="text-sm mb-4">
+          <span>{filtered.length}</span> results
         </p>
       )}
 
-      {error && (
-        <div 
-          role="alert"
-          className="text-red-600"
-          aria-live="assertive"
-        >
-          Error loading content. Please try again later.
-        </div>
-      )}
-
-      {isLoading || isValidating ? (
-        <div className="flex justify-center items-center min-h-[407px]">
-          <LoadingSpinner />
-        </div>
+      {/* Render Carousel or Grid */}
+      {useCarousel ? (
+        <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll}/>
       ) : (
-        <AnimatePresence mode="wait">
-          {useCarousel ? (
-            <CardCarousel 
-              cards={currentCards}
-              perView={perRow}
-              aria-live="polite"
-              className="mb-12"
-              onViewAll={onViewAll}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6 mb-12`}>
+          {currentCards.map((card) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              title={card.title}
+              description={card.description}
+              duration={card.duration}
+              thumbnail={card.thumbnail}
+              type={card.type}
+              categories={card.categories}
             />
-          ) : (
-            <motion.div
-              key={currentPage}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { 
-                  opacity: 1,
-                  transition: { staggerChildren: 0.05 }
-                }
-              }}
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6 items-stretch`}
-              role="list"
-            >
-              {currentCards.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  variants={cardVariants}
-                  transition={{ delay: index * 0.05 }}
-                  layout
-                  role="listitem"
-                  aria-labelledby={`card-${card.id}-title`}
-                  className="flex flex-col h-full focus:ring-2 focus:ring-primary focus:outline-none"
-                  tabIndex="0"
-                >
-                  <Card
-                    id={card.id}
-                    title={card.title}
-                    description={card.description}
-                    duration={card.duration}
-                    thumbnail={card.thumbnail}
-                    type={card.type}
-                    categories={card.categories}
-                    aria-labelledby={`card-${card.id}-title`}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+          ))}
+        </div>
       )}
 
-      {shouldShowPagination && (
-        <motion.div 
-          className="flex items-center gap-8 place-content-between"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
+      {/* Pagination for Grid Layout */}
+      {!useCarousel && totalPages > 1 && paginated && (
+        <div className="flex items-center gap-8 place-content-between">
           <button
-            aria-label="Previous page"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:ring-2 focus:ring-primary"
+            id="prev"
+            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover"
+            type="button"
             onClick={handlePrevPage}
             disabled={currentPage === 1}
           >
-            <NavArrowLeft aria-hidden="true" />
+            <NavArrowLeft />
           </button>
-
-          <p id="pagination-status" aria-live="polite">
-            Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+          <p>
+            Page{" "}
+            <span id="current_page">
+              <strong>{currentPage}</strong>
+            </span>{" "}
+            of&nbsp;
+            <span id="no_pages">
+              <strong>{totalPages}</strong>
+            </span>
           </p>
-
           <button
-            aria-label="Next page"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:ring-2 focus:ring-primary"
+            id="next"
+            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover"
+            type="button"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
           >
-            <NavArrowRight aria-hidden="true" />
+            <NavArrowRight />
           </button>
-        </motion.div>
+        </div>
       )}
-    </div>
+    </>
   );
+
+  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 mb-8">{html}</div>
 };
 
 export default CardSection;
