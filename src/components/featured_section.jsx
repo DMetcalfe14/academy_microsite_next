@@ -24,7 +24,7 @@ const FeaturedSection = ({ cards }) => {
             title: "Driving Change, Empowering Growth",
             description: "Equip yourself with the skills needed to navigate organisational change with confidence and resilience. These courses focus on fostering adaptability, effective communication, and strategic planning to ensure smooth transitions and sustainable success.",
             category: "Change",
-            link: "/discover.html"
+            link: "/discover"
         },
     ];
 

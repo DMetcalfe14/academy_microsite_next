@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavArrowRight, NavArrowLeft } from "iconoir-react";
 import Card from "./card";
+import Link from "next/link";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
@@ -16,7 +17,7 @@ const carouselVariants = {
   }
 };
 
-const CardCarousel = ({ category, ids, perView }) => {
+const CardCarousel = ({ category, ids, perView, onViewAll }) => {
   const { data: cards, error, isLoading } = useSWR('/courses.json', fetcher);
   const carouselRef = useRef(null);
 
@@ -100,21 +101,31 @@ const CardCarousel = ({ category, ids, perView }) => {
               </ul>
             </div>
             
-            <div className="flex gap-2 justify-end mt-4" data-glide-el="controls">
-              <button
-                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2 transition-colors duration-300"
-                data-glide-dir="<"
-                aria-label="Previous slide"
-              >
-                <NavArrowLeft aria-hidden="true" />
-              </button>
-              <button
-                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2 transition-colors duration-300"
-                data-glide-dir=">"
-                aria-label="Next slide"
-              >
-                <NavArrowRight aria-hidden="true" />
-              </button>
+            <div className="flex gap-2 justify-between mt-4">
+              {onViewAll && (
+                <Link
+                  href={onViewAll}
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2 font-semibold"
+                >
+                  View All
+                </Link>
+              )}
+              <div className="flex gap-2" data-glide-el="controls">
+                <button
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2"
+                  data-glide-dir="<"
+                  aria-label="Previous slide"
+                >
+                  <NavArrowLeft aria-hidden="true" />
+                </button>
+                <button
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2"
+                  data-glide-dir=">"
+                  aria-label="Next slide"
+                >
+                  <NavArrowRight aria-hidden="true" />
+                </button>
+              </div>
             </div>
           </motion.div>
         )}

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from "next/image";
 import { useState } from "react";
 import { Menu } from "iconoir-react";
+import Button from "@/components/button";
 
 export default function RootLayout({ children }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -36,12 +37,7 @@ export default function RootLayout({ children }) {
                   className="min-w-[300px] rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-primary text-sm/6"
                   placeholder="Search for articles, learning and more..."
                 />
-                <button
-                  type="submit"
-                  className="flex-none rounded-md bg-primary_hover px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                >
-                  Search
-                </button>
+                <Button type="submit" variant="white">Search</Button>
               </form>
             </div>
             <button
@@ -68,12 +64,7 @@ export default function RootLayout({ children }) {
                 className="w-full rounded-md bg-white px-3.5 py-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-primary text-sm/6"
                 placeholder="Search for articles, learning and more..."
               />
-              <button
-                type="submit"
-                className="flex-none rounded-md bg-primary_hover px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                Search
-              </button>
+              <Button type="submit">Search</Button>
             </form>
           </div>
         )}

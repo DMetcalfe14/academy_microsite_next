@@ -66,7 +66,7 @@ const CardSection = ({
   paginated,
   useCarousel = false,
   perRow = 4,
-  more,
+  onViewAll
 }) => {
   const { data, error, isLoading, isValidating } = useSWR("/courses.json", fetcher, {
     revalidateOnFocus: false,
@@ -156,6 +156,7 @@ const CardSection = ({
               perView={perRow}
               aria-live="polite"
               className="mb-12"
+              onViewAll={onViewAll}
             />
           ) : (
             <motion.div

@@ -11,7 +11,7 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
             <div className="lg:col-span-1">
                 <h1 className="text-2xl font-semibold mb-4">{title}</h1>
                 <p className="mb-5">{description}</p>
-                <Link href={link ? link : `/search.html?Category=${category}`} className="font-semibold hover:text-primary mb-5 flex">
+                <Link href={link ? link : `/search?category=${category}`} className="font-semibold hover:text-primary mb-5 flex">
                     View all <ArrowRight />
                 </Link>
             </div>

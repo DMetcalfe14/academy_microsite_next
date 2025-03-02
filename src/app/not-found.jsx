@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Custom404() {
     return (
-        <main className="grid min-h-screen place-items-center px-10">
+        <main className="grid h-[calc(100vh-90px)] place-items-center px-10">
             <div className="text-center">
                 <p className="font-semibold text-primary text-7xl">404</p>
                 <h1 className="mt-4 text-3xl font-semibold tracking-tight text-balance text-gray-900">Resource not found</h1>
