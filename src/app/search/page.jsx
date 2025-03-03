@@ -90,10 +90,6 @@ function Search() {
         }
         router.push(`?${newSearchParams.toString()}`);
     };
-
-    if (isValidating || isLoading) {
-        return <LoadingSpinner />;
-      }
     
 
     return (

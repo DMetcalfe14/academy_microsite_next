@@ -21,4 +21,10 @@ const formatDuration = (duration) => {
     }
   };
 
-  export {formatDuration}
+  const formatDate = (dateStr) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const [day, month] = dateStr.split("/");
+    return [day, months[[parseInt(month) - 1]]]
+  }
+
+  export {formatDuration, formatDate}

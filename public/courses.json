@@ -64,5 +64,31 @@
     "alt": "Thumbnail showing a leader addressing challenges with confidence",
     "duration": 45,
     "type": "Video"
+  },
+  {
+    "id": 6,
+    "title": "Effective Communication Strategies",
+    "description": "A workshop on improving communication skills for leaders.",
+    "categories": ["Communication", "Leadership"],
+    "thumbnail": "https://images.pexels.com/photos/3182781/pexels-photo-3182781.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "alt": "Thumbnail showing a team engaged in a discussion",
+    "duration": 90,
+    "type": "Event",
+    "start_date": "12/03/2025",
+    "end_date": "12/03/2025",
+    "location": "Liverpool Regional Centre"
+  },
+  {
+    "id": 7,
+    "title": "Managing Change in Organisations",
+    "description": "A seminar discussing change management strategies for business success.",
+    "categories": ["Change Management", "Leadership"],
+    "thumbnail": "https://images.pexels.com/photos/7648239/pexels-photo-7648239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "alt": "Thumbnail showing a business leader adapting to change",
+    "duration": 60,
+    "type": "Event",
+    "start_date": "20/03/2025",
+    "end_date": "20/03/2025",
+    "location": "Manchester Regional Centre"
   }
 ]

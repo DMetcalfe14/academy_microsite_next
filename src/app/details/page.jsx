@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { notFound } from "next/navigation";
-import Banner from '@/components/banner';
+import Banner from "@/components/banner";
 import Accordion from "@/components/accordion";
 import { formatDuration } from "@/app/utilities";
 
@@ -54,10 +54,22 @@ function CourseDetails({ id }) {
     notFound();
   }
 
-  const details = [
-    { label: "Type", value: course.type },
-    { label: "Duration", value: formatDuration(course.duration) },
-  ];
+  let details = []
+
+  if (course.type === "Event") {
+    details = [
+      { label: "Type", value: course.type },
+      { label: "Location", value: course.location },
+      { label: "Start", value: course.start_date },
+      { label: "End", value: course.end_date },
+      { label: "Duration", value: formatDuration(course.duration) },
+    ];
+  } else {
+    details = [
+      { label: "Type", value: course.type },
+      { label: "Duration", value: formatDuration(course.duration) },
+    ];
+  }
 
   return (
     <>
@@ -85,9 +97,9 @@ function CourseDetails({ id }) {
                 {details.map((detail, index) => (
                   <li
                     key={index}
-                    className="p-4 bg-gray-100 rounded-lg mb-2 flex items-center place-content-between font-semibold"
+                    className="p-4 bg-gray-100 rounded-lg mb-2 flex place-content-between font-semibold text-right"
                   >
-                    <span>{detail.label}:</span>
+                    <span className="mr-4">{detail.label}:</span>
                     {detail.value}
                   </li>
                 ))}
@@ -125,9 +137,7 @@ function CourseDetails({ id }) {
 }
 
 export default function Details() {
-  return (
-      <DetailsWithSearchParams />
-  );
+  return <DetailsWithSearchParams />;
 }
 
 function DetailsWithSearchParams() {
