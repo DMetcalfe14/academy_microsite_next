@@ -1,33 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { LoadingProvider, useLoading } from "./loadingContext";
+import useSWR from "swr";
 
 import CardSection from "../components/cards_section";
-import FeaturedSection from "../components/featured_section";
 import Carousel from "@/components/carousel";
+import FeaturedSection from "@/components/featured_section";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function PageContent() {
-  const { isLoading } = useLoading();
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    fetch("/courses.json")
-      .then((response) => response.json())
-      .then((data) => setCourses(data))
-      .catch((error) => console.error("Error fetching courses:", error));
-  }, []);
-
-  if (isLoading) {
-    return <div className="full-page-loader">Loading...</div>;
-  }
+  const { data: courses = [], isLoading } = useSWR(
+    "/courses.json",
+    fetcher, {
+      suspense: true,
+      fallbackData: []
+    }
+  );
 
   return (
-    <>
+    <div className="">
       <Carousel />
       <CardSection title="Brand new 🌟" cards={courses} filters={{ topN: 4 }} />
       <FeaturedSection cards={courses} />
-    </>
+    </div>
   );
 }
 

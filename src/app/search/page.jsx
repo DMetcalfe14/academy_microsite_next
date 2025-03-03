@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import useSWR from "swr";
+import useSWR, {mutate} from "swr";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import CardSection from "../../components/cards_section";
@@ -20,7 +20,20 @@ function Search() {
     const type = searchParams.get("type");
 
     // Use SWR to fetch courses data
-    const { data: courses = [], error } = useSWR("/courses.json", fetcher);
+    const { data: courses = [], isLoading, isValidating } = useSWR(
+      "/courses.json",
+      fetcher,
+      {
+        suspense: true,
+        revalidateOnFocus: true, 
+        fallbackData: [],
+        keepPreviousData: true
+      }
+    );
+
+    useEffect(() => {
+        mutate("/courses.json");
+      }, [router.asPath]);
 
     // Extract unique categories and types dynamically from courses
     const categories = [...new Set(courses.flatMap((course) => course.categories || []))];
@@ -78,9 +91,10 @@ function Search() {
         router.push(`?${newSearchParams.toString()}`);
     };
 
-    if (error) {
-        return <div>Error loading courses...</div>;
-    }
+    if (isValidating || isLoading) {
+        return <LoadingSpinner />;
+      }
+    
 
     return (
         <section className="mb-15">

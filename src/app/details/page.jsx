@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { notFound } from "next/navigation";
-import Banner from "@/components/banner";
+import Banner from '@/components/banner';
 import Accordion from "@/components/accordion";
 import { formatDuration } from "@/app/utilities";
 
@@ -126,9 +126,7 @@ function CourseDetails({ id }) {
 
 export default function Details() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <DetailsWithSearchParams />
-    </Suspense>
   );
 }
 

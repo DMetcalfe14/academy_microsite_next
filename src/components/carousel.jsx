@@ -1,27 +1,17 @@
 "use client";
 
 import useSWR from "swr";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, lazy } from "react";
 import Glide from "@glidejs/glide";
-import Banner from "@/components/banner";
+const Banner = lazy(() => import('./banner'));
 import { NavArrowLeft, NavArrowRight } from "iconoir-react";
-import { useLoading } from "@/app/loadingContext";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 const Carousel = () => {
   const glideRef = useRef(null);
   const sliderRef = useRef(null);
-  const { startLoading, stopLoading } = useLoading();
   const { data: slides = [], isLoading } = useSWR("/slides.json", fetcher);
-  const [isGlideReady, setIsGlideReady] = useState(false);
-
-  useEffect(() => {
-    if (isLoading) {
-      startLoading();
-      return () => stopLoading();
-    }
-  }, [isLoading, startLoading, stopLoading]);
 
   useEffect(() => {
     if (!isLoading && slides?.length > 0 && sliderRef.current) {
@@ -34,19 +24,14 @@ const Carousel = () => {
         animationDuration: 500,
       });
 
-      startLoading(); // Start loading for Glide initialization
       glide.mount();
       glideRef.current = glide;
-      setIsGlideReady(true);
-      stopLoading(); // Stop loading after Glide is ready
 
       return () => {
         glide.destroy();
-        setIsGlideReady(false);
-        stopLoading(); // Cleanup loading state
       };
     }
-  }, [isLoading, slides, startLoading, stopLoading]);
+  }, [isLoading, slides]);
 
   const handleControlClick = (direction) => {
     if (glideRef.current) {

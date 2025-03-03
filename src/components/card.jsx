@@ -1,3 +1,5 @@
+"use client";
+
 import Tag from "./tag";
 import { Clock, Laptop, PathArrow, QuestionMark } from "iconoir-react";
 import Link from 'next/link';

@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy } from "react";
 import { NavArrowLeft, NavArrowRight, ArrowRight } from "iconoir-react";
-
-import Card from "./card";
 import CardCarousel from "./card_carousel";
+import Card from "@/components/card";
 
 const filterRules = {
   topN: (courses, n) => (n ? courses.slice(0, n) : courses),
@@ -98,7 +97,7 @@ const CardSection = ({
       {useCarousel ? (
         <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll}/>
       ) : (
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6 mb-12`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}>
           {currentCards.map((card) => (
             <Card
               key={card.id}

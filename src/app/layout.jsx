@@ -4,10 +4,9 @@ import "./globals.css";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import Link from 'next/link';
 import Image from "next/image";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Menu } from "iconoir-react";
 import Button from "@/components/button";
-import { LoadingProvider } from "@/app/loadingContext";
 
 export default function RootLayout({ children }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -69,9 +68,7 @@ export default function RootLayout({ children }) {
             </form>
           </div>
         )}
-        <LoadingProvider>
         {children}
-        </LoadingProvider>
       </body>
     </html>
   );
