@@ -132,7 +132,7 @@ function Search() {
                                         `?query=${e.target.value}&category=${selectedCategories.join(",")}&type=${selectedTypes.join(",")}`
                                     )
                                 }
-                                placeholder="Search courses..."
+                                placeholder="Search for articles, learning and more..."
                                 className="border border-gray-300 px-4 py-2 w-full rounded"
                             />
                         </div>

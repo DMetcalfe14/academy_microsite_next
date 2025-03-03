@@ -115,7 +115,7 @@ const CardSection = ({
 
       {/* Pagination for Grid Layout */}
       {!useCarousel && totalPages > 1 && paginated && (
-        <div className="flex items-center gap-8 place-content-between">
+        <div className="flex items-center gap-8 place-content-between mt-8">
           <button
             id="prev"
             className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover"
@@ -149,7 +149,7 @@ const CardSection = ({
     </>
   );
 
-  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 mb-8">{html}</div>
+  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{html}</div>
 };
 
 export default CardSection;

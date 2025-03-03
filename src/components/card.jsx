@@ -1,13 +1,16 @@
 "use client";
 
 import Tag from "./tag";
-import { Clock, Laptop, PathArrow, QuestionMark } from "iconoir-react";
+import { Clock, Laptop, PathArrow, QuestionMark, Microphone, Book, Calendar } from "iconoir-react";
 import Link from 'next/link';
 import { formatDuration } from "@/app/utilities";
 
 const iconMap = {
+  Event: Calendar,
+  eBook: Book,
   elearning: Laptop,
   Pathway: PathArrow,
+  Podcast: Microphone,
   default: QuestionMark
 };
 

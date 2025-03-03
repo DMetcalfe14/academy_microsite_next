@@ -16,7 +16,7 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
                 </Link>
             </div>
             <div className="col-span-3">
-            <CardCarousel cards={cards} category={category} perView={3}/>
+            <CardCarousel cards={cards} category={category} perView={3} ids={ids} />
             </div>
         </div>
     );

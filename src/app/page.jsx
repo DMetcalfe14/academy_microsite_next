@@ -20,6 +20,7 @@ function PageContent() {
     <div className="">
       <Carousel />
       <CardSection title="Brand new 🌟" cards={courses} filters={{ topN: 4 }} />
+      <div className="mb-6"></div>
       <FeaturedSection cards={courses} />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
