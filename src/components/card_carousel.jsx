@@ -31,7 +31,6 @@ const CardCarousel = ({
         perView: perView,
         gap: 15,
         throttle: 100,
-        focusAt: "center",
         keyboard: true,
         breakpoints: {
           1280: { perView: Math.min(4, displayedCards.length) },
