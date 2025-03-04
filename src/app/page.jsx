@@ -14,7 +14,7 @@ function PageContent() {
   const { data: courses = [], isLoading } = useSWR("courses.json", fetcher);
 
   return (
-    <div className="">
+    <div>
       <Carousel />
       <CardSection title="Brand new 🌟" cards={courses} filters={{ topN: 4 }} />
       <div className="mb-6"></div>

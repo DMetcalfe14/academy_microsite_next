@@ -10,50 +10,30 @@ import EventDetails from "@/components/event_details";
 import Button from "@/components/button";
 
 function CourseDetails({ id }) {
-  const [courses, setCourses] = useState([]);
-  const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [course, setCourse] = useState(undefined); // Start with undefined to indicate "loading"
 
   useEffect(() => {
     fetch("courses.json")
       .then((response) => response.json())
       .then((data) => {
-        setCourses(data);
         const result = data.find((course) => course.id == id);
-        setCourse(result);
-        setLoading(false);
+        setCourse(result || null); // Set null if no matching course is found
       })
       .catch((error) => {
         console.error("Error fetching courses:", error);
-        setLoading(false);
+        setCourse(null); // Handle errors by setting course to null
       });
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center w-full h-screen">
-        <div className="flex justify-center items-center space-x-1 text-sm text-gray-700">
-          <svg
-            fill="none"
-            className="w-6 h-6 animate-spin"
-            viewBox="0 0 32 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              clipRule="evenodd"
-              d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
-              fill="currentColor"
-              fillRule="evenodd"
-            />
-          </svg>
-          <div>Loading ...</div>
-        </div>
-      </div>
-    );
+  // If no course is found after fetching, trigger notFound()
+  if (course === null) {
+    notFound();
+    return null; // Prevent further rendering
   }
 
-  if (!course) {
-    notFound();
+  // Delay rendering child components until data is fetched
+  if (course === undefined) {
+    return null; // Render nothing while waiting for data
   }
 
   let details = [
@@ -80,7 +60,7 @@ function CourseDetails({ id }) {
                   <Accordion items={course.faqs} />
                 </>
               )}
-              {course.type == "Event" && (
+              {course.type === "Event" && (
                 <EventDetails events={course.events} />
               )}
             </div>
@@ -98,7 +78,13 @@ function CourseDetails({ id }) {
                 ))}
               </ul>
               <div className="mt-2 flex">
-                <Button className="w-full text-center" as="a" href={course.href}>Launch Resource</Button>
+                <Button
+                  className="w-full text-center"
+                  as="a"
+                  href={course.href}
+                >
+                  Launch Resource
+                </Button>
               </div>
               {course.instructors && course.instructors.length > 0 && (
                 <>
@@ -130,9 +116,9 @@ function CourseDetails({ id }) {
 export default function Details() {
   return (
     <Suspense>
-      <DetailsWithSearchParams />
-    </Suspense>
-  );
+  <DetailsWithSearchParams />
+  </Suspense>
+);
 }
 
 function DetailsWithSearchParams() {
@@ -141,6 +127,7 @@ function DetailsWithSearchParams() {
 
   if (!id) {
     notFound(); // Handle missing ID gracefully
+    return null; // Prevent further rendering
   }
 
   return <CourseDetails id={id} />;

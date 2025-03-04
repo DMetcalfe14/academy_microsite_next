@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import useSWR from "swr";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import CardSection from "../../components/cards_section";
 import Checkbox from "../../components/checkbox";
+import CheckboxSkeleton from "../../components/checkbox_skeleton";
 
 // Fetcher function for SWR
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -108,10 +109,6 @@ function Search() {
         });
     }, [courses, debouncedQuery, selectedCategories, selectedTypes]);
 
-    if (isLoading) {
-        return <p>Loading...</p>; // Explicit loading state
-    }
-
     return (
         <section className="mb-15">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -121,25 +118,37 @@ function Search() {
                         <h1 className="text-2xl font-semibold mb-4">Filters</h1>
                         <div className="mb-6">
                             <p className="text-md font-semibold mb-2">Categories</p>
-                            {categories.map((category) => (
-                                <Checkbox
-                                    key={category}
-                                    label={category}
-                                    checked={selectedCategories.includes(category)}
-                                    onChange={() => handleCategoryChange(category)}
-                                />
-                            ))}
+                            {isLoading ? (
+                                Array.from({ length: 5 }).map((_, index) => (
+                                    <CheckboxSkeleton key={index} />
+                                ))
+                            ) : (
+                                categories.map((category) => (
+                                    <Checkbox
+                                        key={category}
+                                        label={category}
+                                        checked={selectedCategories.includes(category)}
+                                        onChange={() => handleCategoryChange(category)}
+                                    />
+                                ))
+                            )}
                         </div>
                         <div className="mb-6" id="types">
                             <p className="text-md font-semibold mb-2">Types</p>
-                            {types.map((type) => (
-                                <Checkbox
-                                    key={type}
-                                    label={type}
-                                    checked={selectedTypes.includes(type)}
-                                    onChange={() => handleTypeChange(type)}
-                                />
-                            ))}
+                            {isLoading ? (
+                                Array.from({ length: 3 }).map((_, index) => (
+                                    <CheckboxSkeleton key={index} />
+                                ))
+                            ) : (
+                                types.map((type) => (
+                                    <Checkbox
+                                        key={type}
+                                        label={type}
+                                        checked={selectedTypes.includes(type)}
+                                        onChange={() => handleTypeChange(type)}
+                                    />
+                                ))
+                            )}
                         </div>
                     </div>
 
@@ -169,4 +178,11 @@ function Search() {
     );
 }
 
-export default Search;
+export default function SearchSuspense() {
+    return (
+      <Suspense>
+        <Search />
+      </Suspense>
+    );
+  }
+  

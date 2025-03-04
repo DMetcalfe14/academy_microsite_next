@@ -4,28 +4,28 @@ import useSWR from "swr";
 import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
 import CardSection from "@/components/cards_section";
-import LoadingSpinner from "../loading";
+import { Suspense } from "react";
 
 const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export function DiscoverSection({ id }) {
   // Fetch discover configuration
   const {
-    data: discoverData = [],
+    data: discoverData,
     isLoading: discoverLoading,
     error: discoverError,
   } = useSWR("discover.json", JSONfetcher);
 
   // Fetch courses data
   const {
-    data: courses = [],
+    data: courses,
     isLoading: coursesLoading,
     error: coursesError,
   } = useSWR("courses.json", JSONfetcher);
 
   // Handle loading state
   if (discoverLoading || coursesLoading) {
-    return <LoadingSpinner />;
+    return null; // Render nothing while loading; child components handle skeletons
   }
 
   // Handle error state
@@ -34,11 +34,12 @@ export function DiscoverSection({ id }) {
   }
 
   // Find the specific section by ID
-  const section = discoverData.find((item) => item.id == id);
+  const section = discoverData?.find((item) => item.id == id);
 
   // Handle case where no matching section is found
   if (!section) {
     notFound();
+    return null; // Prevent further rendering
   }
 
   const { title, image, description, cardSections } = section;
@@ -64,12 +65,12 @@ export function DiscoverSection({ id }) {
           />
         );
       })}
-      <div className="mb-6"/>
+      <div className="mb-6" />
     </>
   );
 }
 
-export default function Page() {
+export function Page() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -79,4 +80,12 @@ export default function Page() {
   }
 
   return <DiscoverSection id={id} />;
+}
+
+export default function PageSuspense() {
+  return (
+    <Suspense>
+      <Page />
+    </Suspense>
+  );
 }

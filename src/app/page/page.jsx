@@ -3,30 +3,27 @@
 import useSWR from "swr";
 import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
-import LoadingSpinner from "../loading";
+import { Suspense } from "react";
 
 const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
 const HTMLfetcher = (...args) => fetch(...args).then((res) => res.text());
 
 export function Article({ id }) {
   // Fetch articles data
-  const { data: articles = [], isLoading: articlesLoading, error: articlesError } = useSWR(
+  const { data: articles, isLoading: articlesLoading, error: articlesError } = useSWR(
     "articles.json",
     JSONfetcher
   );
 
-  // Find the article by ID (safe fallback if articles are not loaded yet)
-  const article = articles.find((article) => article.id == id);
-
-  // Fetch HTML content (conditionally based on article existence)
+  // Always call useSWR for HTML content, but provide a default key
   const { data: htmlContent, isLoading: htmlLoading, error: htmlError } = useSWR(
-    article ? article.page : null, // Only fetch if the article exists
+    articles?.find((article) => article.id == id)?.page || null,
     HTMLfetcher
   );
 
   // Handle loading state for articles
   if (articlesLoading) {
-    return <LoadingSpinner />;
+    return null; // Render nothing while loading; child components handle skeletons
   }
 
   // Handle error state for articles
@@ -34,14 +31,18 @@ export function Article({ id }) {
     return <div>Error loading articles.</div>;
   }
 
+  // Find the article by ID
+  const article = articles?.find((article) => article.id == id);
+
   // Handle case where article is not found
   if (!article) {
-    notFound()
+    notFound();
+    return null; // Prevent further rendering
   }
 
   // Handle loading state for HTML content
   if (htmlLoading) {
-    return <LoadingSpinner />;
+    return null; // Render nothing while loading; child components handle skeletons
   }
 
   // Handle error state for HTML content
@@ -67,7 +68,7 @@ export function Article({ id }) {
   );
 }
 
-export default function Page() {
+export function Page() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -77,4 +78,12 @@ export default function Page() {
   }
 
   return <Article id={id} />;
+}
+
+export default function PageSuspense() {
+  return (
+    <Suspense>
+      <Page />
+    </Suspense>
+  );
 }

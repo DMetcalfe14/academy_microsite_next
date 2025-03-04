@@ -3,10 +3,11 @@
 import useSWR from "swr";
 import { useEffect, useRef, lazy } from "react";
 import Glide from "@glidejs/glide";
-const Banner = lazy(() => import('./banner'));
+const Banner = lazy(() => import("./banner"));
 import { NavArrowLeft, NavArrowRight } from "iconoir-react";
+import CarouselSkeleton from "./carousel_skeleton";
 
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Carousel = () => {
   const glideRef = useRef(null);
@@ -14,7 +15,7 @@ const Carousel = () => {
   const { data: slides = [], isLoading } = useSWR("slides.json", fetcher);
 
   useEffect(() => {
-    if (slides?.length > 0 && sliderRef.current) {
+    if (!isLoading && slides?.length > 0 && sliderRef.current) {
       const glide = new Glide(sliderRef.current, {
         type: "carousel",
         perView: 1,
@@ -41,7 +42,7 @@ const Carousel = () => {
         glide.destroy();
       };
     }
-  }, [slides]);
+  }, [slides, isLoading]);
 
   const handleControlClick = (direction) => {
     if (glideRef.current) {
@@ -65,7 +66,9 @@ const Carousel = () => {
     </button>
   );
 
-  return (
+  return isLoading ? (
+    <CarouselSkeleton />
+  ) : (
     <div id="rotator" className="relative glide" ref={sliderRef}>
       <div className="glide__track" data-glide-el="track">
         <ul className="glide__slides">

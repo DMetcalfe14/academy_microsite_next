@@ -10,7 +10,7 @@ const iconMap = {
   elearning: Laptop,
   Pathway: PathArrow,
   Podcast: Microphone,
-  default: QuestionMark
+  default: QuestionMark,
 };
 
 const Card = ({
@@ -46,41 +46,59 @@ const Card = ({
           <span aria-label={`Duration: ${plainDuration}`}>{plainDuration}</span>
         </div>
 
-        <img
-          src={thumbnail}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          alt={alt || `${title} thumbnail`}
-          loading="lazy"
-        />
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            alt={alt || `${title} thumbnail`}
+            loading="lazy"
+          />
+        ) : (
+          // Fallback for missing thumbnail
+          <div className="bg-gray-300 w-full h-full animate-pulse"></div>
+        )}
       </div>
 
       {/* Content Section */}
       <div className="p-4 flex flex-col flex-1">
         {/* Title */}
-        <a
-          href={`details.html?id=${id}`}
-          className="hover:no-underline rounded"
-          aria-label={`View details of ${title} (${type}, ${plainDuration})`}
-        >
-          <h3 className="mb-2 text-lg font-semibold line-clamp-2 leading-tight">
-            {title}
-          </h3>
-        </a>
+        {title ? (
+          <a
+            href={`details.html?id=${id}`}
+            className="hover:no-underline rounded"
+            aria-label={`View details of ${title} (${type}, ${plainDuration})`}
+          >
+            <h3 className="mb-2 text-lg font-semibold line-clamp-2 leading-tight">{title}</h3>
+          </a>
+        ) : (
+          // Fallback for missing title
+          <div className="bg-gray-300 animate-pulse h-[24px] w-[80%] mb-[16px]"></div>
+        )}
 
         {/* Description */}
-        <p className="mb-4 line-clamp-3 flex-1">{description}</p>
+        {description ? (
+          <p className="mb-4 line-clamp-3 flex-1">{description}</p>
+        ) : (
+          // Fallback for missing description
+          <div className="bg-gray-300 animate-pulse h-[16px] w-[90%] mb-[16px]"></div>
+        )}
 
         {/* Categories/Tags */}
-        <div className="flex flex-wrap gap-2 mt-auto">
-          {categories.map((category) => (
-            <Tag key={category} label={category} />
-          ))}
-        </div>
+        {categories?.length > 0 ? (
+          <div className="flex flex-wrap gap-2 mt-auto">
+            {categories.map((category) => (
+              <Tag key={category} label={category} />
+            ))}
+          </div>
+        ) : (
+          // Fallback for missing categories
+          Array.from({ length: 3 }).map((_, index) => (
+            <span key={index} className="bg-gray-300 animate-pulse h-[16px] w-[60px] rounded"></span>
+          ))
+        )}
       </div>
     </div>
   );
 };
-
-
 
 export default Card;

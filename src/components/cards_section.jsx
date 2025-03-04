@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { NavArrowLeft, NavArrowRight, ArrowRight } from "iconoir-react";
+import { NavArrowLeft, NavArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 import Card from "@/components/card";
+import CardSectionSkeleton from "./card_section_skeleton";
 
 const filterRules = {
   topN: (courses, n) => (n ? courses?.slice(0, n) : courses),
@@ -39,7 +40,7 @@ const filterRules = {
 const CardSection = ({
   title,
   description,
-  cards,
+  cards = [],
   filters,
   paginated,
   useCarousel = false,
@@ -48,6 +49,8 @@ const CardSection = ({
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const cardsPerPage = paginated ? 6 : cards?.length;
 
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -56,12 +59,14 @@ const CardSection = ({
   const totalPages = Math.ceil(filtered?.length / cardsPerPage);
 
   useEffect(() => {
+    setIsLoading(true);
     if (filters) {
       const result = applyFilters(cards, filters);
       setFiltered(result);
     } else {
       setFiltered(cards);
     }
+    setIsLoading(false);
   }, [cards, filters]);
 
   const applyFilters = (cards, rules) => {
@@ -83,6 +88,8 @@ const CardSection = ({
     }
   };
 
+  if (isLoading) return <CardSectionSkeleton perRow={perRow} perPage={cardsPerPage} paginated={paginated}/>;
+
   const html = (
     <>
       {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
@@ -94,7 +101,7 @@ const CardSection = ({
       )}
 
       {useCarousel ? (
-        <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll}/>
+        <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll} />
       ) : (
         <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}>
           {currentCards?.map((card) => (
@@ -140,7 +147,7 @@ const CardSection = ({
             type="button"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            aria-label="Navigate to the previous page of results"
+            aria-label="Navigate to the next page of results"
           >
             <NavArrowRight />
           </button>
@@ -149,7 +156,7 @@ const CardSection = ({
     </>
   );
 
-  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{html}</div>
+  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{html}</div>;
 };
 
 export default CardSection;

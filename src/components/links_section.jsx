@@ -2,11 +2,14 @@
 
 import useSWR from "swr";
 import QuickLink from "./quick_link";
+import LinkSectionSkeleton from "./link_section_skeleton";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const LinkSection = ({}) => {
+const LinkSection = () => {
   const { data: links = [], isLoading } = useSWR("links.json", fetcher);
+
+  if (isLoading) return <LinkSectionSkeleton />;
 
   return (
     <div>
@@ -24,4 +27,5 @@ const LinkSection = ({}) => {
     </div>
   );
 };
+
 export default LinkSection;

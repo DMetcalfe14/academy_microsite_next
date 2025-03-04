@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { ArrowRight } from "iconoir-react";
 
 import EventCard from "@/components/event_card";
+import EventSectionSkeleton from "@/components/event_section_skeleton";
 import { formatDate } from "@/app/utilities";
 
 // Helper function to parse a date string in "dd/mm/YYYY" format
@@ -10,7 +11,7 @@ const parseDate = (dateStr) => {
   return new Date(year, month - 1, day); // JavaScript months are zero-indexed
 };
 
-const EventSection = ({ cards }) => {
+const EventSection = ({ cards, isLoading }) => {
   const filteredAndSortedEvents = useMemo(() => {
     const currentDate = new Date();
 
@@ -34,6 +35,8 @@ const EventSection = ({ cards }) => {
       .sort((a, b) => parseDate(a.start_date) - parseDate(b.start_date))
       .slice(0, 2); // Limit to 2 events
   }, [cards]);
+
+  if (isLoading) return <EventSectionSkeleton />;
 
   return (
     <div>
