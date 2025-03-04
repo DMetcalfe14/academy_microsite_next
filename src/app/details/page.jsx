@@ -98,7 +98,7 @@ function CourseDetails({ id }) {
                 ))}
               </ul>
               <div className="mt-2 flex">
-                <Button as="a" href={course.href}>Launch Resource</Button>
+                <Button className="w-full text-center" as="a" href={course.href}>Launch Resource</Button>
               </div>
               {course.instructors && course.instructors.length > 0 && (
                 <>
