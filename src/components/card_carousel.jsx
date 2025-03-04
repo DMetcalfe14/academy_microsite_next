@@ -2,7 +2,6 @@ import { useEffect, useRef, useMemo } from "react";
 import Glide from "@glidejs/glide";
 import { NavArrowRight, NavArrowLeft } from "iconoir-react";
 import Card from "./card";
-import Link from "next/link";
 
 const CardCarousel = ({ 
   cards, 
@@ -15,13 +14,13 @@ const CardCarousel = ({
   const carouselRef = useRef(null);
 
   const displayedCards = useMemo(() => {
-    const filtered = cards.filter((card) => {
+    const filtered = cards?.filter((card) => {
       const matchesCategory = category ? card.categories.includes(category) : true;
       const matchesId = ids?.length ? ids.includes(card.id) : true;
       return matchesCategory || matchesId;
     });
     
-    return filtered.slice(0, limit);
+    return filtered?.slice(0, limit);
   }, [cards, category, ids, limit]);
 
   useEffect(() => {
@@ -32,6 +31,8 @@ const CardCarousel = ({
         perView: perView,
         gap: 15,
         throttle: 100,
+        focusAt: "center",
+        keyboard: true,
         breakpoints: {
           1280: { perView: Math.min(4, displayedCards.length) },
           1024: { perView: Math.min(3, displayedCards.length) },
@@ -41,11 +42,19 @@ const CardCarousel = ({
       });
 
       glide.mount();
+
+      glide.on(["move.after", "run"], function () {
+        document.querySelectorAll("#rotator li:not(.glide__slide--active) a").forEach((link) => {
+          link.setAttribute("tabindex", -1);
+        });
+        document.querySelector("#rotator li.glide__slide--active a")?.setAttribute("tabindex", 0);
+      });
+
       return () => glide.destroy();
     }
   }, [displayedCards, perView]);
 
-  if (!displayedCards.length) return null;
+  if (!displayedCards?.length) return null;
 
   return (
     <div className="glide" ref={carouselRef}>
@@ -65,12 +74,12 @@ const CardCarousel = ({
 
       <div className="flex gap-2 justify-between mt-4">
         {onViewAll && (
-          <Link
+          <a
             href={onViewAll}
             className="px-4 py-2 bg-primary text-white rounded hover:bg-primary_hover focus:ring-2 font-semibold transition-colors"
           >
             View All
-          </Link>
+          </a>
         )}
         
         <div className="flex gap-2" data-glide-el="controls">

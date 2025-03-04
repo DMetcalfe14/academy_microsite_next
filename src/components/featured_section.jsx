@@ -8,7 +8,7 @@ const fetcher = (...args) => fetch(...args).then(res => res.json());
 const FeaturedSection = ({ cards }) => {
     const [visiblePage, setVisiblePage] = useState(1);
 
-    const { data: featured = [], error, isLoading } = useSWR('/featured.json', fetcher);
+    const { data: featured = [], error, isLoading } = useSWR('featured.json', fetcher);
 
     const handleToggleClick = (id) => {
         if (visiblePage !== id) {

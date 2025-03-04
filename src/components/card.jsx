@@ -2,7 +2,6 @@
 
 import Tag from "./tag";
 import { Clock, Laptop, PathArrow, QuestionMark, Microphone, Book, Calendar } from "iconoir-react";
-import Link from 'next/link';
 import { formatDuration } from "@/app/utilities";
 
 const iconMap = {
@@ -34,7 +33,7 @@ const Card = ({
         {/* Centered Type Icon */}
         <div
           className="absolute top-2 left-2 bg-primary text-white text-sm font-semibold rounded-full flex items-center justify-center h-8 w-8 z-10"
-          aria-label={type}
+          aria-label={`Type: ${type}`}
         >
           <Icon className="w-4 h-4" aria-hidden="true" />
         </div>
@@ -42,10 +41,9 @@ const Card = ({
         {/* Duration Section */}
         <div
           className="absolute top-2 right-2 bg-primary text-white text-sm font-semibold px-3 py-1 rounded flex items-center h-8 z-10"
-          aria-label={`Duration: ${plainDuration}`}
         >
           <Clock className="w-4 h-4 mr-1" aria-hidden="true" />
-          <span>{plainDuration}</span>
+          <span aria-label={`Duration: ${plainDuration}`}>{plainDuration}</span>
         </div>
 
         <img
@@ -59,15 +57,15 @@ const Card = ({
       {/* Content Section */}
       <div className="p-4 flex flex-col flex-1">
         {/* Title */}
-        <Link
-          href={{ pathname: "/details", query: { id } }}
-          className="hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary rounded"
+        <a
+          href={`details.html?id=${id}`}
+          className="hover:no-underline rounded"
           aria-label={`View details of ${title} (${type}, ${plainDuration})`}
         >
-          <h2 className="mb-2 text-lg font-semibold line-clamp-2 leading-tight">
+          <h3 className="mb-2 text-lg font-semibold line-clamp-2 leading-tight">
             {title}
-          </h2>
-        </Link>
+          </h3>
+        </a>
 
         {/* Description */}
         <p className="mb-4 line-clamp-3 flex-1">{description}</p>

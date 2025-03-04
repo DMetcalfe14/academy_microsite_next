@@ -4,7 +4,7 @@ import "./globals.css";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 import Link from 'next/link';
 import Image from "next/image";
-import { useState, Suspense } from "react";
+import { useState } from "react";
 import { Menu } from "iconoir-react";
 import Button from "@/components/button";
 
@@ -16,15 +16,15 @@ export default function RootLayout({ children }) {
       <body>
         <nav className="bg-primary sticky top-0 w-full z-[100]">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex items-center justify-between">
-            <Link
-              href="/"
+            <a
+              href="index.html"
               className="mr-4 block cursor-pointer py-1.5 text-base text-white font-semibold flex gap-3 place-items-center"
             >
-              <Image src="/logo.png" alt="HMRC logo" width="30" height="30" />
+              <Image src="logo.png" alt="HMRC logo" width="30" height="30" />
               Leadership & Management Academy
-            </Link>
+            </a>
             <div className="items-center hidden gap-x-2 lg:flex">
-              <form className="w-full flex gap-3" action="/search.html">
+              <form className="w-full flex gap-3" action="search.html">
                 <label htmlFor="search" className="sr-only">
                   Search
                 </label>
@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
         </nav>
         {isSearchOpen && (
           <div className="lg:hidden bg-white p-4 sticky top-[90px] z-[100]">
-            <form className="w-full flex gap-3" action="/search.html">
+            <form className="w-full flex gap-3" action="search.html">
               <label htmlFor="mobile-search" className="sr-only">
                 Search
               </label>

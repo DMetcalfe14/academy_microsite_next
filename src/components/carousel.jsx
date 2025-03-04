@@ -11,10 +11,10 @@ const fetcher = (...args) => fetch(...args).then(res => res.json());
 const Carousel = () => {
   const glideRef = useRef(null);
   const sliderRef = useRef(null);
-  const { data: slides = [], isLoading } = useSWR("/slides.json", fetcher);
+  const { data: slides = [], isLoading } = useSWR("slides.json", fetcher);
 
   useEffect(() => {
-    if (!isLoading && slides?.length > 0 && sliderRef.current) {
+    if (slides?.length > 0 && sliderRef.current) {
       const glide = new Glide(sliderRef.current, {
         type: "carousel",
         perView: 1,
@@ -24,14 +24,24 @@ const Carousel = () => {
         animationDuration: 500,
       });
 
+      // Mount Glide
       glide.mount();
       glideRef.current = glide;
 
+      // Add event listener for accessibility logic
+      glide.on(["move.after", "run"], function () {
+        document.querySelectorAll("#rotator li:not(.glide__slide--active) a").forEach((link) => {
+          link.setAttribute("tabindex", -1);
+        });
+        document.querySelector("#rotator li.glide__slide--active a")?.setAttribute("tabindex", 0);
+      });
+
+      // Cleanup on unmount
       return () => {
         glide.destroy();
       };
     }
-  }, [isLoading, slides]);
+  }, [slides]);
 
   const handleControlClick = (direction) => {
     if (glideRef.current) {
@@ -56,12 +66,12 @@ const Carousel = () => {
   );
 
   return (
-    <div className="relative glide" ref={sliderRef}>
+    <div id="rotator" className="relative glide" ref={sliderRef}>
       <div className="glide__track" data-glide-el="track">
         <ul className="glide__slides">
           {slides.map((slide, index) => (
             <li key={index} className="glide__slide">
-              <Banner heading={slide.heading} body={slide.body} image={slide.image} cta={slide.cta} />
+              <Banner heading={slide.heading} body={slide.body} image={slide.image} cta={slide.cta} alt={slide.alt} />
             </li>
           ))}
         </ul>

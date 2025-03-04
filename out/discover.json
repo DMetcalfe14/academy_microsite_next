@@ -1,0 +1,41 @@
+[
+    {
+      "id": 1,
+      "title": "Change Hub",
+      "image": "https://images.pexels.com/photos/2566581/pexels-photo-2566581.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "description": "Change is a constant in leadership, and navigating it effectively is essential for success. The Change Hub is your go-to resource for building the skills needed to lead yourself, your team, and your projects through transformation.",
+      "cardSections": [
+        {
+            "title": "Leading Others Through Change",
+            "description": "Effective leaders inspire and support their teams through uncertainty.",
+            "filters": {
+              "byCategory": ["Change"],
+              "topN": 4
+            },
+            "useCarousel": true,
+            "onViewAll": "search.html?category=Change"
+        },
+        {
+            "title": "Leading Myself Through Change",
+            "description": "Effective leaders inspire and support their teams through uncertainty.",
+            "filters": {
+              "byCategory": ["Change"],
+              "topN": 4
+            },
+            "useCarousel": true,
+            "onViewAll": "search.html?category=Change"
+        },
+        {
+            "title": "Managing Change in Projects",
+            "description": "Effective leaders inspire and support their teams through uncertainty.",
+            "filters": {
+              "byCategory": ["Change"],
+              "topN": 4
+            },
+            "useCarousel": true,
+            "onViewAll": "search.html?category=Change"
+        }
+      ]
+    }
+  ]
+  

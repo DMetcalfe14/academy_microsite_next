@@ -6,7 +6,7 @@ import QuickLink from "./quick_link";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const LinkSection = ({}) => {
-  const { data: links = [], isLoading } = useSWR("/links.json", fetcher);
+  const { data: links = [], isLoading } = useSWR("links.json", fetcher);
 
   return (
     <div>

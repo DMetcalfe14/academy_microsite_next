@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Banner from "@/components/banner";
 import Accordion from "@/components/accordion";
 import { formatDuration } from "@/app/utilities";
+import EventDetails from "@/components/event_details";
+import Button from "@/components/button";
 
 function CourseDetails({ id }) {
   const [courses, setCourses] = useState([]);
@@ -13,7 +15,7 @@ function CourseDetails({ id }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/courses.json")
+    fetch("courses.json")
       .then((response) => response.json())
       .then((data) => {
         setCourses(data);
@@ -54,41 +56,32 @@ function CourseDetails({ id }) {
     notFound();
   }
 
-  let details = []
-
-  if (course.type === "Event") {
-    details = [
-      { label: "Type", value: course.type },
-      { label: "Location", value: course.location },
-      { label: "Start", value: course.start_date },
-      { label: "End", value: course.end_date },
-      { label: "Duration", value: formatDuration(course.duration) },
-    ];
-  } else {
-    details = [
-      { label: "Type", value: course.type },
-      { label: "Duration", value: formatDuration(course.duration) },
-    ];
-  }
+  let details = [
+    { label: "Type", value: course.type },
+    { label: "Duration", value: formatDuration(course.duration) },
+  ];
 
   return (
     <>
       <Banner
         heading={course.title}
         image={course.thumbnail}
-        // body={course.description}
+        alt={course.alt}
         fullScreen
       />
       <section className="mb-15">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="col-span-3 prose">
-              <p>{course.description}</p>
+            <div className="col-span-3">
+              <p className="mb-6">{course.description}</p>
               {course.faqs && course.faqs.length > 0 && (
                 <>
                   <h2 className="text-2xl font-semibold mb-4">FAQs</h2>
                   <Accordion items={course.faqs} />
                 </>
+              )}
+              {course.type == "Event" && (
+                <EventDetails events={course.events} />
               )}
             </div>
             <div className="col-span-1">
@@ -105,9 +98,7 @@ function CourseDetails({ id }) {
                 ))}
               </ul>
               <div className="mt-2 flex">
-                <button className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary_hover flex-grow">
-                  Launch Resource
-                </button>
+                <Button as="a" href={course.href}>Launch Resource</Button>
               </div>
               {course.instructors && course.instructors.length > 0 && (
                 <>
@@ -137,7 +128,11 @@ function CourseDetails({ id }) {
 }
 
 export default function Details() {
-  return <DetailsWithSearchParams />;
+  return (
+    <Suspense>
+      <DetailsWithSearchParams />
+    </Suspense>
+  );
 }
 
 function DetailsWithSearchParams() {

@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, lazy } from "react";
+import { useState, useEffect } from "react";
 import { NavArrowLeft, NavArrowRight, ArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 import Card from "@/components/card";
 
 const filterRules = {
-  topN: (courses, n) => (n ? courses.slice(0, n) : courses),
+  topN: (courses, n) => (n ? courses?.slice(0, n) : courses),
   byCategory: (courses, categories) =>
     categories.length > 0
       ? courses.filter((course) =>
-        categories.some((category) => course.categories.includes(category))
-      )
+          categories.some((category) => course.categories.includes(category))
+        )
       : courses,
   byMaxDuration: (courses, maxDuration) =>
     maxDuration ? courses.filter((course) => course.duration <= maxDuration) : courses,
@@ -20,18 +20,18 @@ const filterRules = {
   byType: (courses, types) =>
     types.length > 0
       ? courses.filter((course) =>
-        types.some((type) => course.type.includes(type))
-      )
+          types.some((type) => course.type.includes(type))
+        )
       : courses,
   byLocation: (courses, location) =>
     location ? courses.filter((course) => course.location === location) : courses,
   byQuery: (courses, query) =>
     query
       ? courses.filter(
-        (course) =>
-          course.title.toLowerCase().includes(query.toLowerCase()) ||
-          course.description.toLowerCase().includes(query.toLowerCase())
-      )
+          (course) =>
+            course.title.toLowerCase().includes(query.toLowerCase()) ||
+            course.description.toLowerCase().includes(query.toLowerCase())
+        )
       : courses,
   byId: (courses, ids) => (ids ? courses.filter((course) => ids.includes(course.id)) : courses),
 };
@@ -48,12 +48,12 @@ const CardSection = ({
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = paginated ? 6 : cards.length;
+  const cardsPerPage = paginated ? 6 : cards?.length;
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = filtered.slice(indexOfFirstCard, indexOfLastCard);
-  const totalPages = Math.ceil(filtered.length / cardsPerPage);
+  const currentCards = filtered?.slice(indexOfFirstCard, indexOfLastCard);
+  const totalPages = Math.ceil(filtered?.length / cardsPerPage);
 
   useEffect(() => {
     if (filters) {
@@ -85,20 +85,19 @@ const CardSection = ({
 
   const html = (
     <>
-      {title && <h1 className="text-2xl font-semibold mb-4">{title}</h1>}
+      {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
       {description && <p className="mb-6">{description}</p>}
-      {filtered.length > 0 && paginated && !useCarousel && (
+      {filtered?.length > 0 && paginated && !useCarousel && (
         <p className="text-sm mb-4">
           <span>{filtered.length}</span> results
         </p>
       )}
 
-      {/* Render Carousel or Grid */}
       {useCarousel ? (
         <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll}/>
       ) : (
         <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}>
-          {currentCards.map((card) => (
+          {currentCards?.map((card) => (
             <Card
               key={card.id}
               id={card.id}
@@ -113,7 +112,6 @@ const CardSection = ({
         </div>
       )}
 
-      {/* Pagination for Grid Layout */}
       {!useCarousel && totalPages > 1 && paginated && (
         <div className="flex items-center gap-8 place-content-between mt-8">
           <button
@@ -122,6 +120,7 @@ const CardSection = ({
             type="button"
             onClick={handlePrevPage}
             disabled={currentPage === 1}
+            aria-label="Navigate to the previous page of results"
           >
             <NavArrowLeft />
           </button>
@@ -141,6 +140,7 @@ const CardSection = ({
             type="button"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
+            aria-label="Navigate to the previous page of results"
           >
             <NavArrowRight />
           </button>

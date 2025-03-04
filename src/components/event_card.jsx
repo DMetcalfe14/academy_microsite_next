@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const EventCard = ({
   id,
   title,
@@ -13,7 +11,7 @@ const EventCard = ({
   return (
     <div className="relative flex flex-col md:flex-row w-full bg-white border border-slate-200 rounded-lg overflow-hidden">
       <div className="relative md:w-2/5 shrink-0 overflow-hidden">
-        <div className="bg-[#00000080] text-6xl text-white absolute w-full h-full overflow-hidden flex justify-center items-center text-center">
+        <div className="bg-[#00000080] text-6xl text-white absolute w-full h-full overflow-hidden flex justify-center items-center text-center" aria-label={`Event start date: ${day} of ${month}`}>
           {day}
           <br />
           {month}
@@ -28,9 +26,9 @@ const EventCard = ({
         <a className="text-primary hover:text-orange-600 font-semibold text-sm">
           {location}
         </a>
-        <h4 className="mb-2 mt-2 text-lg font-semibold line-clamp-2">
-          <Link href={`/details?id=${id}`}>{title}</Link>
-        </h4>
+        <h3 className="mb-2 mt-2 text-lg font-semibold line-clamp-2">
+          <a href={`details.html?id=${id}`}>{title}</a>
+        </h3>
         <p className="mb-4 line-clamp-3">{description}</p>
       </div>
     </div>

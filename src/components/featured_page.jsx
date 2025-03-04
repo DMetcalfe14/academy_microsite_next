@@ -1,6 +1,5 @@
 import { ArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
-import Link from 'next/link';
 
 const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
     return (
@@ -9,11 +8,11 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
             aria-hidden="false"
         >
             <div className="lg:col-span-1">
-                <h1 className="text-2xl font-semibold mb-4">{title}</h1>
+                <h2 className="text-2xl font-semibold mb-4">{title}</h2>
                 <p className="mb-5">{description}</p>
-                <Link href={link ? link : `/search?category=${category}`} className="font-semibold hover:text-primary mb-5 flex">
+                <a href={link ? link : `search.html?category=${category}`} className="font-semibold hover:text-primary mb-5 flex">
                     View all <ArrowRight />
-                </Link>
+                </a>
             </div>
             <div className="col-span-3">
             <CardCarousel cards={cards} category={category} perView={3} ids={ids} />

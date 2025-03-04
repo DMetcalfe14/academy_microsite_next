@@ -1,38 +1,80 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import useSWR from "swr";
+import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
+import LoadingSpinner from "../loading";
 
-export default function Discover() {
-  const [loading, setLoading] = useState(true);
+const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
+const HTMLfetcher = (...args) => fetch(...args).then((res) => res.text());
+
+export function Article({ id }) {
+  // Fetch articles data
+  const { data: articles = [], isLoading: articlesLoading, error: articlesError } = useSWR(
+    "articles.json",
+    JSONfetcher
+  );
+
+  // Find the article by ID (safe fallback if articles are not loaded yet)
+  const article = articles.find((article) => article.id == id);
+
+  // Fetch HTML content (conditionally based on article existence)
+  const { data: htmlContent, isLoading: htmlLoading, error: htmlError } = useSWR(
+    article ? article.page : null, // Only fetch if the article exists
+    HTMLfetcher
+  );
+
+  // Handle loading state for articles
+  if (articlesLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Handle error state for articles
+  if (articlesError) {
+    return <div>Error loading articles.</div>;
+  }
+
+  // Handle case where article is not found
+  if (!article) {
+    notFound()
+  }
+
+  // Handle loading state for HTML content
+  if (htmlLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Handle error state for HTML content
+  if (htmlError) {
+    return <div>Error loading article content.</div>;
+  }
 
   return (
     <>
       <Banner
         className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 max-h-[400px] overflow-hidden rounded-lg"
-        heading="9 Leadership Capabilities"
-        body="Lorem ipsum"
-        image="https://images.pexels.com/photos/2566581/pexels-photo-2566581.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        heading={article.title}
+        image={article.image}
         fullScreen
       />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <article className="prose lg:prose-lg mx-auto max-w-none mt-8">
-            <p>Here's an initial paragraph</p>
-          <h2>Subheading</h2>
-          <p>
-            Here’s another paragraph with some <strong>bold text</strong> and
-            <em>italicized text</em>.
-          </p>
-          <blockquote>
-            This is a cool quote.
-          </blockquote>
-          <ul>
-            <li>First item</li>
-            <li>Second item</li>
-            <li>Third item</li>
-          </ul>
+          {/* Render HTML content */}
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
         </article>
       </div>
     </>
   );
+}
+
+export default function Page() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  // Handle missing ID gracefully
+  if (!id) {
+    return <div>No article ID provided</div>;
+  }
+
+  return <Article id={id} />;
 }

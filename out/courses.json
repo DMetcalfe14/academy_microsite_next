@@ -4,7 +4,7 @@
     "title": "Strategic Planning and Change Management",
     "description": "A structured learning pathway focused on strategic planning and change management. Participants will explore leadership theories, develop strategic thinking skills, and learn to lead organizational change effectively.",
     "categories": ["Digital", "Change"],
-    "thumbnail": "/images/pexels-photo-3184298.webp",
+    "thumbnail": "images/pexels-photo-3184298.webp",
     "alt": "Thumbnail showing a leader presenting a strategic plan to a team",
     "duration": 180,
     "type": "elearning",
@@ -30,7 +30,7 @@
     "title": "Coaching Skills for Leaders",
     "description": "An eLearning module designed to teach leaders effective coaching techniques to empower their teams.",
     "categories": ["Coaching", "Development"],
-    "thumbnail": "/images/pexels-photo-3184297.webp",
+    "thumbnail": "images/pexels-photo-3184297.webp",
     "alt": "Thumbnail showing two colleagues engaged in a coaching session",
     "duration": 120,
     "type": "elearning"
@@ -40,7 +40,7 @@
     "title": "Influencing Stakeholders",
     "description": "A podcast series exploring strategies to build influence and trust with key stakeholders.",
     "categories": ["Communication"],
-    "thumbnail": "/images/pexels-photo-3184300.webp",
+    "thumbnail": "images/pexels-photo-3184300.webp",
     "alt": "Thumbnail showing a professional discussing ideas with stakeholders",
     "duration": 60,
     "type": "Podcast"
@@ -50,7 +50,7 @@
     "title": "Time Management for Leaders",
     "description": "An eBook providing actionable tips for leaders to manage their time effectively.",
     "categories": ["Productivity"],
-    "thumbnail": "/images/pexels-photo-3184311.jpeg",
+    "thumbnail": "images/pexels-photo-3184311.jpeg",
     "alt": "Thumbnail showing a clock and a notebook on a desk",
     "duration": 15,
     "type": "eBook"
@@ -60,10 +60,11 @@
     "title": "Resilience in Leadership",
     "description": "A video exploring how leaders can build resilience in themselves and their teams.",
     "categories": ["Resilience", "Wellbeing"],
-    "thumbnail": "/images/pexels-photo-3184320.webp",
+    "thumbnail": "images/pexels-photo-3184320.webp",
     "alt": "Thumbnail showing a leader addressing challenges with confidence",
     "duration": 45,
-    "type": "Video"
+    "type": "Video",
+    "href": "https://google.com"
   },
   {
     "id": 6,
@@ -74,9 +75,21 @@
     "alt": "Thumbnail showing a team engaged in a discussion",
     "duration": 90,
     "type": "Event",
-    "start_date": "12/03/2025",
-    "end_date": "12/03/2025",
-    "location": "Liverpool Regional Centre"
+    "href": "https://google.com",
+    "events": [
+      {
+        "location": "Liverpool Regional Centre",
+        "start_date": "12/03/2025",
+        "end_date": "12/03/2025",
+        "href": ""
+      },
+      {
+        "location": "Manchester Regional Centre",
+        "start_date": "15/03/2025",
+        "end_date": "15/03/2025",
+        "href": ""
+      }
+    ]
   },
   {
     "id": 7,
@@ -87,8 +100,13 @@
     "alt": "Thumbnail showing a business leader adapting to change",
     "duration": 60,
     "type": "Event",
-    "start_date": "20/03/2025",
-    "end_date": "20/03/2025",
-    "location": "Manchester Regional Centre"
+    "events": [
+      {
+        "location": "Liverpool Regional Centre",
+        "start_date": "14/03/2025",
+        "end_date": "14/03/2025",
+        "href": ""
+      }
+    ]
   }
 ]

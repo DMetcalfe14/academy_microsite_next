@@ -1,17 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
-    trailingSlash: true,
-    images: { unoptimized: true },
-    async redirects() {
-        return [
-          {
-            source: "/:path+/",
-            destination: "/:path+.html",
-            permanent: true,
-          },
-        ];
-      },
+    assetPrefix: './',
+    images: {
+      unoptimized: true,
+    },
 };
 
 export default nextConfig;

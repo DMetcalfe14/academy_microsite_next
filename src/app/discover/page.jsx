@@ -1,36 +1,82 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import useSWR from "swr";
+import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
 import CardSection from "@/components/cards_section";
+import LoadingSpinner from "../loading";
 
-export default function Discover() {
-    const [courses, setCourses] = useState([]);
-    const [loading, setLoading] = useState(true);
+const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
 
-    useEffect(() => {
-        fetch("/courses.json")
-            .then((response) => response.json())
-            .then((data) => {
-                setCourses(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching courses:", error);
-                setLoading(false);
-            });
-    }, []);
+export function DiscoverSection({ id }) {
+  // Fetch discover configuration
+  const {
+    data: discoverData = [],
+    isLoading: discoverLoading,
+    error: discoverError,
+  } = useSWR("discover.json", JSONfetcher);
 
-    return (
-        <>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <Banner fullScreen heading="Change Hub" body="Change is a constant in leadership, and navigating it effectively is essential for success. The Change Hub is your go-to resource for building the skills needed to lead yourself, your team, and your projects through transformation. Whether you're supporting others through uncertainty, strengthening your own adaptability, or managing change within projects, you'll find practical tools, strategies, and learning materials to help you thrive in a dynamic environment." image="https://images.pexels.com/photos/2566581/pexels-photo-2566581.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-                <p className="mt-6 mb-8">Welcome to the Change Hub, your central resource for navigating and leading change effectively within the Leadership and Management Capability Academy. This hub provides essential materials, tools, and insights to help you build the skills and confidence needed to embrace change, support others through transitions, and drive successful change initiatives.</p>
-            </div>
-            <CardSection title="Leading Others Through Change" description="Effective leaders inspire and support their teams through uncertainty. Learn strategies to communicate change with clarity, foster resilience, and guide people through transitions while maintaining engagement and trust." cards={courses} filters={{ topN: 4 }} useCarousel onViewAll="/search"/>
-            <CardSection title="Leading Myself Through Change" description="Personal resilience is key to leading others effectively. Explore ways to navigate change with confidence, manage stress, and develop a growth mindset that allows you to adapt and thrive in evolving environments." cards={courses} filters={{ topN: 4 }} useCarousel onViewAll="/search"/>
-            <CardSection title="Managing Change Within Projects" description="Successful change management in projects requires careful planning and execution. Gain insights into frameworks and techniques for integrating change within project workflows, mitigating risks, and ensuring stakeholder alignment." cards={courses} filters={{topN: 4}} useCarousel onViewAll="/search" />
-            <div className="mb-10"></div>
-        </>
-    )
+  // Fetch courses data
+  const {
+    data: courses = [],
+    isLoading: coursesLoading,
+    error: coursesError,
+  } = useSWR("courses.json", JSONfetcher);
+
+  // Handle loading state
+  if (discoverLoading || coursesLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Handle error state
+  if (discoverError || coursesError) {
+    return <div>Error loading data.</div>;
+  }
+
+  // Find the specific section by ID
+  const section = discoverData.find((item) => item.id == id);
+
+  // Handle case where no matching section is found
+  if (!section) {
+    notFound();
+  }
+
+  const { title, image, description, cardSections } = section;
+
+  return (
+    <>
+      <Banner fullScreen heading={title} body={description} image={image} />
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <p className="mt-6">{description}</p>
+      </div>
+
+      {/* Dynamically render CardSections */}
+      {cardSections.map((cardSection, index) => {
+        return (
+          <CardSection
+            key={index}
+            title={cardSection.title}
+            description={cardSection.description}
+            cards={courses}
+            useCarousel={cardSection.useCarousel}
+            filters={cardSection.filters}
+            onViewAll={cardSection.onViewAll || "search.html"}
+          />
+        );
+      })}
+      <div className="mb-6"/>
+    </>
+  );
+}
+
+export default function Page() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  // Handle missing ID gracefully
+  if (!id) {
+    return <div>No section ID provided</div>;
+  }
+
+  return <DiscoverSection id={id} />;
 }
