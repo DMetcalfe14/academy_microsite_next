@@ -8,6 +8,8 @@ import CardSectionSkeleton from "./card_section_skeleton";
 
 const filterRules = {
   topN: (courses, n) => (n ? courses?.slice(0, n) : courses),
+  byId: (courses, ids) =>
+    ids ? courses.filter((course) => ids.includes(course.id)) : courses,
   byCategory: (courses, categories) =>
     categories.length > 0
       ? courses.filter((course) =>
@@ -47,8 +49,6 @@ const filterRules = {
             course.description.toLowerCase().includes(query.toLowerCase())
         )
       : courses,
-  byId: (courses, ids) =>
-    ids ? courses.filter((course) => ids.includes(course.id)) : courses,
 };
 
 const CardSection = ({
@@ -59,9 +59,10 @@ const CardSection = ({
   paginated,
   useCarousel = false,
   perRow = 4,
+  perView = 4,
   onViewAll,
-  pageCount = 1, // Current page passed from parent
-  onPageChange, // Callback to notify parent when page changes
+  pageCount = 1,
+  onPageChange,
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,11 +88,17 @@ const CardSection = ({
   }, [cards, filters]);
 
   const applyFilters = (cards, rules) => {
+    const skipCategory = !!rules.byId; // Check if ID filtering is active
+  
     return Object.entries(rules).reduce((filtered, [ruleKey, ruleValue]) => {
+      // Skip category filter when IDs are provided
+      if (skipCategory && ruleKey === "byCategory") return filtered;
+  
       const filterFunction = filterRules[ruleKey];
       return filterFunction ? filterFunction(filtered, ruleValue) : filtered;
     }, cards);
   };
+  
 
   // Handle "Next" button click
   const handleNextPage = () => {
@@ -135,7 +142,7 @@ const CardSection = ({
       )}
 
       {useCarousel ? (
-        <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll} />
+        <CardCarousel cards={currentCards} perView={perView} onViewAll={onViewAll} />
       ) : (
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}

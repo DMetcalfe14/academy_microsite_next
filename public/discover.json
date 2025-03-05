@@ -10,7 +10,8 @@
             "description": "Effective leaders inspire and support their teams through uncertainty.",
             "filters": {
               "byCategory": ["Change"],
-              "topN": 4
+              "topN": 4,
+              "byId": [2]
             },
             "useCarousel": true,
             "onViewAll": "search.html?category=Change"

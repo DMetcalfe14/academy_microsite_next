@@ -1,5 +1,5 @@
 import { ArrowRight } from "iconoir-react";
-import CardCarousel from "./card_carousel";
+import CardSection from "./cards_section";
 
 const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
     return (
@@ -26,12 +26,8 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
 
             {/* Card Carousel */}
             <div className="col-span-3">
-                <CardCarousel
-                    cards={cards}
-                    category={category}
-                    perView={3}
-                    ids={ids}
-                />
+                <CardSection cards={cards} useCarousel={true} filters={{byCategory: [category], byId: ids}} perView = {3}/>
+
             </div>
         </div>
     );
