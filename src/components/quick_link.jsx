@@ -12,6 +12,8 @@ const QuickLink = ({ title, href, icon }) => {
             href={href} 
             aria-label={title} 
             className="focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-blue-500"
+            target="_blank" 
+            rel="noopener noreferrer"
         >
             <div className="flex gap-4 items-center group font-semibold">
                 <span 

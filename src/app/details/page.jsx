@@ -91,6 +91,8 @@ function CourseDetails({ id }) {
                     className="w-full text-center"
                     as="a"
                     href={course.href}
+                    target="_blank" 
+                    rel="noopener noreferrer"
                     aria-label={`Launch resource: ${course.title}`}
                   >
                     Launch Resource
