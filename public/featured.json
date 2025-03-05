@@ -4,14 +4,14 @@
         "title": "Mastering Tech-Driven Leadership",
         "description": "Explore essential learning materials designed to equip leaders with the skills to navigate digital transformation, drive innovation, and lead effectively in a tech-driven world.",
         "category": "Digital",
-        "ids": [2, 6]
+        "ids": [2, 6, 1, 3, 4]
     },
     {
         "id": 2,
         "title": "Driving Change, Empowering Growth",
         "description": "Equip yourself with the skills needed to navigate organisational change with confidence and resilience. These courses focus on fostering adaptability, effective communication, and strategic planning to ensure smooth transitions and sustainable success.",
         "category": "Change",
-        "ids": [1,7],
+        "ids": [1, 7],
         "link": "discover.html?id=1"
     }
 ]
