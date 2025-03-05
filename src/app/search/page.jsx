@@ -15,12 +15,13 @@ function Search() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Local state for filters and search input
+  // Local state for filters, search input, and page count
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [pageCount, setPageCount] = useState(1); // State to track page count
 
   // Use SWR to fetch courses data
   const { data: courses = [], isLoading } = useSWR("courses.json", fetcher, {
@@ -58,6 +59,7 @@ function Search() {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchInput);
+      resetPageCount();
     }, 500);
 
     return () => clearTimeout(handler);
@@ -75,6 +77,37 @@ function Search() {
     if (selectedLocation) newSearchParams.set("location", selectedLocation);
 
     router.replace(`?${newSearchParams.toString()}`); // Use replace to avoid full re-render
+  };
+
+  // Reset page count whenever filters are updated
+  const resetPageCount = () => {
+    setPageCount(1); // Reset page count to initial value
+  };
+
+  // Handlers for updating filters and resetting page count
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+    resetPageCount(); // Reset page count when filter changes
+  };
+
+  const handleTypeChange = (type) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type)
+        ? prev.filter((t) => t !== type)
+        : [...prev, type]
+    );
+    resetPageCount(); // Reset page count when filter changes
+  };
+
+  const handleLocationChange = (location) => {
+    setSelectedLocation((prevLocation) =>
+      prevLocation === location ? "" : location
+    );
+    resetPageCount(); // Reset page count when filter changes
   };
 
   return (
@@ -96,13 +129,7 @@ function Search() {
                     key={category}
                     label={category}
                     checked={selectedCategories.includes(category)}
-                    onChange={() =>
-                      setSelectedCategories((prev) =>
-                        prev.includes(category)
-                          ? prev.filter((c) => c !== category)
-                          : [...prev, category]
-                      )
-                    }
+                    onChange={() => handleCategoryChange(category)}
                   />
                 ))
               )}
@@ -119,13 +146,7 @@ function Search() {
                     key={type}
                     label={type}
                     checked={selectedTypes.includes(type)}
-                    onChange={() =>
-                      setSelectedTypes((prev) =>
-                        prev.includes(type)
-                          ? prev.filter((t) => t !== type)
-                          : [...prev, type]
-                      )
-                    }
+                    onChange={() => handleTypeChange(type)}
                   />
                 ))
               )}
@@ -143,11 +164,7 @@ function Search() {
                     key={location}
                     label={location}
                     checked={selectedLocation === location}
-                    onChange={() =>
-                      setSelectedLocation((prevLocation) =>
-                        prevLocation === location ? "" : location
-                      )
-                    }
+                    onChange={() => handleLocationChange(location)}
                   />
                 ))
               )}
@@ -181,6 +198,8 @@ function Search() {
               }}
               paginated={true}
               perRow={3}
+              pageCount={pageCount} // Pass pageCount as a prop to CardSection
+              onPageChange={(newPage) => setPageCount(newPage)}
             />
           </section>
         </div>

@@ -60,18 +60,21 @@ const CardSection = ({
   useCarousel = false,
   perRow = 4,
   onViewAll,
+  pageCount = 1, // Current page passed from parent
+  onPageChange, // Callback to notify parent when page changes
 }) => {
   const [filtered, setFiltered] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const cardsPerPage = paginated ? 6 : cards?.length;
 
-  const indexOfLastCard = currentPage * cardsPerPage;
+  // Calculate which cards to display based on the current page
+  const indexOfLastCard = pageCount * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filtered?.slice(indexOfFirstCard, indexOfLastCard);
   const totalPages = Math.ceil(filtered?.length / cardsPerPage);
 
+  // Apply filters and update filtered cards
   useEffect(() => {
     setIsLoading(true);
     if (filters) {
@@ -90,15 +93,17 @@ const CardSection = ({
     }, cards);
   };
 
+  // Handle "Next" button click
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (pageCount < totalPages && onPageChange) {
+      onPageChange(pageCount + 1); // Notify parent to increment page
     }
   };
 
+  // Handle "Previous" button click
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    if (pageCount > 1 && onPageChange) {
+      onPageChange(pageCount - 1); // Notify parent to decrement page
     }
   };
 
@@ -151,14 +156,15 @@ const CardSection = ({
         </div>
       )}
 
-      {!useCarousel && totalPages > 1 && paginated && (
+      {/* Conditionally Render Pagination */}
+      {!useCarousel && paginated && filtered.length > cardsPerPage && (
         <div className="flex items-center gap-8 place-content-between mt-8">
           <button
             id="prev"
             className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handlePrevPage}
-            disabled={currentPage === 1}
+            disabled={pageCount === 1}
             aria-label="Navigate to the previous page of results"
           >
             <NavArrowLeft />
@@ -166,7 +172,7 @@ const CardSection = ({
           <p>
             Page{" "}
             <span id="current_page" aria-live="polite">
-              <strong>{currentPage}</strong>
+              <strong>{pageCount}</strong>
             </span>{" "}
             of&nbsp;
             <span id="no_pages">
@@ -178,7 +184,7 @@ const CardSection = ({
             className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handleNextPage}
-            disabled={currentPage === totalPages}
+            disabled={pageCount === totalPages}
             aria-label="Navigate to the next page of results"
           >
             <NavArrowRight />
@@ -202,3 +208,4 @@ const CardSection = ({
 };
 
 export default CardSection;
+

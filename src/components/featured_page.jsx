@@ -1,19 +1,7 @@
-import { useState, useEffect } from "react";
 import { ArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 
 const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
-    const [filteredCards, setFilteredCards] = useState([]);
-
-    useEffect(() => {
-        // Filter cards by ids if provided, otherwise by category
-        if (ids?.length > 0) {
-            setFilteredCards(cards.filter((card) => ids.includes(card.id)));
-        } else {
-            setFilteredCards(cards.filter((card) => card.categories?.includes(category)));
-        }
-    }, [cards, ids, category]);
-
     return (
         <div
             className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-6"
@@ -39,7 +27,7 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
             {/* Card Carousel */}
             <div className="col-span-3">
                 <CardCarousel
-                    cards={filteredCards} // Pass filtered cards here
+                    cards={cards}
                     category={category}
                     perView={3}
                     ids={ids}

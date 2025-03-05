@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Glide from "@glidejs/glide";
 import { NavArrowRight, NavArrowLeft } from "iconoir-react";
 import Card from "./card";
@@ -6,9 +6,20 @@ import CardCarouselSkeleton from "./card_carousel_skeleton";
 
 const CardCarousel = ({ 
   cards = [], 
-  perView = 3 
+  perView = 3 ,
+  category,
+  ids
 }) => {
   const carouselRef = useRef(null);
+  const [filteredCards, setFilteredCards] = useState([]);
+
+    useEffect(() => {
+        if (ids?.length > 0) {
+            setFilteredCards(cards.filter((card) => ids.includes(card.id)));
+        } else {
+            setFilteredCards(cards.filter((card) => card.categories?.includes(category)));
+        }
+    }, [cards, ids, category]);
 
   useEffect(() => {
     if (carouselRef.current && cards.length > 0) {
@@ -30,9 +41,9 @@ const CardCarousel = ({
 
       return () => glide.destroy();
     }
-  }, [cards, perView]);
+  }, [filteredCards, perView]);
 
-  if (!cards?.length) return <CardCarouselSkeleton perView={perView} aria-label="Loading carousel content" />;
+  if (!filteredCards?.length) return <CardCarouselSkeleton perView={perView} aria-label="Loading carousel content" />;
 
   return (
     <div 
@@ -45,7 +56,7 @@ const CardCarousel = ({
       {/* Track Section */}
       <div className="glide__track" data-glide-el="track">
         <ul className="glide__slides items-stretch">
-          {cards.map((card, index) => (
+          {filteredCards.map((card, index) => (
             <li
               key={card.id}
               className="glide__slide h-auto"
