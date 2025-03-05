@@ -1,11 +1,18 @@
+import { useState, useEffect } from "react";
 import { ArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 
 const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
-    // Filter cards by id and category
-    const filteredCards = ids?.length > 0
-    ? cards?.filter((card) => ids.includes(card.id)) // Filter by ids
-    : cards?.filter((card) => card.categories?.includes(category)) || [];
+    const [filteredCards, setFilteredCards] = useState([]);
+
+    useEffect(() => {
+        // Filter cards by ids if provided, otherwise by category
+        if (ids?.length > 0) {
+            setFilteredCards(cards.filter((card) => ids.includes(card.id)));
+        } else {
+            setFilteredCards(cards.filter((card) => card.categories?.includes(category)));
+        }
+    }, [cards, ids, category]);
 
     return (
         <div
