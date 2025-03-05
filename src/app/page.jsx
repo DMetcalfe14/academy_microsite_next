@@ -14,25 +14,43 @@ function PageContent() {
   const { data: courses = [], isLoading } = useSWR("courses.json", fetcher);
 
   return (
-    <div>
+    <main aria-label="Main content">
+      {/* Carousel */}
       <Carousel />
+
+      {/* Card Section */}
       <CardSection title="Brand new 🌟" cards={courses} filters={{ topN: 4 }} />
-      <div className="mb-6"></div>
+
+      {/* Featured Section */}
       <FeaturedSection cards={courses} />
+
+      {/* Events and Links */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="grid grid-cols-1 gap-6">
-            <EventSection cards={courses} />
-          </div>
-          <div>
-            <LinkSection />
-          </div>
+          {/* Events Section */}
+          <EventSection cards={courses} />
+
+          {/* Links Section */}
+          <LinkSection />
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
 export default function Home() {
-  return <PageContent />;
+  return (
+    <>
+      {/* Skip Link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:outline focus:outline-primary"
+      >
+        Skip to main content
+      </a>
+
+      {/* Main Content */}
+      <PageContent />
+    </>
+  );
 }

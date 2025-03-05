@@ -25,12 +25,12 @@ export function DiscoverSection({ id }) {
 
   // Handle loading state
   if (discoverLoading || coursesLoading) {
-    return null; // Render nothing while loading; child components handle skeletons
+    return <div role="status" aria-live="polite">Loading data...</div>;
   }
 
   // Handle error state
   if (discoverError || coursesError) {
-    return <div>Error loading data.</div>;
+    return <div role="alert">Error loading data. Please try again later.</div>;
   }
 
   // Find the specific section by ID
@@ -45,28 +45,29 @@ export function DiscoverSection({ id }) {
   const { title, image, description, cardSections } = section;
 
   return (
-    <>
+    <main aria-labelledby="discover-heading">
       <Banner fullScreen heading={title} body={description} image={image} />
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <h1 id="discover-heading" className="sr-only">
+          {title}
+        </h1>
         <p className="mt-6">{description}</p>
-      </div>
+      </section>
 
       {/* Dynamically render CardSections */}
-      {cardSections.map((cardSection, index) => {
-        return (
-          <CardSection
-            key={index}
-            title={cardSection.title}
-            description={cardSection.description}
-            cards={courses}
-            useCarousel={cardSection.useCarousel}
-            filters={cardSection.filters}
-            onViewAll={cardSection.onViewAll || "search.html"}
-          />
-        );
-      })}
+      {cardSections.map((cardSection, index) => (
+        <CardSection
+          key={index}
+          title={cardSection.title}
+          description={cardSection.description}
+          cards={courses}
+          useCarousel={cardSection.useCarousel}
+          filters={cardSection.filters}
+          onViewAll={cardSection.onViewAll || "search.html"}
+        />
+      ))}
       <div className="mb-6" />
-    </>
+    </main>
   );
 }
 
@@ -76,7 +77,11 @@ export function Page() {
 
   // Handle missing ID gracefully
   if (!id) {
-    return <div>No section ID provided</div>;
+    return (
+      <div role="alert" aria-live="polite">
+        No section ID provided.
+      </div>
+    );
   }
 
   return <DiscoverSection id={id} />;
@@ -84,7 +89,7 @@ export function Page() {
 
 export default function PageSuspense() {
   return (
-    <Suspense>
+    <Suspense fallback={<div role="status" aria-live="polite">Loading page...</div>}>
       <Page />
     </Suspense>
   );

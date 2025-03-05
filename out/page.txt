@@ -1,19 +1,20 @@
 1:"$Sreact.fragment"
 2:I[4547,[],"ClientSegmentRoot"]
-3:I[9412,["734","static/chunks/734-5f06f1680cef996e.js","177","static/chunks/app/layout-2f87bf76061eb3ac.js"],"default"]
+3:I[9412,["734","static/chunks/734-5f06f1680cef996e.js","177","static/chunks/app/layout-3827522cc0a13a1d.js"],"default"]
 4:I[5244,[],""]
 5:I[3866,[],""]
-7:I[7033,[],"ClientPageRoot"]
-8:I[9203,["94","static/chunks/94-4017e109d6bfc65a.js","916","static/chunks/app/page/page-e005fc964c8e4642.js"],"default"]
-b:I[6213,[],"OutletBoundary"]
-d:I[6213,[],"MetadataBoundary"]
-f:I[6213,[],"ViewportBoundary"]
-11:I[4835,[],""]
-:HL["./_next/static/css/6b8172924e35c818.css","style"]
-0:{"P":null,"b":"eGiuANXwDiL1gArx5MQcH","p":".","c":["","page"],"i":false,"f":[[["",{"children":["page",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/css/6b8172924e35c818.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","$L2",null,{"Component":"$3","slots":{"children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[],["$","main",null,{"className":"grid h-[calc(100vh-90px)] place-items-center px-10","children":["$","div",null,{"className":"text-center","children":[["$","p",null,{"className":"font-semibold text-primary text-7xl","children":"404"}],["$","h1",null,{"className":"mt-4 text-3xl font-semibold tracking-tight text-balance text-gray-900","children":"Resource not found"}],["$","p",null,{"className":"mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8","children":"Sorry, we couldn’t find the resource you’re looking for."}],["$","div",null,{"className":"mt-10 flex items-center justify-center gap-x-6","children":["$","a",null,{"href":"/","className":"rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-primary_hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary","children":"Go back home"}]}]]}]}]],"forbidden":"$undefined","unauthorized":"$undefined"}]},"params":{},"promise":"$@6"}]]}],{"children":["page",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","page","children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L7",null,{"Component":"$8","searchParams":{},"params":"$0:f:0:1:1:props:children:1:props:params","promises":["$@9","$@a"]}],null,["$","$Lb",null,{"children":"$Lc"}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","NOZ1Klcd74vZJwwU2VFWP",{"children":[["$","$Ld",null,{"children":"$Le"}],["$","$Lf",null,{"children":"$L10"}],null]}]]}],false]],"m":"$undefined","G":["$11","$undefined"],"s":false,"S":true}
-6:{}
-9:{}
+6:I[6309,["345","static/chunks/app/not-found-8320059715d27d37.js"],"default"]
+8:I[7033,[],"ClientPageRoot"]
+9:I[9203,["94","static/chunks/94-4017e109d6bfc65a.js","916","static/chunks/app/page/page-1b326e0fea1a17bf.js"],"default"]
+c:I[6213,[],"OutletBoundary"]
+e:I[6213,[],"MetadataBoundary"]
+10:I[6213,[],"ViewportBoundary"]
+12:I[4835,[],""]
+:HL["./_next/static/css/e41d2f74a48f8db5.css","style"]
+0:{"P":null,"b":"nGw50t7skjX1lEIIIBMoL","p":".","c":["","page"],"i":false,"f":[[["",{"children":["page",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/css/e41d2f74a48f8db5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","$L2",null,{"Component":"$3","slots":{"children":["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[],["$","main",null,{"className":"grid h-[calc(100vh-90px)] place-items-center px-10","aria-labelledby":"error-heading","children":["$","div",null,{"className":"text-center","children":[["$","p",null,{"className":"font-semibold text-primary text-7xl","aria-hidden":"true","children":"404"}],["$","h1",null,{"id":"error-heading","className":"mt-4 text-3xl font-semibold tracking-tight text-balance text-gray-900","children":"Resource not found"}],["$","p",null,{"className":"mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8","children":"Sorry, we couldn’t find the resource you’re looking for."}],["$","div",null,{"className":"mt-10 flex items-center justify-center gap-x-6","children":["$","$L6",null,{"className":"text-center","as":"a","href":"index.html","aria-label":"Go back to the homepage","children":"Go back home"}]}]]}]}]],"forbidden":"$undefined","unauthorized":"$undefined"}]},"params":{},"promise":"$@7"}]]}],{"children":["page",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","segmentPath":["children","page","children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L8",null,{"Component":"$9","searchParams":{},"params":"$0:f:0:1:1:props:children:1:props:params","promises":["$@a","$@b"]}],null,["$","$Lc",null,{"children":"$Ld"}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","remsfbQEVbQPXlu9uXcIi",{"children":[["$","$Le",null,{"children":"$Lf"}],["$","$L10",null,{"children":"$L11"}],null]}]]}],false]],"m":"$undefined","G":["$12","$undefined"],"s":false,"S":true}
+7:{}
 a:{}
-10:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-e:[["$","meta","0",{"charSet":"utf-8"}],["$","link","1",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}]]
-c:null
+b:{}
+11:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+f:[["$","meta","0",{"charSet":"utf-8"}],["$","link","1",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}]]
+d:null

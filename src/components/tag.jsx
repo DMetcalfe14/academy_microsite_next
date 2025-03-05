@@ -1,8 +1,12 @@
-const Tag = ({
-    label
-}) => {
+const Tag = ({ label }) => {
     return (
-        <a href={`search.html?category=${label}`}><span className="bg-primary rounded-full text-xs font-semibold text-white px-2 py-1 hover:bg-primary_hover">{label}</span></a>
+        <a 
+            href={`search.html?category=${label}`} 
+            className="bg-primary rounded-full text-xs font-semibold text-white px-2 py-1 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary_hover"
+            aria-label={`Search for category ${label}`}
+        >
+            <span>{label}</span>
+        </a>
     );
 };
 

@@ -36,14 +36,24 @@ const EventSection = ({ cards, isLoading }) => {
       .slice(0, 2); // Limit to 2 events
   }, [cards]);
 
-  if (isLoading) return <EventSectionSkeleton />;
+  if (isLoading)
+    return (
+      <EventSectionSkeleton aria-label="Loading upcoming events" />
+    );
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
+    <section aria-labelledby="event-section-title">
+      <h2
+        id="event-section-title"
+        className="text-2xl font-semibold mb-4 text-gray-800"
+      >
+        Upcoming Events
+      </h2>
       <div className="grid grid-cols-1 gap-6">
         {/* If no events are available */}
-        {filteredAndSortedEvents.length === 0 && <p>No events scheduled</p>}
+        {filteredAndSortedEvents.length === 0 && (
+          <p className="text-gray-700">No events scheduled</p>
+        )}
 
         {/* Render each event */}
         {filteredAndSortedEvents.map((event, index) => {
@@ -67,13 +77,14 @@ const EventSection = ({ cards, isLoading }) => {
         {filteredAndSortedEvents.length !== 0 && (
           <a
             href={`search.html?type=Event`}
-            className="font-semibold hover:text-primary mb-5 flex items-center"
+            className="font-semibold hover:text-primary mb-5 flex items-center focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+            aria-label="View all upcoming events"
           >
-            View all <ArrowRight className="ml-2" />
+            View all <ArrowRight aria-hidden="true" className="ml-2" />
           </a>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

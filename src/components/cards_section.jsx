@@ -15,9 +15,13 @@ const filterRules = {
         )
       : courses,
   byMaxDuration: (courses, maxDuration) =>
-    maxDuration ? courses.filter((course) => course.duration <= maxDuration) : courses,
+    maxDuration
+      ? courses.filter((course) => course.duration <= maxDuration)
+      : courses,
   byMinDuration: (courses, minDuration) =>
-    minDuration ? courses.filter((course) => course.duration >= minDuration) : courses,
+    minDuration
+      ? courses.filter((course) => course.duration >= minDuration)
+      : courses,
   byType: (courses, types) =>
     types.length > 0
       ? courses.filter((course) =>
@@ -25,7 +29,16 @@ const filterRules = {
         )
       : courses,
   byLocation: (courses, location) =>
-    location ? courses.filter((course) => course.location === location) : courses,
+    location
+      ? courses.filter((course) => {
+          // If the course has events, check if any event matches the location
+          if (course.type === "Event" && Array.isArray(course.events)) {
+            return course.events.some((event) => event.location === location);
+          }
+          // For non-event courses, skip filtering by location
+          return false;
+        })
+      : courses,
   byQuery: (courses, query) =>
     query
       ? courses.filter(
@@ -34,7 +47,8 @@ const filterRules = {
             course.description.toLowerCase().includes(query.toLowerCase())
         )
       : courses,
-  byId: (courses, ids) => (ids ? courses.filter((course) => ids.includes(course.id)) : courses),
+  byId: (courses, ids) =>
+    ids ? courses.filter((course) => ids.includes(course.id)) : courses,
 };
 
 const CardSection = ({
@@ -45,12 +59,12 @@ const CardSection = ({
   paginated,
   useCarousel = false,
   perRow = 4,
-  onViewAll
+  onViewAll,
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const cardsPerPage = paginated ? 6 : cards?.length;
 
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -88,14 +102,29 @@ const CardSection = ({
     }
   };
 
-  if (isLoading) return <CardSectionSkeleton perRow={perRow} perPage={cardsPerPage} paginated={paginated}/>;
+  if (isLoading)
+    return (
+      <CardSectionSkeleton
+        perRow={perRow}
+        perPage={cardsPerPage}
+        paginated={paginated}
+        aria-label="Loading card section content"
+      />
+    );
 
   const html = (
     <>
-      {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
-      {description && <p className="mb-6">{description}</p>}
+      {title && (
+        <h2
+          id="card-section-title"
+          className="text-2xl font-semibold mb-4 text-gray-800"
+        >
+          {title}
+        </h2>
+      )}
+      {description && <p className="mb-6 text-gray-700">{description}</p>}
       {filtered?.length > 0 && paginated && !useCarousel && (
-        <p className="text-sm mb-4">
+        <p className="text-sm mb-4 text-gray-600">
           <span>{filtered.length}</span> results
         </p>
       )}
@@ -103,7 +132,10 @@ const CardSection = ({
       {useCarousel ? (
         <CardCarousel cards={currentCards} perView={4} onViewAll={onViewAll} />
       ) : (
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}>
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}
+          aria-labelledby="card-section-title"
+        >
           {currentCards?.map((card) => (
             <Card
               key={card.id}
@@ -123,7 +155,7 @@ const CardSection = ({
         <div className="flex items-center gap-8 place-content-between mt-8">
           <button
             id="prev"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover"
+            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handlePrevPage}
             disabled={currentPage === 1}
@@ -133,7 +165,7 @@ const CardSection = ({
           </button>
           <p>
             Page{" "}
-            <span id="current_page">
+            <span id="current_page" aria-live="polite">
               <strong>{currentPage}</strong>
             </span>{" "}
             of&nbsp;
@@ -143,7 +175,7 @@ const CardSection = ({
           </p>
           <button
             id="next"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover"
+            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
@@ -156,7 +188,17 @@ const CardSection = ({
     </>
   );
 
-  return paginated ? html : <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{html}</div>;
+  return paginated ? (
+    html
+  ) : (
+    <div
+      className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
+      role="region"
+      aria-labelledby="card-section-title"
+    >
+      {html}
+    </div>
+  );
 };
 
 export default CardSection;

@@ -3,9 +3,10 @@ import { useState } from "react";
 
 const AccordionItem = ({ index, question, answer, activeIndex, toggleAccordion }) => (
     <div className="border-b border-slate-200">
+        {/* Accordion Button */}
         <button
             onClick={() => toggleAccordion(index)}
-            className="w-full flex justify-between items-center py-5 text-slate-800"
+            className="w-full flex justify-between items-center py-5 text-slate-800 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             aria-expanded={activeIndex === index}
             aria-controls={`content-${index}`}
             id={`accordion-button-${index}`}
@@ -14,10 +15,13 @@ const AccordionItem = ({ index, question, answer, activeIndex, toggleAccordion }
             <span
                 id={`icon-${index}`}
                 className="text-slate-800 transition-transform duration-200 ease-in-out"
+                aria-hidden="true" // Icon is decorative
             >
                 {activeIndex === index ? <NavArrowUp /> : <NavArrowDown />}
             </span>
         </button>
+
+        {/* Accordion Content */}
         <div
             id={`content-${index}`}
             role="region"
@@ -41,7 +45,7 @@ const Accordion = ({ items }) => {
     }
 
     return (
-        <>
+        <div role="region" aria-label="Accordion">
             {items.map((item, index) => (
                 <AccordionItem
                     key={index}
@@ -52,7 +56,7 @@ const Accordion = ({ items }) => {
                     toggleAccordion={toggleAccordion}
                 />
             ))}
-        </>
+        </div>
     );
 };
 

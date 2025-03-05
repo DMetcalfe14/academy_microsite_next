@@ -21,9 +21,9 @@ const CardCarousel = ({
         keyboard: true,
         breakpoints: {
           // Adjust breakpoints as needed
-          // Example:
-          // ...
-        }
+          1024: { perView: 2 },
+          768: { perView: 1 },
+        },
       });
 
       glide.mount();
@@ -32,14 +32,27 @@ const CardCarousel = ({
     }
   }, [cards, perView]);
 
-  if (!cards?.length) return <CardCarouselSkeleton perView={perView} />;
+  if (!cards?.length) return <CardCarouselSkeleton perView={perView} aria-label="Loading carousel content" />;
 
   return (
-    <div className="glide" ref={carouselRef}>
+    <div 
+      className="glide" 
+      ref={carouselRef} 
+      role="region" 
+      aria-roledescription="carousel" 
+      aria-label="Card carousel"
+    >
+      {/* Track Section */}
       <div className="glide__track" data-glide-el="track">
         <ul className="glide__slides items-stretch">
-          {cards.map((card) => (
-            <li key={card.id} className="glide__slide h-auto">
+          {cards.map((card, index) => (
+            <li
+              key={card.id}
+              className="glide__slide h-auto"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`Slide ${index + 1} of ${cards.length}`}
+            >
               <Card
                 {...card}
                 className="h-full"
@@ -50,21 +63,22 @@ const CardCarousel = ({
         </ul>
       </div>
 
+      {/* Navigation Controls */}
       <div className="flex gap-2 justify-between mt-4">
         <div className="flex gap-2" data-glide-el="controls">
           <button
-            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 transition-colors"
+            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
             data-glide-dir="<"
             aria-label="Previous slide"
           >
-            <NavArrowLeft className="w-5 h-5" />
+            <NavArrowLeft className="w-5 h-5" aria-hidden="true" />
           </button>
           <button
-            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 transition-colors"
+            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
             data-glide-dir=">"
             aria-label="Next slide"
           >
-            <NavArrowRight className="w-5 h-5" />
+            <NavArrowRight className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -73,4 +87,3 @@ const CardCarousel = ({
 };
 
 export default CardCarousel;
-

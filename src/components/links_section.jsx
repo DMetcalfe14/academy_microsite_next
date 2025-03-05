@@ -9,11 +9,13 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const LinkSection = () => {
   const { data: links = [], isLoading } = useSWR("links.json", fetcher);
 
-  if (isLoading) return <LinkSectionSkeleton />;
+  if (isLoading) return <LinkSectionSkeleton aria-label="Loading links" />;
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Links</h2>
+    <section aria-labelledby="link-section-title">
+      <h2 id="link-section-title" className="text-2xl font-semibold mb-4 text-gray-800">
+        Links
+      </h2>
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
         {links.map((link) => (
           <QuickLink
@@ -24,7 +26,7 @@ const LinkSection = () => {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
