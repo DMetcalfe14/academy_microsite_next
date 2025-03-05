@@ -2,6 +2,11 @@ import { ArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 
 const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
+    // Filter cards by id and category
+    const filteredCards = ids?.length > 0
+    ? cards?.filter((card) => ids.includes(card.id)) // Filter by ids
+    : cards?.filter((card) => card.categories?.includes(category)) || [];
+
     return (
         <div
             className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-6"
@@ -27,7 +32,7 @@ const FeaturedPage = ({ title, description, cards, category, ids, link }) => {
             {/* Card Carousel */}
             <div className="col-span-3">
                 <CardCarousel
-                    cards={cards}
+                    cards={filteredCards} // Pass filtered cards here
                     category={category}
                     perView={3}
                     ids={ids}
