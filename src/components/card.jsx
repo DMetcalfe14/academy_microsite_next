@@ -1,15 +1,23 @@
 "use client";
 
 import Tag from "./tag";
-import { Clock, Laptop, PathArrow, QuestionMark, Microphone, Book, Calendar } from "iconoir-react";
+import { Clock, Laptop, PathArrow, QuestionMark, Microphone, Book, Calendar, Page, Play, Box3dCenter, EmptyPage, Headset, Medal, Archive } from "iconoir-react";
 import { formatDuration } from "@/app/utilities";
 
 const iconMap = {
+  Article: Page,
   Event: Calendar,
+  Book: Book,
   eBook: Book,
+  AudioBook: Headset,
   elearning: Laptop,
   Pathway: PathArrow,
   Podcast: Microphone,
+  Video: Play,
+  Resource: EmptyPage,
+  Simulation: Box3dCenter,
+  Guidance: Archive,
+  "Skill Benchmark": Medal,
   default: QuestionMark,
 };
 
