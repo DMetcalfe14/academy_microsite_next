@@ -42,7 +42,7 @@ export function DiscoverSection({ id }) {
     return null; // Prevent further rendering
   }
 
-  const { title, image, description, cardSections } = section;
+  const { title, image, description, htmlDescription, cardSections } = section;
 
   return (
     <main aria-labelledby="discover-heading">
@@ -51,7 +51,11 @@ export function DiscoverSection({ id }) {
         <h1 id="discover-heading" className="sr-only">
           {title}
         </h1>
-        <p className="mt-6">{description}</p>
+          {htmlDescription ? (
+      <div dangerouslySetInnerHTML={{ __html: htmlDescription }} />
+    ) : (
+      <p className="mt-6">{description}</p>
+    )}
       </section>
 
       {/* Dynamically render CardSections */}
