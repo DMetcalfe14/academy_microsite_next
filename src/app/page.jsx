@@ -19,7 +19,7 @@ function PageContent() {
       <Carousel />
 
       {/* Card Section */}
-      <CardSection title="Brand new 🌟" cards={courses} filters={{ topN: 4 }} />
+      <CardSection title="Featured 🌟" cards={courses} filters={{ topN: 4 }} />
 
       {/* Featured Section */}
       <FeaturedSection cards={courses} />

@@ -82,7 +82,7 @@ export default function RootLayout({ children }) {
               aria-label="Go to homepage"
             >
               <Image src="logo.png" alt="HMRC logo" width="30" height="30" />
-              Leadership & Management Academy
+              Leadership & Management Capability Academy
             </a>
 
             {/* Desktop Search Form */}
