@@ -14,6 +14,7 @@
     "iconoir-react": "^7.10.1",
     "moment": "^2.30.1",
     "next": "15.1.7",
+    "pipwerks-scorm-api-wrapper": "^0.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "spin-delay": "^2.0.1",
