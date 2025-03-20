@@ -23,3 +23,11 @@
   align-items: stretch !important; /* Stretch child elements vertically */
   margin-bottom: 5px !important;
 }
+
+.shepherd-button.shepherd-button-primary {
+  background-color: var(--primary-colour) !important;
+}
+
+.shepherd-button.shepherd-button-cancel {
+  background-color: var(--primary-colour) !important;
+}

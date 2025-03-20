@@ -1,40 +1,32 @@
 "use client";
 
-import useSWR from "swr";
+import { useJsonData } from '@/context/json_context';
 import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
 import CardSection from "@/components/cards_section";
 import { Suspense } from "react";
 
-const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
-
 export function DiscoverSection({ id }) {
-  // Fetch discover configuration
-  const {
-    data: discoverData,
-    isLoading: discoverLoading,
-    error: discoverError,
-  } = useSWR("discover.json", JSONfetcher);
+  
+  const { data, isLoading, isError } = useJsonData();
 
-  // Fetch courses data
   const {
-    data: courses,
-    isLoading: coursesLoading,
-    error: coursesError,
-  } = useSWR("courses.json", JSONfetcher);
+    courses = [],
+    discover = [],
+  } = data;
 
   // Handle loading state
-  if (discoverLoading || coursesLoading) {
+  if (isLoading) {
     return <div role="status" aria-live="polite">Loading data...</div>;
   }
 
   // Handle error state
-  if (discoverError || coursesError) {
+  if (isError) {
     return <div role="alert">Error loading data. Please try again later.</div>;
   }
 
   // Find the specific section by ID
-  const section = discoverData?.find((item) => item.id == id);
+  const section = discover?.find((item) => item.id == id);
 
   // Handle case where no matching section is found
   if (!section) {

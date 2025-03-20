@@ -12,8 +12,8 @@ const LinkSection = () => {
   if (isLoading) return <LinkSectionSkeleton aria-label="Loading links" />;
 
   return (
-    <section aria-labelledby="link-section-title">
-      <h2 id="link-section-title" className="text-2xl font-semibold mb-4 text-gray-800">
+    <section aria-labelledby="Quick links">
+      <h2 id="links" className="text-2xl font-semibold mb-4 text-gray-800">
         Links
       </h2>
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">

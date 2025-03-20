@@ -1,19 +1,15 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import useSWR from "swr";
+import { useJsonData } from '@/context/json_context';
 import { useSearchParams, useRouter } from "next/navigation";
 
 import CardSection from "../../components/cards_section";
 import Checkbox from "../../components/checkbox";
 import CheckboxSkeleton from "../../components/checkbox_skeleton";
 
-// Fetcher function for SWR
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 function Search() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   // Local state for filters, search input, and page count
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -21,17 +17,18 @@ function Search() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [pageCount, setPageCount] = useState(1); // State to track page count
+  const [pageCount, setPageCount] = useState(1);
 
-  // Use SWR to fetch courses data
-  const { data: courses = [], isLoading } = useSWR("courses.json", fetcher, {
-    revalidateOnFocus: true,
-    fallbackData: [],
-    keepPreviousData: true,
-  });
+  const { data, isLoading } = useJsonData();
+
+  const {
+    courses = []
+  } = data;
 
   // Extract unique categories, types, and locations dynamically from courses
-  const categories = [...new Set(courses.flatMap((course) => course.categories || []))];
+  const categories = [...new Set([
+    ...courses.flatMap((course) => course.categories) || []])
+  ];
   const types = [...new Set(courses.map((course) => course.type))];
   const locations = [
     ...new Set(
@@ -64,20 +61,6 @@ function Search() {
 
     return () => clearTimeout(handler);
   }, [searchInput]);
-
-  // Function to update the URL query string explicitly (on user action)
-  const updateUrlQueryString = () => {
-    const newSearchParams = new URLSearchParams();
-
-    if (debouncedQuery) newSearchParams.set("query", debouncedQuery);
-    if (selectedCategories.length > 0)
-      newSearchParams.set("category", selectedCategories.join(","));
-    if (selectedTypes.length > 0)
-      newSearchParams.set("type", selectedTypes.join(","));
-    if (selectedLocation) newSearchParams.set("location", selectedLocation);
-
-    router.replace(`?${newSearchParams.toString()}`); // Use replace to avoid full re-render
-  };
 
   // Reset page count whenever filters are updated
   const resetPageCount = () => {
@@ -210,8 +193,9 @@ function Search() {
 
 export default function SearchSuspense() {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading...</div>}>
       <Search />
     </Suspense>
   );
 }
+

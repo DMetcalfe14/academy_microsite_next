@@ -23,13 +23,14 @@ const FeaturedSection = ({ cards }) => {
 
   if (isLoading)
     return (
-      <FeaturedSectionSkeleton aria-label="Loading featured section content" />
+      <FeaturedSectionSkeleton aria-label="Loading spotlight content" />
     );
 
   return (
     <section
       className="bg-primary_saturated"
       aria-label="Learning spotlights"
+      id="spotlight"
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 py-15">
         {/* Toggles */}

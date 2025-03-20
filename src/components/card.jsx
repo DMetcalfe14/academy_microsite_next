@@ -30,6 +30,7 @@ const Card = ({
   thumbnail,
   alt,
   type,
+  page_href
 }) => {
   const Icon = iconMap[type] || iconMap.default;
   const plainDuration = formatDuration(duration);
@@ -45,6 +46,7 @@ const Card = ({
         {/* Centered Type Icon */}
         <div
           className="absolute top-2 left-2 bg-primary text-white text-sm font-semibold rounded-full flex items-center justify-center h-8 w-8 z-10"
+          title = {type}
           aria-label={`Type: ${type}`}
         >
           <Icon className="w-4 h-4" aria-hidden="true" />
@@ -77,7 +79,7 @@ const Card = ({
         {/* Title */}
         {title ? (
           <a
-            href={`details.html?id=${id}`}
+            href={page_href ? page_href : `details.html?id=${id}`}
             className="hover:no-underline rounded focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             aria-label={`View details of ${title} (${type}, ${plainDuration})`}
           >

@@ -1,6 +1,8 @@
 "use client";
 
-import useSWR from "swr";
+import { useJsonData } from '@/context/json_context';
+
+import Tour from "@/components/tour";
 
 import CardSection from "../components/cards_section";
 import Carousel from "@/components/carousel";
@@ -8,18 +10,24 @@ import FeaturedSection from "@/components/featured_section";
 import EventSection from "@/components/events_section";
 import LinkSection from "@/components/links_section";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
 function PageContent() {
-  const { data: courses = [], isLoading } = useSWR("courses.json", fetcher);
 
+  const { data} = useJsonData();
+
+  const {
+    courses = [],
+  } = data;
+  
   return (
     <main aria-label="Main content">
+      {/* Tour */}
+      <Tour />
+
       {/* Carousel */}
       <Carousel />
 
       {/* Card Section */}
-      <CardSection title="Featured 🌟" cards={courses} filters={{ topN: 4 }} />
+      <CardSection id="featured" title="Featured 🌟" cards={courses} filters={{ topN: 4 }} />
 
       {/* Featured Section */}
       <FeaturedSection cards={courses} />

@@ -52,6 +52,7 @@ const filterRules = {
 };
 
 const CardSection = ({
+  id,
   title,
   description,
   cards = [],
@@ -62,7 +63,7 @@ const CardSection = ({
   perView = 4,
   onViewAll,
   pageCount = 1,
-  onPageChange,
+  onPageChange
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,8 +118,8 @@ const CardSection = ({
   if (isLoading)
     return (
       <CardSectionSkeleton
-        perRow={perRow}
-        perPage={cardsPerPage}
+        perRow={useCarousel ? perView : perRow}
+        perPage={useCarousel ? perView : cardsPerPage}
         paginated={paginated}
         aria-label="Loading card section content"
       />
@@ -150,7 +151,7 @@ const CardSection = ({
         >
           {currentCards?.map((card) => (
             <Card
-              key={card.id}
+              key={crypto.randomUUID()}
               id={card.id}
               title={card.title}
               description={card.description}
@@ -158,6 +159,7 @@ const CardSection = ({
               thumbnail={card.thumbnail}
               type={card.type}
               categories={card.categories}
+              page_href={card.page_href}
             />
           ))}
         </div>
@@ -205,6 +207,7 @@ const CardSection = ({
     html
   ) : (
     <div
+      id = {id}
       className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
       role="region"
       aria-labelledby="card-section-title"

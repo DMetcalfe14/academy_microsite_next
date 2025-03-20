@@ -42,9 +42,9 @@ const EventSection = ({ cards, isLoading }) => {
     );
 
   return (
-    <section aria-labelledby="event-section-title">
+    <section aria-labelledby="Upcoming events">
       <h2
-        id="event-section-title"
+        id="events"
         className="text-2xl font-semibold mb-4 text-gray-800"
       >
         Upcoming Events

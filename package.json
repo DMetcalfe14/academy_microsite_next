@@ -17,6 +17,7 @@
     "pipwerks-scorm-api-wrapper": "^0.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "shepherd.js": "^14.5.0",
     "spin-delay": "^2.0.1",
     "swr": "^2.3.2"
   },

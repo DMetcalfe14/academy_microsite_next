@@ -61,6 +61,7 @@ const Carousel = () => {
       }`}
       onClick={() => handleControlClick(direction === "left" ? "<" : ">")}
       aria-label={`Go to ${direction === "left" ? "previous" : "next"} slide`}
+      title = {direction === "left" ? "Previous" : "Next"}
     >
       {direction === "left" ? (
         <NavArrowLeft width={24} height={24} color="white" />

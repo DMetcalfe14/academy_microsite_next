@@ -1,19 +1,22 @@
 "use client";
 
 import useSWR from "swr";
-import { useSearchParams, notFound } from "next/navigation";
-import Banner from "@/components/banner";
 import { Suspense } from "react";
+import { useJsonData } from '@/context/json_context';
+import { useSearchParams, notFound } from "next/navigation";
 
-const JSONfetcher = (...args) => fetch(...args).then((res) => res.json());
+import Banner from "@/components/banner";
+
 const HTMLfetcher = (...args) => fetch(...args).then((res) => res.text());
 
 export function Article({ id }) {
-  // Fetch articles data
-  const { data: articles, isLoading: articlesLoading, error: articlesError } = useSWR(
-    "articles.json",
-    JSONfetcher
-  );
+  
+  const { data, isLoading: articlesLoading, articlesError } = useJsonData();
+
+  const {
+    articles = [],
+  } = data;
+
 
   // Always call useSWR for HTML content, but provide a default key
   const { data: htmlContent, isLoading: htmlLoading, error: htmlError } = useSWR(
@@ -56,6 +59,7 @@ export function Article({ id }) {
         className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 max-h-[400px] overflow-hidden rounded-lg"
         heading={article.title}
         image={article.image}
+        alt={article.alt}
         fullScreen
       />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -82,7 +86,7 @@ export function Page() {
 
 export default function PageSuspense() {
   return (
-    <Suspense>
+    <Suspense fallback={<div className="p-4 text-gray-500">Loading page...</div>}>
       <Page />
     </Suspense>
   );
