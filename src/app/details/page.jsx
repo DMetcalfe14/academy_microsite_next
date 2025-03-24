@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { notFound } from "next/navigation";
+import { useSearchParams, notFound } from "next/navigation";
+
+import { useJsonData } from '@/context/json_context';
+
 import Banner from "@/components/banner";
 import Accordion from "@/components/accordion";
 import { formatDuration } from "@/app/utilities";
@@ -10,29 +12,26 @@ import EventDetails from "@/components/event_details";
 import Button from "@/components/button";
 
 function CourseDetails({ id }) {
-  const [course, setCourse] = useState(undefined); // Start with undefined to indicate "loading"
-
+  const { data } = useJsonData();
+  const [course, setCourse] = useState(undefined);
+  
   useEffect(() => {
-    fetch("courses.json")
-      .then((response) => response.json())
-      .then((data) => {
-        const result = data.find((course) => course.id == id);
-        setCourse(result || null); // Set null if no matching course is found
-      })
-      .catch((error) => {
-        console.error("Error fetching courses:", error);
-        setCourse(null); // Handle errors by setting course to null
-      });
-  }, [id]);
+    const {
+      courses = [],
+    } = data;
 
-  // If no course is found after fetching, trigger notFound()
-  if (course === null) {
-    notFound();
-    return null; // Prevent further rendering
+    const result = courses.find((course) => course.id == id);
+    setCourse(result || null);
+
+    if (result === null) {
+      notFound();
+      return;
+    }
   }
+  , [data, id]);
 
   // Delay rendering child components until data is fetched
-  if (course === undefined) {
+  if (course === undefined || course === null) {
     return null; // Render nothing while waiting for data
   }
 
@@ -146,7 +145,7 @@ function DetailsWithSearchParams() {
 
   if (!id) {
     notFound(); // Handle missing ID gracefully
-    return null; // Prevent further rendering
+    return; // Prevent further rendering
   }
 
   return <CourseDetails id={id} />;

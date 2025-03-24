@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import { useJsonData } from '@/context/json_context';
 
 import Tour from "@/components/tour";
-
 import CardSection from "../components/cards_section";
 import Carousel from "@/components/carousel";
 import FeaturedSection from "@/components/featured_section";
@@ -11,17 +11,23 @@ import EventSection from "@/components/events_section";
 import LinkSection from "@/components/links_section";
 
 function PageContent() {
+  const { data } = useJsonData();
+  const { courses = [] } = data;
 
-  const { data} = useJsonData();
+  const [showTour, setShowTour] = useState(false);
 
-  const {
-    courses = [],
-  } = data;
-  
+  useEffect(() => {
+    const isFirstVisit = localStorage.getItem('isFirstVisit');
+    if (!isFirstVisit) {
+      setShowTour(true);
+      localStorage.setItem('isFirstVisit', 'true');
+    }
+  }, []);
+
   return (
     <main aria-label="Main content">
       {/* Tour */}
-      <Tour />
+      {showTour && <Tour />}
 
       {/* Carousel */}
       <Carousel />
@@ -49,13 +55,13 @@ function PageContent() {
 export default function Home() {
   return (
     <>
-      {/* Skip Link */}
+      {/* Skip Link
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:outline focus:outline-primary"
       >
         Skip to main content
-      </a>
+      </a> */}
 
       {/* Main Content */}
       <PageContent />

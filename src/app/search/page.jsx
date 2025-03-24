@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+
 import { useJsonData } from '@/context/json_context';
-import { useSearchParams, useRouter } from "next/navigation";
+import useScorm from "@/hooks/useSCORM";
+
+import { Filter, NavArrowUp, NavArrowDown } from 'iconoir-react';
 
 import CardSection from "../../components/cards_section";
 import Checkbox from "../../components/checkbox";
@@ -10,35 +14,33 @@ import CheckboxSkeleton from "../../components/checkbox_skeleton";
 
 function Search() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  // Local state for filters, search input, and page count
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [pageCount, setPageCount] = useState(1);
+  const [expandedSections, setExpandedSections] = useState({
+    categories: false,
+    types: false,
+    locations: false
+  });
 
   const { data, isLoading } = useJsonData();
+  const { courses = [] } = data;
+  const { setLocation } = useScorm();
 
-  const {
-    courses = []
-  } = data;
-
-  // Extract unique categories, types, and locations dynamically from courses
-  const categories = [...new Set([
-    ...courses.flatMap((course) => course.categories) || []])
-  ];
+  const categories = [...new Set([...courses.flatMap((course) => course.categories) || []])];
   const types = [...new Set(courses.map((course) => course.type))];
-  const locations = [
-    ...new Set(
-      courses
-        .filter((course) => course.type === "Event")
-        .flatMap((course) => course.events.map((event) => event.location))
-    ),
-  ];
+  const locations = [...new Set(courses.filter((course) => course.type === "Event").flatMap((course) => course.events.map((event) => event.location)))];
 
-  // Initialize state from URL query parameters on page load
+  useEffect(() => {
+    let msg = `Navigated to search`;
+    setLocation(msg);
+  }, []);
+  
   useEffect(() => {
     const query = searchParams.get("query") || "";
     const category = searchParams.get("category");
@@ -52,45 +54,68 @@ function Search() {
     setDebouncedQuery(query);
   }, []);
 
-  // Debouncing logic for the search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchInput);
+      if (searchInput != "") {
+        let msg = `Searching with query: ${searchInput}`;
+        setLocation(msg);
+      }
+      updateURL();
       resetPageCount();
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(handler);
   }, [searchInput]);
 
-  // Reset page count whenever filters are updated
+  useEffect(() => {
+    updateURL();
+  }, [selectedCategories, selectedTypes, selectedLocation]);
+
   const resetPageCount = () => {
-    setPageCount(1); // Reset page count to initial value
+    setPageCount(1);
   };
 
-  // Handlers for updating filters and resetting page count
+  const updateURL = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (searchInput) params.set("query", searchInput);
+    else params.delete("query");
+    
+    if (selectedCategories.length) params.set("category", selectedCategories.join(","));
+    else params.delete("category");
+    
+    if (selectedTypes.length) params.set("type", selectedTypes.join(","));
+    else params.delete("type");
+    
+    if (selectedLocation) params.set("location", selectedLocation);
+    else params.delete("location");
+  
+    const newURL = `${pathname}?${params.toString()}`;
+    window.history.pushState(null, '', newURL);
+  };
+
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
-    resetPageCount(); // Reset page count when filter changes
+    resetPageCount();
   };
 
   const handleTypeChange = (type) => {
     setSelectedTypes((prev) =>
-      prev.includes(type)
-        ? prev.filter((t) => t !== type)
-        : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
-    resetPageCount(); // Reset page count when filter changes
+    resetPageCount();
   };
 
   const handleLocationChange = (location) => {
-    setSelectedLocation((prevLocation) =>
-      prevLocation === location ? "" : location
-    );
-    resetPageCount(); // Reset page count when filter changes
+    setSelectedLocation((prevLocation) => prevLocation === location ? "" : location);
+    resetPageCount();
+  };
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({...prev, [section]: !prev[section]}));
   };
 
   return (
@@ -100,56 +125,85 @@ function Search() {
           {/* Filters Section */}
           <aside className="grid-cols-1" aria-labelledby="filters-heading">
             <h1 id="filters-heading" className="text-2xl font-semibold mb-4">Filters</h1>
+            
+            {/* Categories Section */}
             <div className="mb-6">
-              <p className="text-md font-semibold mb-2">Categories</p>
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <CheckboxSkeleton key={index} />
-                ))
-              ) : (
-                categories.map((category) => (
-                  <Checkbox
-                    key={category}
-                    label={category}
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryChange(category)}
-                  />
-                ))
+              <button 
+                onClick={() => toggleSection('categories')} 
+                className="flex items-center justify-between w-full text-md font-semibold mb-2"
+              >
+                Categories
+                {expandedSections.categories ? <NavArrowUp /> : <NavArrowDown />}
+              </button>
+              {expandedSections.categories && (
+                isLoading ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <CheckboxSkeleton key={index} />
+                  ))
+                ) : (
+                  categories.map((category) => (
+                    <Checkbox
+                      key={category}
+                      label={category}
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                    />
+                  ))
+                )
               )}
             </div>
+
+            {/* Types Section */}
             <div className="mb-6" id="types">
-              <p className="text-md font-semibold mb-2">Types</p>
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <CheckboxSkeleton key={index} />
-                ))
-              ) : (
-                types.map((type) => (
-                  <Checkbox
-                    key={type}
-                    label={type}
-                    checked={selectedTypes.includes(type)}
-                    onChange={() => handleTypeChange(type)}
-                  />
-                ))
+              <button 
+                onClick={() => toggleSection('types')} 
+                className="flex items-center justify-between w-full text-md font-semibold mb-2"
+              >
+                Types
+                {expandedSections.types ? <NavArrowUp /> : <NavArrowDown />}
+              </button>
+              {expandedSections.types && (
+                isLoading ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <CheckboxSkeleton key={index} />
+                  ))
+                ) : (
+                  types.map((type) => (
+                    <Checkbox
+                      key={type}
+                      label={type}
+                      checked={selectedTypes.includes(type)}
+                      onChange={() => handleTypeChange(type)}
+                    />
+                  ))
+                )
               )}
             </div>
-            {/* Location Filter */}
+
+            {/* Locations Section */}
             <div className="mb-6" id="locations">
-              <p className="text-md font-semibold mb-2">Locations</p>
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <CheckboxSkeleton key={index} />
-                ))
-              ) : (
-                locations.map((location) => (
-                  <Checkbox
-                    key={location}
-                    label={location}
-                    checked={selectedLocation === location}
-                    onChange={() => handleLocationChange(location)}
-                  />
-                ))
+              <button 
+                onClick={() => toggleSection('locations')} 
+                className="flex items-center justify-between w-full text-md font-semibold mb-2"
+              >
+                Locations
+                {expandedSections.locations ? <NavArrowUp /> : <NavArrowDown />}
+              </button>
+              {expandedSections.locations && (
+                isLoading ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <CheckboxSkeleton key={index} />
+                  ))
+                ) : (
+                  locations.map((location) => (
+                    <Checkbox
+                      key={location}
+                      label={location}
+                      checked={selectedLocation === location}
+                      onChange={() => handleLocationChange(location)}
+                    />
+                  ))
+                )
               )}
             </div>
           </aside>
@@ -181,7 +235,7 @@ function Search() {
               }}
               paginated={true}
               perRow={3}
-              pageCount={pageCount} // Pass pageCount as a prop to CardSection
+              pageCount={pageCount}
               onPageChange={(newPage) => setPageCount(newPage)}
             />
           </section>
@@ -198,4 +252,3 @@ export default function SearchSuspense() {
     </Suspense>
   );
 }
-
