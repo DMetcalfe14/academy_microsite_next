@@ -76,21 +76,7 @@
     "alt": "Thumbnail showing a team engaged in a discussion",
     "duration": 90,
     "type": "Event",
-    "href": "https://google.com",
-    "events": [
-      {
-        "location": "Liverpool Regional Centre",
-        "start_date": "12/03/2025",
-        "end_date": "12/03/2025",
-        "href": ""
-      },
-      {
-        "location": "Manchester Regional Centre",
-        "start_date": "15/03/2025",
-        "end_date": "15/03/2025",
-        "href": ""
-      }
-    ]
+    "href": "https://google.com"
   },
   {
     "id": 10,

@@ -34,7 +34,7 @@ function Search() {
 
   const categories = [...new Set([...courses.flatMap((course) => course.categories) || []])];
   const types = [...new Set(courses.map((course) => course.type))];
-  const locations = [...new Set(courses.filter((course) => course.type === "Event").flatMap((course) => course.events.map((event) => event.location)))];
+  const locations = [...new Set(courses.filter((course) => course.type === "Event").flatMap((course) => course.events ? course.events.map((event) => event.location) : []))];
 
   useEffect(() => {
     let msg = `Navigated to search`;
@@ -153,62 +153,64 @@ function Search() {
               )}
             </div>
 
-            {/* Types Section */}
-            <div className="mb-6" id="types">
-              <button 
-                onClick={() => toggleSection('types')} 
-                className="flex items-center justify-between w-full text-md font-semibold mb-2"
-              >
-                Types
-                {expandedSections.types ? <NavArrowUp /> : <NavArrowDown />}
-              </button>
-              {expandedSections.types && (
-                isLoading ? (
-                  Array.from({ length: 5 }).map((_, index) => (
-                    <CheckboxSkeleton key={index} />
-                  ))
-                ) : (
-                  types.map((type) => (
-                    <Checkbox
-                      key={type}
-                      label={type}
-                      checked={selectedTypes.includes(type)}
-                      onChange={() => handleTypeChange(type)}
-                    />
-                  ))
-                )
-              )}
-            </div>
+{/* Types Section */}
+                  <div className="mb-6" id="types">
+                    <button 
+                    onClick={() => toggleSection('types')} 
+                    className="flex items-center justify-between w-full text-md font-semibold mb-2"
+                    >
+                    Types
+                    {expandedSections.types ? <NavArrowUp /> : <NavArrowDown />}
+                    </button>
+                    {expandedSections.types && (
+                    isLoading ? (
+                      Array.from({ length: 5 }).map((_, index) => (
+                      <CheckboxSkeleton key={index} />
+                      ))
+                    ) : (
+                      types.map((type) => (
+                      <Checkbox
+                        key={type}
+                        label={type}
+                        checked={selectedTypes.includes(type)}
+                        onChange={() => handleTypeChange(type)}
+                      />
+                      ))
+                    )
+                    )}
+                  </div>
 
-            {/* Locations Section */}
-            <div className="mb-6" id="locations">
-              <button 
-                onClick={() => toggleSection('locations')} 
-                className="flex items-center justify-between w-full text-md font-semibold mb-2"
-              >
-                Locations
-                {expandedSections.locations ? <NavArrowUp /> : <NavArrowDown />}
-              </button>
-              {expandedSections.locations && (
-                isLoading ? (
-                  Array.from({ length: 5 }).map((_, index) => (
-                    <CheckboxSkeleton key={index} />
-                  ))
-                ) : (
-                  locations.map((location) => (
-                    <Checkbox
-                      key={location}
-                      label={location}
-                      checked={selectedLocation === location}
-                      onChange={() => handleLocationChange(location)}
-                    />
-                  ))
-                )
-              )}
-            </div>
-          </aside>
+                  {/* Locations Section */}
+                  {locations.length > 0 && (
+                    <div className="mb-6" id="locations">
+                    <button 
+                      onClick={() => toggleSection('locations')} 
+                      className="flex items-center justify-between w-full text-md font-semibold mb-2"
+                    >
+                      Locations
+                      {expandedSections.locations ? <NavArrowUp /> : <NavArrowDown />}
+                    </button>
+                    {expandedSections.locations && (
+                      isLoading ? (
+                      Array.from({ length: 5 }).map((_, index) => (
+                        <CheckboxSkeleton key={index} />
+                      ))
+                      ) : (
+                      locations.map((location) => (
+                        <Checkbox
+                        key={location}
+                        label={location}
+                        checked={selectedLocation === location}
+                        onChange={() => handleLocationChange(location)}
+                        />
+                      ))
+                      )
+                    )}
+                    </div>
+                  )}
+                  </aside>
 
-          {/* Pass filters directly to CardSection */}
+                  {/* Pass filters directly to CardSection */}
           <section className="col-span-3" aria-labelledby="results-heading">
             <h2 id="results-heading" className="sr-only">Search Results</h2>
             {/* Search Bar */}
