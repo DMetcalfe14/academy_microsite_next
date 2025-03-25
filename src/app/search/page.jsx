@@ -4,7 +4,6 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import { useJsonData } from '@/context/json_context';
-import useScorm from "@/hooks/useSCORM";
 
 import { Filter, NavArrowUp, NavArrowDown } from 'iconoir-react';
 
@@ -30,16 +29,15 @@ function Search() {
 
   const { data, isLoading } = useJsonData();
   const { courses = [] } = data;
-  const { setLocation } = useScorm();
 
   const categories = [...new Set([...courses.flatMap((course) => course.categories) || []])];
   const types = [...new Set(courses.map((course) => course.type))];
   const locations = [...new Set(courses.filter((course) => course.type === "Event").flatMap((course) => course.events ? course.events.map((event) => event.location) : []))];
 
-  useEffect(() => {
-    let msg = `Navigated to search`;
-    setLocation(msg);
-  }, []);
+  // useEffect(() => {
+  //   let msg = `Navigated to search`;
+  //   setLocation(msg);
+  // }, []);
   
   useEffect(() => {
     const query = searchParams.get("query") || "";

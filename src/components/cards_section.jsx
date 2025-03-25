@@ -170,7 +170,7 @@ const CardSection = ({
         <div className="flex items-center gap-8 place-content-between mt-8">
           <button
             id="prev"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+            className="px-4 py-2 bg-primary text-label rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handlePrevPage}
             disabled={pageCount === 1}
@@ -190,7 +190,7 @@ const CardSection = ({
           </p>
           <button
             id="next"
-            className="px-4 py-2 bg-primary text-white rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+            className="px-4 py-2 bg-primary text-label rounded font-semibold disabled:bg-gray-500 hover:bg-primary_hover focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
             type="button"
             onClick={handleNextPage}
             disabled={pageCount === totalPages}

@@ -21,7 +21,7 @@ const Button = forwardRef(
 
     const variantStyles = {
       primary:
-        "bg-primary text-white hover:bg-primary_hover " +
+        "bg-primary text-label hover:bg-primary_hover " +
         "focus-visible:outline-primary",
       white:
         "bg-white text-primary hover:bg-gray-50 " +

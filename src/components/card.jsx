@@ -45,7 +45,7 @@ const Card = ({
       <div className="relative aspect-video overflow-hidden rounded-t-lg">
         {/* Centered Type Icon */}
         <div
-          className="absolute top-2 left-2 bg-primary text-white text-sm font-semibold rounded-full flex items-center justify-center h-8 w-8 z-10"
+          className="absolute top-2 left-2 bg-primary text-label text-sm font-semibold rounded-full flex items-center justify-center h-8 w-8 z-10"
           title = {type}
           aria-label={`Type: ${type}`}
         >
@@ -54,7 +54,7 @@ const Card = ({
 
         {/* Duration Section */}
         <div
-          className="absolute top-2 right-2 bg-primary text-white text-sm font-semibold px-3 py-1 rounded flex items-center h-8 z-10"
+          className="absolute top-2 right-2 bg-primary text-label text-sm font-semibold px-3 py-1 rounded flex items-center h-8 z-10"
           aria-label={`Duration: ${plainDuration}`}
         >
           <Clock className="w-4 h-4 mr-1" aria-hidden="true" />

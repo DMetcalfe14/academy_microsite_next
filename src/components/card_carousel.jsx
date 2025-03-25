@@ -72,14 +72,14 @@ const CardCarousel = ({
         )}
         <div className="flex gap-2" data-glide-el="controls">
           <button
-            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
+            className="p-2 bg-primary text-label rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
             data-glide-dir="<"
             aria-label="Previous slide"
           >
             <NavArrowLeft className="w-5 h-5" aria-hidden="true" />
           </button>
           <button
-            className="p-2 bg-primary text-white rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
+            className="p-2 bg-primary text-label rounded-full hover:bg-primary_hover focus:ring-2 focus:ring-primary transition-colors"
             data-glide-dir=">"
             aria-label="Next slide"
           >

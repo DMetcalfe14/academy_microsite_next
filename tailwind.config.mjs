@@ -12,7 +12,8 @@ export default {
         foreground: "var(--foreground)",
         primary: "var(--primary-colour)",
         primary_hover: "var(--primary-hover)",
-        primary_saturated: "var(--primary-saturated)"
+        primary_saturated: "var(--primary-saturated)",
+        label: "var(--primary-label)"
       },
     },
   },

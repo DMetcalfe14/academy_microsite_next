@@ -12,7 +12,10 @@ import LinkSection from "@/components/links_section";
 
 function PageContent() {
   const { data } = useJsonData();
-  const { courses = [] } = data;
+  const { 
+    courses = [],
+    featured_home = [],
+   } = data;
 
   const [showTour, setShowTour] = useState(false);
 
@@ -33,7 +36,7 @@ function PageContent() {
       <Carousel />
 
       {/* Card Section */}
-      <CardSection id="featured" title="Featured 🌟" cards={courses} filters={{ topN: 4 }} />
+      <CardSection id="featured" title="Featured 🌟" cards={courses} filters={featured_home} />
 
       {/* Featured Section */}
       <FeaturedSection cards={courses} />
@@ -55,15 +58,6 @@ function PageContent() {
 export default function Home() {
   return (
     <>
-      {/* Skip Link
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:outline focus:outline-primary"
-      >
-        Skip to main content
-      </a> */}
-
-      {/* Main Content */}
       <PageContent />
     </>
   );

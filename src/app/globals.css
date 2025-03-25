@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --primary-colour: oklch(0.646 0.222 41.116);
+  --primary-colour: oklch(72.35% 0.1547 72.21);
+  --primary-hover: oklch(63.05% 0.1277 69.50);
+  --primary-saturated: oklch(95.88% 0.0296 72.21);
+  --primary-label: oklch(0.208 0.042 265.755);
+
+  /* --primary-colour: oklch(0.646 0.222 41.116);
   --primary-hover: oklch(0.553 0.195 38.402);
-  --primary-saturated: oklch(0.954 0.038 75.164);
+  --primary-saturated: oklch(0.954 0.038 75.164); */
 
   /* --primary-colour: oklch(0.488 0.243 264.376);
     --primary-hover: oklch(0.424 0.199 265.638);

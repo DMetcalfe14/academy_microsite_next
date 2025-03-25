@@ -5,7 +5,7 @@ import { Menu, ArrowLeft } from "iconoir-react";
 import Button from "@/components/button";
 import Image from "next/image";
 import { useJsonData } from "@/context/json_context";
-import useScorm from "@/hooks/useSCORM";
+// import { useScorm } from '@/context/scorm_context';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const Navigation = () => {
@@ -15,44 +15,52 @@ const Navigation = () => {
 
   const { data } = useJsonData() || {};
   const { courses = [], articles = [], discover = [] } = data || {};
-  const { setLocation } = useScorm();
+  // const { isInitialized, setLocation } = useScorm();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  useEffect(() => {
-    const id = searchParams.get("id");
-    let item;
-    let msg;
-    if (pathname.includes("/details")) {
-      item = courses.find((item) => item.id == id);
-      if (item) {
-        msg = `Viewed the course details for "${item.title}"`;
-        console.log(msg);
-        setLocation(msg);
-      }
-    } else if (pathname.includes("/discover")) {
-      item = discover.find((item) => item.id == id);
-      if (item) {
-        msg = `Exploring the material within "${item.title}"`;
-        console.log(msg);
-        setLocation(msg);
-      }
-    } else if (pathname.includes("/page")) {
-      item = articles.find((item) => item.id == id);
-      if (item) {
-        msg = `Navigated to page: "${item.title}"`;
-        console.log(msg);
-        setLocation(msg);
-      }
-    } else if (pathname.includes("/index")) {
-      msg = `Navigated to home`;
-      console.log(msg);
-      setLocation(msg);
-    }
-  }, [data, pathname, searchParams]);
+  // useEffect(() => {
+  //   const id = searchParams.get("id");
+  //   let item;
+  //   let msg;
+  //   if (pathname.includes("/details")) {
+  //     item = courses.find((item) => item.id == id);
+  //     if (item) {
+  //       msg = `Viewed the course details for "${item.title}"`;
+  //       console.log(msg);
+  //       if (isInitialized) {
+  //         setLocation(msg);
+  //       }
+  //     }
+  //   } else if (pathname.includes("/discover")) {
+  //     item = discover.find((item) => item.id == id);
+  //     if (item) {
+  //       msg = `Exploring the material within "${item.title}"`;
+  //       console.log(msg);
+  //       if (isInitialized) {
+  //         setLocation(msg);
+  //       }
+  //     }
+  //   } else if (pathname.includes("/page")) {
+  //     item = articles.find((item) => item.id == id);
+  //     if (item) {
+  //       msg = `Navigated to page: "${item.title}"`;
+  //       console.log(msg);
+  //       if (isInitialized) {
+  //         setLocation(msg);
+  //       }
+  //     }
+  //   } else if (pathname.includes("/index")) {
+  //     msg = `Navigated to home`;
+  //     console.log(msg);
+  //     if (isInitialized) {
+  //       setLocation(msg);
+  //     }
+  //   }
+  // }, [data, pathname, searchParams, isInitialized]);
 
   useEffect(() => {
     if (selectedIndex !== null) {
@@ -156,7 +164,7 @@ const Navigation = () => {
             <div className="flex items-center flex-shrink-0">
               <a
                 href="index.html"
-                className="cursor-pointer text-white font-semibold flex items-center gap-3"
+                className="cursor-pointer text-label font-semibold flex items-center gap-3"
                 aria-label="Go to homepage"
               >
                 <Image src="logo.png" alt="HMRC logo" width="30" height="30" />
@@ -231,7 +239,7 @@ const Navigation = () => {
             {/* Mobile Toggle */}
             <div className="lg:hidden flex items-center">
               <button
-                className="text-white focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                className="text-label focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                 type="button"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-expanded={isSearchOpen}
@@ -299,7 +307,7 @@ const Navigation = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
           <button
             onClick={handleBackClick}
-            className="absolute z-50 mt-4 inline-flex items-center border border-transparent text-sm font-medium text-white"
+            className="absolute z-50 mt-4 inline-flex items-center border border-transparent text-sm font-medium text-label"
             aria-label="Go back to previous page"
           >
             <ArrowLeft className="mr-2 h-5 w-5" aria-hidden="true" />

@@ -7,7 +7,7 @@ const EventCardSkeleton = () => {
 
       <div className="relative md:w-2/5 shrink-0 overflow-hidden">
         <div 
-          className="bg-gray-400 text-6xl text-white absolute w-full h-full flex justify-center items-center text-center rounded-l-lg" 
+          className="bg-gray-400 text-6xl text-label absolute w-full h-full flex justify-center items-center text-center rounded-l-lg" 
           role="presentation"
         ></div>
         <div className="h-full w-full bg-gray-400" role="presentation"></div>
