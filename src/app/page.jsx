@@ -24,8 +24,9 @@ function PageContent() {
    const pathname = usePathname();
 
    useEffect(() => {
-    if (tours[pathname]) {
-      setTourConfig(tours[pathname]);
+    const matchingTour = Object.keys(tours).find(key => pathname.includes(key));
+    if (matchingTour) {
+      setTourConfig(tours[matchingTour]);
     }
   }, [tours, pathname, setTourConfig]);
 

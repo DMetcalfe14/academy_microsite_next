@@ -16,7 +16,7 @@ const EventCard = ({
       {/* Event Date */}
       <div className="relative md:w-2/5 shrink-0 overflow-hidden">
         <div
-          className="bg-[#00000080] text-6xl text-label absolute w-full h-full overflow-hidden flex justify-center items-center text-center"
+          className="bg-[#00000080] text-6xl text-white absolute w-full h-full overflow-hidden flex justify-center items-center text-center"
           aria-label={`Event start date: ${day} of ${month}`}
         >
           {day}
