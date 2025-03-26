@@ -324,7 +324,7 @@ const Navigation = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
           <button
             onClick={handleBackClick}
-            className="absolute z-50 mt-4 inline-flex items-center border border-transparent text-sm font-medium text-label"
+            className="absolute z-50 mt-4 inline-flex items-center border border-transparent text-sm font-medium text-white"
             aria-label="Go back to previous page"
           >
             <ArrowLeft className="mr-2 h-5 w-5" aria-hidden="true" />
