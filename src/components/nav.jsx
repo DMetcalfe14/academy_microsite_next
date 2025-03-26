@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { Menu, ArrowLeft } from "iconoir-react";
+import { Menu, ArrowLeft, HelpCircle } from "iconoir-react";
 import Button from "@/components/button";
 import Image from "next/image";
 import { useJsonData } from "@/context/json_context";
+import { useTour } from "@/context/tour_context";
 // import { useScorm } from '@/context/scorm_context';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
@@ -12,6 +13,7 @@ const Navigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { startTour, hasTour } = useTour();
 
   const { data } = useJsonData() || {};
   const { courses = [], articles = [], discover = [] } = data || {};
@@ -174,6 +176,7 @@ const Navigation = () => {
               </a>
             </div>
 
+            <div className="flex flex-1 justify-end">
             {/* Desktop Search */}
             <div className="hidden lg:flex flex-1 max-w-xl ml-8">
               <form
@@ -234,6 +237,20 @@ const Navigation = () => {
                   Search
                 </Button>
               </form>
+            </div>
+
+            <div>
+            {hasTour && (
+                <Button
+                  onClick={() => startTour()}
+                  className="ml-4 text-label focus-visible:outline-white hidden sm:block"
+                  aria-label="Start user tour"
+                  title="Start user tour"
+                >
+                  <HelpCircle />
+                </Button>
+              )}
+            </div>
             </div>
 
             {/* Mobile Toggle */}
@@ -303,7 +320,7 @@ const Navigation = () => {
           )}
         </div>
       </nav>
-      {showOnPaths.some(path => pathname.includes(path)) && (
+      {showOnPaths.some((path) => pathname.includes(path)) && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
           <button
             onClick={handleBackClick}

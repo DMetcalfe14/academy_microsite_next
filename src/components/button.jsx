@@ -24,8 +24,8 @@ const Button = forwardRef(
         "bg-primary text-label hover:bg-primary_hover " +
         "focus-visible:outline-primary",
       white:
-        "bg-white text-primary hover:bg-gray-50 " +
-        "border-2 border-gray-100 focus-visible:outline-primary",
+        "bg-white text-label hover:bg-gray-50 " +
+        "border-2 border-gray-100 focus-visible:outline-white",
     };
 
     // Accessibility props for links styled as buttons

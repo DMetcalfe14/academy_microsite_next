@@ -22,9 +22,9 @@ function Search() {
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [pageCount, setPageCount] = useState(1);
   const [expandedSections, setExpandedSections] = useState({
-    categories: false,
-    types: false,
-    locations: false
+    categories: true,
+    types: true,
+    locations: true
   });
 
   const { data, isLoading } = useJsonData();
@@ -33,11 +33,6 @@ function Search() {
   const categories = [...new Set([...courses.flatMap((course) => course.categories) || []])];
   const types = [...new Set(courses.map((course) => course.type))];
   const locations = [...new Set(courses.filter((course) => course.type === "Event").flatMap((course) => course.events ? course.events.map((event) => event.location) : []))];
-
-  // useEffect(() => {
-  //   let msg = `Navigated to search`;
-  //   setLocation(msg);
-  // }, []);
   
   useEffect(() => {
     const query = searchParams.get("query") || "";

@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useJsonData } from '@/context/json_context';
+import { usePathname } from "next/navigation";
+// import Tour from "@/components/tour";
+import { useTour } from "@/context/tour_context";
 
-import Tour from "@/components/tour";
 import CardSection from "../components/cards_section";
 import Carousel from "@/components/carousel";
 import FeaturedSection from "@/components/featured_section";
@@ -15,23 +17,20 @@ function PageContent() {
   const { 
     courses = [],
     featured_home = [],
+    tours = [] // new
    } = data;
 
-  const [showTour, setShowTour] = useState(false);
+   const { setTourConfig } = useTour();
+   const pathname = usePathname();
 
-  useEffect(() => {
-    const isFirstVisit = localStorage.getItem('isFirstVisit');
-    if (!isFirstVisit) {
-      setShowTour(true);
-      localStorage.setItem('isFirstVisit', 'true');
+   useEffect(() => {
+    if (tours[pathname]) {
+      setTourConfig(tours[pathname]);
     }
-  }, []);
+  }, [tours, pathname, setTourConfig]);
 
   return (
     <main aria-label="Main content">
-      {/* Tour */}
-      {showTour && <Tour />}
-
       {/* Carousel */}
       <Carousel />
 

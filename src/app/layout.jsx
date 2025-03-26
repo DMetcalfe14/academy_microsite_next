@@ -4,6 +4,8 @@ import "./globals.css";
 import "@glidejs/glide/dist/css/glide.core.min.css";
 
 import { JsonProvider } from "@/context/json_context";
+import { TourProvider } from "@/context/tour_context";
+
 import useScormStore from "@/store/scormStore";
 
 import { useEffect } from "react";
@@ -21,10 +23,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
           <JsonProvider>
+            <TourProvider>
             {/* Wrap Nav component with JsonProvider */}
             <Nav />
             {/* Main Content */}
             {children}
+            </TourProvider>
           </JsonProvider>
       </body>
     </html>

@@ -44,7 +44,7 @@ const EventDetailSection = ({ events }) => {
         Events
       </h2>
       {events.length === 0 && (
-        <p className="text-gray-700">No events available at the moment.</p>
+        <p className="text-gray-700">No upcoming events.</p>
       )}
       {events.map((event, index) => (
         <EventDetails
