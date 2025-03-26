@@ -45,4 +45,9 @@ const formatPlainDate = (dateStr) => {
   return parsedDate.format("dddd, MMMM Do YYYY");
 };
 
-export { formatDuration, formatDate, formatPlainDate };
+const isBeforeToday = (dateStr) => {
+  const parsedDate = moment(dateStr, "DD/MM/YYYY");
+  return parsedDate.isBefore(moment(), "day");
+};
+
+export { formatDuration, formatDate, formatPlainDate, isBeforeToday };

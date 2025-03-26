@@ -10,6 +10,7 @@ const Button = forwardRef(
       href,
       variant = "primary",
       className = "",
+      disabled = false,
       children,
       ...props
     },
@@ -28,14 +29,16 @@ const Button = forwardRef(
         "border-2 border-gray-100 focus-visible:outline-white",
     };
 
+    const disabledStyles = "!bg-gray-400 cursor-not-allowed";
+
     // Accessibility props for links styled as buttons
     const accessibilityProps =
       Component === "a"
         ? {
             role: "button",
-            tabIndex: 0,
+            tabIndex: disabled ? -1 : 0,
             onKeyDown: (e) => {
-              if (e.key === "Enter" || e.key === " ") {
+              if (!disabled && (e.key === "Enter" || e.key === " ")) {
                 e.preventDefault();
                 e.target.click(); // Simulate a button click for keyboard users
               }
@@ -47,10 +50,14 @@ const Button = forwardRef(
       <Component
         ref={ref}
         type={Component === "button" ? type : undefined}
-        href={href}
-        className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+        href={disabled ? undefined : href}
+        className={`${baseStyles} ${variantStyles[variant]} ${
+          disabled ? disabledStyles : ""
+        } ${className}`}
+        disabled={Component === "button" ? disabled : undefined}
         {...accessibilityProps}
         {...props}
+        onClick={disabled ? undefined : props.onClick} // Prevent click if disabled
       >
         {children}
       </Component>

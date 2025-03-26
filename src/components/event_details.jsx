@@ -1,9 +1,10 @@
-import { formatPlainDate } from "@/app/utilities";
+import { formatPlainDate, isBeforeToday } from "@/app/utilities";
 
 import Button from "@/components/button";
 
 const EventDetails = ({ location, date, href }) => {
   const plainDate = formatPlainDate(date);
+  const isPastEvent = isBeforeToday(date);
 
   return (
     <div
@@ -27,6 +28,7 @@ const EventDetails = ({ location, date, href }) => {
         href={href}
         className="focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
         aria-label={`Book event at ${location} on ${plainDate}`}
+        disabled={isPastEvent}
       >
         Book
       </Button>
@@ -36,9 +38,9 @@ const EventDetails = ({ location, date, href }) => {
 
 const EventDetailSection = ({ events }) => {
   return (
-    <section aria-labelledby="event-detail-section-title">
+    <section aria-labelledby="event-details">
       <h2
-        id="event-detail-section-title"
+        id="event-details"
         className="text-2xl font-semibold mb-4 text-gray-800"
       >
         Events
@@ -46,6 +48,7 @@ const EventDetailSection = ({ events }) => {
       {events.length === 0 && (
         <p className="text-gray-700">No upcoming events.</p>
       )}
+      <div className="flex flex-col gap-4">
       {events.map((event, index) => (
         <EventDetails
           key={index}
@@ -54,6 +57,7 @@ const EventDetailSection = ({ events }) => {
           href={event.href}
         />
       ))}
+      </div>
     </section>
   );
 };

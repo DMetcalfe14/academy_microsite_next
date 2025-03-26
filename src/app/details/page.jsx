@@ -85,7 +85,8 @@ function CourseDetails({ id }) {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-2 flex">
+                {course.href && (
+                  <div className="mt-2 flex">
                   <Button
                     className="w-full text-center"
                     as="a"
@@ -97,6 +98,7 @@ function CourseDetails({ id }) {
                     Launch Resource
                   </Button>
                 </div>
+                )}
                 {course.instructors && course.instructors.length > 0 && (
                   <>
                     <h2
@@ -133,7 +135,7 @@ function CourseDetails({ id }) {
 
 export default function Details() {
   return (
-    <Suspense fallback={<p>Loading course details...</p>}>
+    <Suspense>
       <DetailsWithSearchParams />
     </Suspense>
   );

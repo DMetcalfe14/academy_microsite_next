@@ -85,7 +85,7 @@ export function Page() {
 
 export default function PageSuspense() {
   return (
-    <Suspense fallback={<div role="status" aria-live="polite">Loading page...</div>}>
+    <Suspense>
       <Page />
     </Suspense>
   );

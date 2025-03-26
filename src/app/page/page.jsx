@@ -86,7 +86,7 @@ export function Page() {
 
 export default function PageSuspense() {
   return (
-    <Suspense fallback={<div className="p-4 text-gray-500">Loading page...</div>}>
+    <Suspense>
       <Page />
     </Suspense>
   );
