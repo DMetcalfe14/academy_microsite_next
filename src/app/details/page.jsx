@@ -46,7 +46,7 @@ function CourseDetails({ id }) {
         heading={course.title}
         image={course.thumbnail}
         alt={course.alt}
-        fullScreen
+        fullScreen={false}
       />
       <main aria-labelledby="course-title">
         <section className="mb-15">

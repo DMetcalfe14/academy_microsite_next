@@ -3,10 +3,10 @@ import Button from "./button";
 const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
   const html = (
     <section
-      className="relative w-full left-1/2 right-1/2 -translate-x-1/2 overflow-hidden"
+      className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8"
       aria-labelledby="banner-heading"
     >
-      <div className="relative h-full">
+      <div className="relative h-full rounded-lg overflow-hidden">
         <img
           alt={alt || "Banner background"}
           src={image}

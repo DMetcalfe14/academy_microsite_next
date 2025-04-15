@@ -21,15 +21,24 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body>
-          <JsonProvider>
-            <TourProvider>
+      <body className="min-h-screen flex flex-col">
+        <JsonProvider>
+          <TourProvider>
             {/* Wrap Nav component with JsonProvider */}
             <Nav />
             {/* Main Content */}
-            {children}
-            </TourProvider>
-          </JsonProvider>
+            <main className="flex-grow">{children}</main>
+            {/* Footer */}
+            <footer className="bg-black text-white w-full">
+              <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div className="flex space-x-4">
+                  <a href="/" className="text-white hover:underline">Accessibility statement</a>
+                  <a href="/" className="text-white hover:underline">Contact Us</a>
+                </div>
+              </div>
+            </footer>
+          </TourProvider>
+        </JsonProvider>
       </body>
     </html>
   );

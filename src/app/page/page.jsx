@@ -60,7 +60,7 @@ export function Article({ id }) {
         heading={article.title}
         image={article.image}
         alt={article.alt}
-        fullScreen
+        fullScreen={false}
       />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <article className="prose lg:prose-lg mx-auto max-w-none mt-8">

@@ -1,0 +1,24 @@
+[
+    {
+        "title": "Change",
+        "description": "Courses and resources focused on managing and leading change effectively.",
+        "thumbnail": "images/pexels-photo-3184298.webp",
+        "alt": "Thumbnail showing a leader presenting a strategic plan to a team",
+        "href": "https://google.com",
+        "count": 5
+    },
+    {
+        "title": "Digital",
+        "description": "Resources and courses that focus on digital transformation and technology in leadership.",
+        "thumbnail": "images/pexels-photo-3184297.webp",
+        "alt": "Thumbnail showing two colleagues engaged in a coaching session",
+        "count": 10
+    },
+    {
+        "title": "Communication",
+        "description": "Courses and resources that enhance communication skills for leaders.",
+        "thumbnail": "images/pexels-photo-3184300.webp",
+        "alt": "Thumbnail showing a professional discussing ideas with stakeholders",
+        "count": 8
+    }
+]

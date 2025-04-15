@@ -1,30 +1,32 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useJsonData } from '@/context/json_context';
+import { useEffect, useState } from "react";
+import { useJsonData } from "@/context/json_context";
 import { usePathname } from "next/navigation";
-// import Tour from "@/components/tour";
 import { useTour } from "@/context/tour_context";
 
 import CardSection from "../components/cards_section";
-import Carousel from "@/components/carousel";
-import FeaturedSection from "@/components/featured_section";
+import Banner from "@/components/banner";
 import EventSection from "@/components/events_section";
 import LinkSection from "@/components/links_section";
+import CategorySection from "@/components/category_section";
 
 function PageContent() {
   const { data } = useJsonData();
-  const { 
+  const {
     courses = [],
     featured_home = [],
-    tours = [] // new
-   } = data;
+    tours = [],
+    categories = [],
+  } = data;
 
-   const { setTourConfig } = useTour();
-   const pathname = usePathname();
+  const { setTourConfig } = useTour();
+  const pathname = usePathname();
 
-   useEffect(() => {
-    const matchingTour = Object.keys(tours).find(key => pathname.includes(key));
+  useEffect(() => {
+    const matchingTour = Object.keys(tours).find((key) =>
+      pathname.includes(key)
+    );
     if (matchingTour) {
       setTourConfig(tours[matchingTour]);
     }
@@ -32,14 +34,27 @@ function PageContent() {
 
   return (
     <main aria-label="Main content">
-      {/* Carousel */}
-      <Carousel />
+      {/* Banner */}
+      <Banner
+        heading="Welcome"
+        body="Learn the skills needed to lead high-performing teams with the Leadership and Management Academy."
+        image="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        alt="Something"
+        cta={{ label: "Read welcome article", href: "google.com" }}
+        fullScreen={false}
+      />
 
       {/* Card Section */}
-      <CardSection id="featured" title="Featured 🌟" cards={courses} filters={featured_home} />
+      <CardSection
+        id="featured"
+        title="Featured"
+        cards={courses}
+        filters={featured_home}
+        description="Featured content brings you the latest news, updates, thinking, and initiatives across government and wider, that directly impact leadership and management development."
+      />
 
       {/* Featured Section */}
-      <FeaturedSection cards={courses} />
+      <CategorySection categories={categories}></CategorySection>
 
       {/* Events and Links */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

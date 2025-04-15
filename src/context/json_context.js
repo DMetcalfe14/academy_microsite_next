@@ -13,6 +13,7 @@ export const JsonProvider = ({ children }) => {
         const files = [
           'articles.json',
           'courses.json',
+          'categories.json',
           'discover.json',
           'featured.json',
           'featured_home.json',

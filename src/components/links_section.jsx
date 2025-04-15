@@ -12,9 +12,9 @@ const LinkSection = () => {
   if (isLoading) return <LinkSectionSkeleton aria-label="Loading links" />;
 
   return (
-    <section aria-labelledby="Quick links">
+    <section aria-labelledby="links">
       <h2 id="links" className="text-2xl font-semibold mb-4 text-gray-800">
-        Links
+        Popular links
       </h2>
       <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
         {links.map((link) => (

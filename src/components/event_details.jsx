@@ -26,6 +26,8 @@ const EventDetails = ({ location, date, href }) => {
       <Button
         as="a"
         href={href}
+        target="_blank" 
+        rel="noopener noreferrer"
         className="focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
         aria-label={`Book event at ${location} on ${plainDate}`}
         disabled={isPastEvent}

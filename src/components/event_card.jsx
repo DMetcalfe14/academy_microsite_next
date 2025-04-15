@@ -26,7 +26,7 @@ const EventCard = ({
         <img
           src={image}
           alt={alt}
-          className="h-full w-full md:rounded-l-lg @sm:rounded-t-lg object-cover"
+          className="h-full w-full md:rounded-l-lg @sm:rounded-t-lg object-cover aspect-video"
         />
       </div>
 
@@ -34,7 +34,7 @@ const EventCard = ({
       <div className="p-6">
         <a
           href={`search.html?location=${location}`}
-          className="text-primary hover:text-orange-600 font-semibold text-sm focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+          className="text-primary hover:text-primary_hover font-semibold text-sm"
           aria-label={`Search events in ${location}`}
         >
           {location}
@@ -45,7 +45,7 @@ const EventCard = ({
         >
           <a
             href={`details.html?id=${id}`}
-            className="hover:underline focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+            className="hover:underline"
             aria-label={`View details for event: ${title}`}
           >
             {title}

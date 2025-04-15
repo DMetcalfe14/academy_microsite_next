@@ -38,7 +38,7 @@ export function DiscoverSection({ id }) {
 
   return (
     <main aria-labelledby="discover-heading">
-      <Banner fullScreen heading={title} body={description} image={image} />
+      <Banner fullScreen={false} heading={title} body={description} image={image} />
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 id="discover-heading" className="sr-only">
           {title}

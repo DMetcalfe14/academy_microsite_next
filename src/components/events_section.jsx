@@ -42,12 +42,12 @@ const EventSection = ({ cards, isLoading }) => {
     );
 
   return (
-    <section aria-labelledby="Upcoming events">
+    <section aria-labelledby="events">
       <h2
         id="events"
         className="text-2xl font-semibold mb-4 text-gray-800"
       >
-        Upcoming Events
+        Upcoming events
       </h2>
       <div className="grid grid-cols-1 gap-6">
         {/* If no events are available */}

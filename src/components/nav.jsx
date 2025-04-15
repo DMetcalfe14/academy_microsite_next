@@ -1,68 +1,26 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { Menu, ArrowLeft, HelpCircle } from "iconoir-react";
+import { Menu, ArrowLeft, Search, NavArrowDown } from "iconoir-react";
 import Button from "@/components/button";
 import Image from "next/image";
 import { useJsonData } from "@/context/json_context";
-import { useTour } from "@/context/tour_context";
-// import { useScorm } from '@/context/scorm_context';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-const Navigation = () => {
+export default Navigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { startTour, hasTour } = useTour();
 
   const { data } = useJsonData() || {};
-  const { courses = [], articles = [], discover = [] } = data || {};
-  // const { isInitialized, setLocation } = useScorm();
+  const { courses = [], categories = [] } = data || {};
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
-  // useEffect(() => {
-  //   const id = searchParams.get("id");
-  //   let item;
-  //   let msg;
-  //   if (pathname.includes("/details")) {
-  //     item = courses.find((item) => item.id == id);
-  //     if (item) {
-  //       msg = `Viewed the course details for "${item.title}"`;
-  //       console.log(msg);
-  //       if (isInitialized) {
-  //         setLocation(msg);
-  //       }
-  //     }
-  //   } else if (pathname.includes("/discover")) {
-  //     item = discover.find((item) => item.id == id);
-  //     if (item) {
-  //       msg = `Exploring the material within "${item.title}"`;
-  //       console.log(msg);
-  //       if (isInitialized) {
-  //         setLocation(msg);
-  //       }
-  //     }
-  //   } else if (pathname.includes("/page")) {
-  //     item = articles.find((item) => item.id == id);
-  //     if (item) {
-  //       msg = `Navigated to page: "${item.title}"`;
-  //       console.log(msg);
-  //       if (isInitialized) {
-  //         setLocation(msg);
-  //       }
-  //     }
-  //   } else if (pathname.includes("/index")) {
-  //     msg = `Navigated to home`;
-  //     console.log(msg);
-  //     if (isInitialized) {
-  //       setLocation(msg);
-  //     }
-  //   }
-  // }, [data, pathname, searchParams, isInitialized]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (selectedIndex !== null) {
@@ -135,21 +93,17 @@ const Navigation = () => {
     }, 200);
   };
 
-  const showOnPaths = ["/details.html", "/discover.html", "/page.html"];
-
-  useEffect(() => {
-    const fullPath = `${pathname}${
-      searchParams.toString() ? `?${searchParams.toString()}` : ""
-    }`;
-    router.push(fullPath);
-  }, [pathname]);
-
   const handleBackClick = () => {
     if (history.length > 1) {
       router.back();
     } else {
       router.push("/");
     }
+  };
+
+  const handleSiteTour = () => {
+    // Trigger site tour logic here
+    console.log("Site tour triggered");
   };
 
   return (
@@ -170,24 +124,137 @@ const Navigation = () => {
                 aria-label="Go to homepage"
               >
                 <Image src="logo.png" alt="HMRC logo" width="30" height="30" />
-                <span className="whitespace-nowrap text-sm sm:text-base">
+                <span className="whitespace-nowrap text-sm sm:text-base text-black">
                   Leadership & Management Capability Academy
                 </span>
               </a>
             </div>
 
-            <div className="flex flex-1 justify-end">
-            {/* Desktop Search */}
-            <div className="hidden lg:flex flex-1 max-w-xl ml-8">
+            {/* Links Section */}
+            <div className="hidden lg:flex items-center gap-6">
+              <a href="/search.html" className="text-black text-sm">
+                View Catalogue
+              </a>
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="text-black text-sm flex items-center gap-1"
+                  aria-haspopup="true"
+                  aria-expanded={isDropdownOpen}
+                >
+                  Explore Capability Learning
+                  <NavArrowDown
+                    className={`transition-transform ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {isDropdownOpen && !isSearchOpen && (
+                  <div
+                    className="absolute mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-full"
+                    role="menu"
+                  >
+                    {
+                      categories.map(category => (
+                        <a
+                          key={category.title}
+                          href={category.href ? category.href : `/search.html?category=${category.title}`}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                          tabIndex={0}
+                        >
+                          {category.title}
+                        </a>
+                      ))
+                    }
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={handleSiteTour}
+                className="text-black text-sm"
+              >
+                Site Tour
+              </button>
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* Search Icon */}
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="text-black"
+                aria-label="Toggle search"
+              >
+                <Search />
+              </button>
+
+              {/* Mobile Toggle */}
+                      <button
+                      className="lg:hidden text-black"
+                      type="button"
+                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                      aria-expanded={isMobileMenuOpen}
+                      aria-controls="mobile-menu"
+                      aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                      >
+                      <Menu />
+                      </button>
+                    </div>
+                    </div>
+
+                    {/* Mobile Menu */}
+                    {isMobileMenuOpen && (
+                    <div id="mobile-menu" className="lg:hidden mt-4">
+                      <a
+                      href="/search.html"
+                      className="block px-4 py-2 text-sm text-black"
+                      >
+                      View Catalogue
+                      </a>
+                      <div className="relative">
+                      <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="block w-full text-left px-4 py-2 text-sm text-black flex items-center justify-between"
+                      >
+                        Explore Capability Learning
+                        <NavArrowDown
+                        className={`transition-transform ${
+                          isDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        />
+                      </button>
+                      {isDropdownOpen && (
+                        <div className="mt-2 pl-4 w-full">
+                        {
+                          categories.map(category => (
+                          <a
+                            key={category.title}
+                            href={category.href ? category.href : `/search.html?category=${category.title}`}
+                            className="block px-4 py-2 text-sm text-black"
+                          >
+                            {category.title}
+                          </a>
+                          ))
+                        }
+                        </div>
+                      )}
+                      </div>
+                      <button
+                      onClick={handleSiteTour}
+                      className="block px-4 py-2 text-sm text-black"
+                      >
+                      Site Tour
+                      </button>
+                    </div>
+                    )}
+          {isSearchOpen && (
+            <div className="mt-4">
               <form
                 id="search-form"
                 className="w-full flex gap-3 relative"
                 action="search.html"
                 aria-label="Search form"
               >
-                <label htmlFor="search" className="sr-only">
-                  Search
-                </label>
                 <input
                   id="search"
                   name="query"
@@ -204,6 +271,9 @@ const Navigation = () => {
                   aria-autocomplete="list"
                   aria-haspopup="listbox"
                 />
+                <Button type="submit" variant="white" className="flex-shrink-0">
+                  Search
+                </Button>
 
                 {suggestions.length > 0 && (
                   <div
@@ -223,92 +293,7 @@ const Navigation = () => {
                         aria-selected={selectedIndex === index}
                         onClick={() => handleSuggestionClick(course)}
                         onMouseEnter={() => setSelectedIndex(index)}
-                        onKeyDown={(e) =>
-                          e.key === "Enter" && handleSuggestionClick(course)
-                        }
                         tabIndex={0}
-                      >
-                        {course.title}
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <Button type="submit" variant="white" className="flex-shrink-0">
-                  Search
-                </Button>
-              </form>
-            </div>
-
-            <div>
-            {hasTour && (
-                <Button
-                  onClick={() => startTour()}
-                  className="ml-4 text-label focus-visible:outline-white hidden sm:block"
-                  aria-label="Start user tour"
-                  title="Start user tour"
-                >
-                  <HelpCircle />
-                </Button>
-              )}
-            </div>
-            </div>
-
-            {/* Mobile Toggle */}
-            <div className="lg:hidden flex items-center">
-              <button
-                className="text-label focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
-                type="button"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                aria-expanded={isSearchOpen}
-                aria-controls="mobile-search"
-                aria-label={isSearchOpen ? "Close search" : "Open search"}
-              >
-                <Menu />
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Search */}
-          {isSearchOpen && (
-            <div className="lg:hidden mt-4">
-              <form
-                id="mobile-search"
-                className="w-full flex gap-3 relative"
-                action="search.html"
-                aria-label="Mobile search"
-              >
-                <input
-                  id="mobile-search-input"
-                  name="query"
-                  type="text"
-                  autoComplete="off"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleKeyDown}
-                  className="w-full rounded-md bg-white px-3.5 py-2 text-sm placeholder:text-gray-500 focus:outline-primary"
-                  placeholder="Search for articles..."
-                  role="combobox"
-                  aria-controls="mobile-suggestions"
-                  aria-expanded={suggestions.length > 0}
-                />
-                <Button type="submit" variant="white" className="flex-shrink-0">
-                  Search
-                </Button>
-
-                {suggestions.length > 0 && (
-                  <div
-                    id="mobile-suggestions"
-                    className="absolute top-full left-0 right-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-[200]"
-                    role="listbox"
-                  >
-                    {suggestions.map((course, index) => (
-                      <div
-                        key={index}
-                        className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                          selectedIndex === index ? "bg-gray-100" : ""
-                        }`}
-                        role="option"
-                        onClick={() => handleSuggestionClick(course)}
                       >
                         {course.title}
                       </div>
@@ -320,26 +305,6 @@ const Navigation = () => {
           )}
         </div>
       </nav>
-      {showOnPaths.some((path) => pathname.includes(path)) && (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
-          <button
-            onClick={handleBackClick}
-            className="absolute z-50 mt-4 inline-flex items-center border border-transparent text-sm font-medium text-white"
-            aria-label="Go back to previous page"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" aria-hidden="true" />
-            Back
-          </button>
-        </div>
-      )}
     </>
   );
 };
-
-export default function Nav() {
-  return (
-    <Suspense>
-      <Navigation />
-    </Suspense>
-  );
-}
