@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useJsonData } from "@/context/json_context";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default Navigation = () => {
+const Navigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -308,3 +308,11 @@ export default Navigation = () => {
     </>
   );
 };
+
+export default function Nav() {
+  return (
+    <Suspense>
+      <Navigation />
+    </Suspense>
+  );
+}
