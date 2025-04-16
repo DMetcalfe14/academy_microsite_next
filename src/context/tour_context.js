@@ -18,6 +18,9 @@ export function TourProvider({ children }) {
         defaultStepOptions: {
           classes: 'p-6 rounded-lg z-50',
           scrollTo: true,
+          cancelIcon: {
+            enabled: true
+          },
         },
       });
 

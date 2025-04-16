@@ -16,7 +16,7 @@ const formatDuration = (duration) => {
     const mins = moment_duration.minutes();
     let parts = [];
     if (hours > 0) parts.push(`${hours} ${hours === 1 ? "hr" : "hrs"}`);
-    parts.push(`${mins} mins`);
+    parts.push(`${mins === 0 ? "" : mins} ${mins === 0 ? "" : "mins"}`);
     return parts.join(" ");
   }
 };

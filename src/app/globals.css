@@ -20,6 +20,7 @@
 /* Glide container adjustments */
 .glide__slides {
   height: 100% !important; /* Force slides container to full height */
+  padding: 3px !important; 
 }
 
 .glide__slide {

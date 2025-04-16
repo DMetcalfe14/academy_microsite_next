@@ -18,10 +18,12 @@ function PageContent() {
     featured_home = [],
     tours = [],
     categories = [],
+    landing = []
   } = data;
 
   const { setTourConfig } = useTour();
   const pathname = usePathname();
+  const { banner, featured, category } = landing;
 
   useEffect(() => {
     const matchingTour = Object.keys(tours).find((key) =>
@@ -36,25 +38,26 @@ function PageContent() {
     <main aria-label="Main content">
       {/* Banner */}
       <Banner
-        heading="Welcome"
-        body="Learn the skills needed to lead high-performing teams with the Leadership and Management Academy."
-        image="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        alt="Something"
-        cta={{ label: "Read welcome article", href: "google.com" }}
+        heading={banner?.title}
+        body={banner?.body}
+        image={banner?.thumbnail}
+        alt={banner?.alt}
+        cta={banner?.cta}
         fullScreen={false}
       />
 
       {/* Card Section */}
       <CardSection
         id="featured"
-        title="Featured"
+        title={featured?.title}
         cards={courses}
         filters={featured_home}
-        description="Featured content brings you the latest news, updates, thinking, and initiatives across government and wider, that directly impact leadership and management development."
+        description={featured?.body}
+        useCarousel={true}
       />
 
       {/* Featured Section */}
-      <CategorySection categories={categories}></CategorySection>
+      <CategorySection categories={categories} title={category?.title} description={category?.body}></CategorySection>
 
       {/* Events and Links */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

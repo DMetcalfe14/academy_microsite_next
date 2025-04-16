@@ -4,15 +4,18 @@ const EventCard = ({
   description,
   image,
   alt,
+  duration,
   day,
   month,
   location,
 }) => {
   return (
-    <article
-      className="relative flex flex-col md:flex-row w-full bg-white border border-slate-200 rounded-lg overflow-hidden"
-      aria-labelledby={`event-card-title-${id}`}
-    >
+    <article className="relative" aria-labelledby={`event-card-title-${id}`}>
+      <a
+        href={`details.html?id=${id}`}
+        aria-label={`View details for event: ${title}`}
+        className="flex flex-col md:flex-row w-full bg-white border border-slate-200 rounded-lg overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
       {/* Event Date */}
       <div className="relative md:w-2/5 shrink-0 overflow-hidden">
         <div
@@ -26,33 +29,24 @@ const EventCard = ({
         <img
           src={image}
           alt={alt}
-          className="h-full w-full md:rounded-l-lg @sm:rounded-t-lg object-cover aspect-video"
+          className="h-full w-full md:rounded-l-lg @sm:rounded-t-lg object-cover lg:aspect-square"
         />
       </div>
 
       {/* Event Details */}
       <div className="p-6">
-        <a
-          href={`search.html?location=${location}`}
-          className="text-primary hover:text-primary_hover font-semibold text-sm"
-          aria-label={`Search events in ${location}`}
-        >
-          {location}
-        </a>
+        <span className="text-primary font-semibold text-sm">
+          {location + " | " + duration}
+        </span>
         <h3
           id={`event-card-title-${id}`}
           className="mb-2 mt-2 text-lg font-semibold line-clamp-2"
         >
-          <a
-            href={`details.html?id=${id}`}
-            className="hover:underline"
-            aria-label={`View details for event: ${title}`}
-          >
             {title}
-          </a>
         </h3>
         <p className="mb-4 line-clamp-3 text-gray-700">{description}</p>
       </div>
+      </a>
     </article>
   );
 };

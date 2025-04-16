@@ -3,7 +3,7 @@
     "id": 1,
     "title": "Strategic Planning and Change Management",
     "description": "A structured learning pathway focused on strategic planning and change management. Participants will explore leadership theories, develop strategic thinking skills, and learn to lead organizational change effectively.",
-    "categories": ["Digital", "Change"],
+    "categories": [],
     "thumbnail": "images/pexels-photo-3184298.webp",
     "alt": "Thumbnail showing a leader presenting a strategic plan to a team",
     "duration": 180,
@@ -24,7 +24,9 @@
         "name": "Jane Smith",
         "profile": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       }
-    ]
+    ],
+    "keywords": "Change Maturity, Strategy",
+    "programme": "Management Development Programme"
   },
   {
     "id": 2,

@@ -16,6 +16,12 @@ const filterRules = {
           categories.some((category) => course.categories.includes(category))
         )
       : courses,
+  byProgramme: (courses, programmes) =>
+    programmes.length > 0
+  ? courses.filter((course) =>
+      programmes.some((programme) => course.programme?.includes(programme))
+    )
+  : courses,
   byMaxDuration: (courses, maxDuration) =>
     maxDuration
       ? courses.filter((course) => course.duration <= maxDuration)
@@ -27,7 +33,7 @@ const filterRules = {
   byType: (courses, types) =>
     types.length > 0
       ? courses.filter((course) =>
-          types.some((type) => course.type.includes(type))
+          types.some((type) => course.type?.includes(type))
         )
       : courses,
   byLocation: (courses, location) =>
@@ -46,7 +52,8 @@ const filterRules = {
       ? courses.filter(
           (course) =>
             course.title.toLowerCase().includes(query.toLowerCase()) ||
-            course.description.toLowerCase().includes(query.toLowerCase())
+            course.description.toLowerCase().includes(query.toLowerCase()) ||
+            course.keywords?.toLowerCase().includes(query.toLowerCase())
         )
       : courses,
 };
@@ -68,7 +75,7 @@ const CardSection = ({
   const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const cardsPerPage = paginated ? 6 : cards?.length;
+  const cardsPerPage = paginated ? 12 : cards?.length;
 
   // Calculate which cards to display based on the current page
   const indexOfLastCard = pageCount * cardsPerPage;
@@ -130,7 +137,7 @@ const CardSection = ({
       {title && (
         <h2
           id="card-section-title"
-          className="text-2xl font-semibold mb-4 text-gray-800"
+          className="text-2xl font-semibold mb-2 text-gray-800"
         >
           {title}
         </h2>

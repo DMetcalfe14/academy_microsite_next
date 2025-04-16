@@ -1,0 +1,20 @@
+{
+    "banner": {
+        "title": "Welcome",
+        "body": "Learn the skills needed to lead high-performing teams with the Leadership and Management Capability Academy.",
+        "thumbnail": "https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "alt": "Happy woman sitting at table with laptop",
+        "cta": {
+            "label": "Read welcome article",
+            "href": ""
+        }
+    },
+    "featured": {
+        "title": "Featured",
+        "body": "Featured content brings you the latest news, updates, thinking, and initiatives across government and wider, that directly impact leadership and management development."
+    },
+    "category": {
+        "title": "Explore the Leadership Capabilities",
+        "body": "Lorem ipsum dolor sit amet."
+    }
+}

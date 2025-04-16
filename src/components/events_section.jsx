@@ -3,7 +3,7 @@ import { ArrowRight } from "iconoir-react";
 
 import EventCard from "@/components/event_card";
 import EventSectionSkeleton from "@/components/event_section_skeleton";
-import { formatDate } from "@/app/utilities";
+import { formatDate, formatDuration } from "@/app/utilities";
 
 // Helper function to parse a date string in "dd/mm/YYYY" format
 const parseDate = (dateStr) => {
@@ -26,6 +26,7 @@ const EventSection = ({ cards, isLoading }) => {
           cardDescription: card.description,
           cardThumbnail: card.thumbnail,
           cardAlt: card.alt,
+          cardDuration: card.duration
         }))
       );
 
@@ -69,6 +70,7 @@ const EventSection = ({ cards, isLoading }) => {
               day={day} // Formatted day (e.g., "12")
               month={month} // Formatted month (e.g., "March")
               location={event.location} // Event-specific location
+              duration={formatDuration(event.cardDuration)}
             />
           );
         })}

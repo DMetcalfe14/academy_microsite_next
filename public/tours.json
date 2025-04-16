@@ -27,7 +27,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {
@@ -47,7 +47,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {
@@ -67,7 +67,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {
@@ -87,7 +87,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {
@@ -107,7 +107,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {
@@ -127,7 +127,7 @@
         "buttons": [
           {
             "action": "back",
-            "text": "Prev",
+            "text": "Back",
             "classes": "shepherd-button-secondary"
           },
           {

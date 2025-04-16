@@ -17,9 +17,11 @@ export const JsonProvider = ({ children }) => {
           'discover.json',
           'featured.json',
           'featured_home.json',
+          'footer.json',
+          'landing.json',
           'links.json',
           'slides.json',
-          'tours.json'
+          'tours.json',
         ];
 
         const fetches = files.map(file =>

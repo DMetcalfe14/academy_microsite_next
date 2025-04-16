@@ -1,6 +1,6 @@
 import CategoryCard from "@/components/category_card";
 
-const CategorySection = ({ categories, isLoading }) => {
+const CategorySection = ({ title, description, categories, isLoading }) => {
 
   if (isLoading)
     return (
@@ -12,11 +12,11 @@ const CategorySection = ({ categories, isLoading }) => {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 py-15">
       <h2
         id="categories"
-        className="text-2xl font-semibold mb-4 text-gray-800"
+        className="text-2xl font-semibold mb-2 text-gray-800"
       >
-        Explore the Leadership Capabilities
+        {title}
       </h2>
-      <p className="mb-6 text-gray-700">Lorem ipsum dolor sit amet</p>
+      <p className="mb-6 text-gray-700">{description}</p>
       <div className="grid sm:grid-cols-2 gap-6">
         {/* Render each category */}
         {categories.map((category) => {

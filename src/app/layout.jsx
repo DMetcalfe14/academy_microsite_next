@@ -5,12 +5,14 @@ import "@glidejs/glide/dist/css/glide.core.min.css";
 
 import { JsonProvider } from "@/context/json_context";
 import { TourProvider } from "@/context/tour_context";
+import { HistoryProvider } from "@/context/history_context";
 
 import useScormStore from "@/store/scormStore";
 
 import { useEffect } from "react";
 
 import Nav from "@/components/nav"; // Import Nav component
+import Footer from '@/components/footer';
 
 export default function RootLayout({ children }) {
   const initScorm = useScormStore((state) => state.initScorm);
@@ -23,21 +25,16 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <JsonProvider>
+          <HistoryProvider>
           <TourProvider>
             {/* Wrap Nav component with JsonProvider */}
             <Nav />
             {/* Main Content */}
             <main className="flex-grow">{children}</main>
             {/* Footer */}
-            <footer className="bg-black text-white w-full">
-              <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                <div className="flex space-x-4">
-                  <a href="/" className="text-white hover:underline">Accessibility statement</a>
-                  <a href="/" className="text-white hover:underline">Contact Us</a>
-                </div>
-              </div>
-            </footer>
+            <Footer />
           </TourProvider>
+          </HistoryProvider>
         </JsonProvider>
       </body>
     </html>
