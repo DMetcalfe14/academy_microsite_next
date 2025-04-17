@@ -1,4 +1,5 @@
 import moment from "moment";
+import stringSimilarity from "string-similarity";
 
 const formatDuration = (duration) => {
   const moment_duration = moment.duration(duration, "minutes");
@@ -50,4 +51,18 @@ const isBeforeToday = (dateStr) => {
   return parsedDate.isBefore(moment(), "day");
 };
 
-export { formatDuration, formatDate, formatPlainDate, isBeforeToday };
+const tokenize = (text) =>
+  text?.toLowerCase().split(/\W+/).filter(Boolean) ?? [];
+
+const jaccard = (a, b) => {
+  const setA = new Set(tokenize(a));
+  const setB = new Set(tokenize(b));
+  const intersection = new Set([...setA].filter((x) => setB.has(x)));
+  const union = new Set([...setA, ...setB]);
+  return union.size ? intersection.size / union.size : 0;
+};
+
+const fuzzyScore = (a, b) =>
+  stringSimilarity.compareTwoStrings(a?.toLowerCase() ?? "", b?.toLowerCase() ?? "");
+
+export { formatDuration, formatDate, formatPlainDate, isBeforeToday, fuzzyScore, tokenize, jaccard };

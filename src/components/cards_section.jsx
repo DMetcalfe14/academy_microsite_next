@@ -5,6 +5,7 @@ import { NavArrowLeft, NavArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 import Card from "@/components/card";
 import CardSectionSkeleton from "./card_section_skeleton";
+import { tokenize, jaccard, fuzzyScore } from "@/app/utilities";
 
 const filterRules = {
   topN: (courses, n) => (n ? courses?.slice(0, n) : courses),
@@ -18,10 +19,10 @@ const filterRules = {
       : courses,
   byProgramme: (courses, programmes) =>
     programmes.length > 0
-  ? courses.filter((course) =>
-      programmes.some((programme) => course.programme?.includes(programme))
-    )
-  : courses,
+      ? courses.filter((course) =>
+          programmes.some((programme) => course.programme?.includes(programme))
+        )
+      : courses,
   byMaxDuration: (courses, maxDuration) =>
     maxDuration
       ? courses.filter((course) => course.duration <= maxDuration)
@@ -47,15 +48,33 @@ const filterRules = {
           return false;
         })
       : courses,
-  byQuery: (courses, query) =>
-    query
-      ? courses.filter(
-          (course) =>
-            course.title.toLowerCase().includes(query.toLowerCase()) ||
-            course.description.toLowerCase().includes(query.toLowerCase()) ||
-            course.keywords?.toLowerCase().includes(query.toLowerCase())
-        )
-      : courses,
+  byQuery: (courses, query) => {
+    if (!query) return courses;
+
+    const queryTokens = tokenize(query).join(" ");
+
+    return courses
+      .map((course) => {
+        const titleScore =
+          jaccard(queryTokens, course.title || "") * 0.7 +
+          fuzzyScore(query, course.title || "") * 0.3;
+
+        const descScore =
+          jaccard(queryTokens, course.description || "") * 0.6 +
+          fuzzyScore(query, course.description || "") * 0.4;
+
+        const keywordScore =
+          jaccard(queryTokens, course.keywords || "") * 0.5 +
+          fuzzyScore(query, course.keywords || "") * 0.5;
+
+        const score = keywordScore * 3 + titleScore * 2 + descScore * 1;
+
+        return { course, score };
+      })
+      .filter(({ score }) => score > 0.1) // adjust threshold as needed
+      .sort((a, b) => b.score - a.score)
+      .map(({ course }) => course);
+  },
 };
 
 const CardSection = ({
@@ -70,7 +89,7 @@ const CardSection = ({
   perView = 4,
   onViewAll,
   pageCount = 1,
-  onPageChange
+  onPageChange,
 }) => {
   const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,16 +116,15 @@ const CardSection = ({
 
   const applyFilters = (cards, rules) => {
     const skipCategory = !!rules.byId; // Check if ID filtering is active
-  
+
     return Object.entries(rules).reduce((filtered, [ruleKey, ruleValue]) => {
       // Skip category filter when IDs are provided
       if (skipCategory && ruleKey === "byCategory") return filtered;
-  
+
       const filterFunction = filterRules[ruleKey];
       return filterFunction ? filterFunction(filtered, ruleValue) : filtered;
     }, cards);
   };
-  
 
   // Handle "Next" button click
   const handleNextPage = () => {
@@ -150,7 +168,11 @@ const CardSection = ({
       )}
 
       {useCarousel ? (
-        <CardCarousel cards={currentCards} perView={perView} onViewAll={onViewAll} />
+        <CardCarousel
+          cards={currentCards}
+          perView={perView}
+          onViewAll={onViewAll}
+        />
       ) : (
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${perRow} gap-6`}
@@ -214,7 +236,7 @@ const CardSection = ({
     html
   ) : (
     <div
-      id = {id}
+      id={id}
       className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
       role="region"
       aria-labelledby="card-section-title"
@@ -225,4 +247,3 @@ const CardSection = ({
 };
 
 export default CardSection;
-
