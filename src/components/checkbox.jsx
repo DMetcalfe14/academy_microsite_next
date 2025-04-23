@@ -1,5 +1,5 @@
 const Checkbox = ({ label, checked, onChange }) => {
-    const id = label.toLowerCase().replace(/\s+/g, '_');
+    const id = label?.toLowerCase().replace(/\s+/g, '_');
 
     return (
         <div className="flex items-center mb-2">

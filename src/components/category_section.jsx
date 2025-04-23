@@ -8,7 +8,7 @@ const CategorySection = ({ title, description, categories, isLoading }) => {
     );
 
   return (
-    <section aria-labelledby="categories" className="bg-primary_saturated">
+    <section aria-labelledby="categories">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 py-15">
       <h2
         id="categories"

@@ -35,7 +35,9 @@ function Search() {
     ...new Set([...(courses.flatMap((course) => course.categories) || [])]),
   ];
   const types = [...new Set(courses.map((course) => course.type))];
-  const programmes = [...new Set(courses.map((course) => course.programme).filter(Boolean))];
+  const programmes = [
+    ...new Set([...(courses.flatMap((course) => course.programmes) || [])]),
+  ];
   const locations = [
     ...new Set(
       courses
@@ -123,7 +125,7 @@ function Search() {
             </h1>
 
             {/* Categories Section */}
-            <div className="mb-6">
+            <div className="mb-6" id="categories">
               <button
                 onClick={() => toggleSection("categories")}
                 className="flex items-center justify-between w-full text-md font-semibold mb-2"

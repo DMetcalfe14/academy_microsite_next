@@ -46,6 +46,9 @@ function PageContent() {
         fullScreen={false}
       />
 
+      {/* Category Section */}
+      <CategorySection categories={categories} title={category?.title} description={category?.body}></CategorySection>
+
       {/* Card Section */}
       <CardSection
         id="featured"
@@ -55,9 +58,6 @@ function PageContent() {
         description={featured?.body}
         useCarousel={true}
       />
-
-      {/* Featured Section */}
-      <CategorySection categories={categories} title={category?.title} description={category?.body}></CategorySection>
 
       {/* Events and Links */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

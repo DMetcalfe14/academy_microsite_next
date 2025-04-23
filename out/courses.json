@@ -26,7 +26,9 @@
       }
     ],
     "keywords": "Change Maturity, Strategy",
-    "programme": "Management Development Programme"
+    "programmes": [
+      "Management Development Programme"
+    ]
   },
   {
     "id": 2,
@@ -36,7 +38,8 @@
     "thumbnail": "images/pexels-photo-3184297.webp",
     "alt": "Thumbnail showing two colleagues engaged in a coaching session",
     "duration": 120,
-    "type": "Skill Benchmark"
+    "type": "Skill Benchmark",
+    "programmes": []
   },
   {
     "id": 3,
@@ -46,7 +49,8 @@
     "thumbnail": "images/pexels-photo-3184300.webp",
     "alt": "Thumbnail showing a professional discussing ideas with stakeholders",
     "duration": 60,
-    "type": "Podcast"
+    "type": "Podcast",
+    "programmes": []
   },
   {
     "id": 4,
@@ -56,7 +60,8 @@
     "thumbnail": "images/pexels-photo-3184311.jpeg",
     "alt": "Thumbnail showing a clock and a notebook on a desk",
     "duration": 15,
-    "type": "eBook"
+    "type": "eBook",
+    "programmes": []
   },
   {
     "id": 5,
@@ -67,7 +72,8 @@
     "alt": "Thumbnail showing a leader addressing challenges with confidence",
     "duration": 45,
     "type": "Video",
-    "href": "https://google.com"
+    "href": "https://google.com",
+    "programmes": []
   },
   {
     "id": 6,
@@ -86,7 +92,8 @@
         "end_date": "17/04/2025",
         "href": ""
       }
-    ]
+    ],
+    "programmes": []
   },
   {
     "id": 10,
@@ -110,7 +117,8 @@
         "end_date": "17/04/2025",
         "href": ""
       }
-    ]
+    ],
+    "programmes": []
   },
   {
     "id": 11,
@@ -122,6 +130,7 @@
     "categories": ["All"],
     "duration": 15,
     "type": "Article",
-    "page_href": "page.html?id=1"
+    "page_href": "page.html?id=1",
+    "programmes": []
 }
 ]

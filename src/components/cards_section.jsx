@@ -20,7 +20,7 @@ const filterRules = {
   byProgramme: (courses, programmes) =>
     programmes.length > 0
       ? courses.filter((course) =>
-          programmes.some((programme) => course.programme?.includes(programme))
+          programmes.some((programme) => course.programmes.includes(programme))
         )
       : courses,
   byMaxDuration: (courses, maxDuration) =>
