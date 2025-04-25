@@ -129,7 +129,7 @@ const CardCarousel = ({ cards = [], perView = 3, onViewAll }) => {
       </div>
 
       <div className="flex gap-2 justify-between mt-4">
-        {onViewAll && <Button href={onViewAll}>View All</Button>}
+        {onViewAll && <Button as="a" href={onViewAll}>View All</Button>}
         <div className="flex gap-2" data-glide-el="controls">
           <button
             className="p-2 bg-primary text-label rounded-full"

@@ -197,7 +197,7 @@ const CardSection = ({
 
       {!useCarousel && onViewAll && (
         <div className="mt-6">
-        <Button href={onViewAll}>View All</Button>
+        <Button as="a" href={onViewAll}>View All</Button>
         </div>
         )
       }
