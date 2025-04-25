@@ -1,26 +1,34 @@
+import { useState, useEffect } from "react";
+
 import CategoryCard from "@/components/category_card";
+import CategorySectionSkeleton from "@/components/category_skeleton";
 
-const CategorySection = ({ title, description, categories, isLoading }) => {
+const CategorySection = ({ title, description, categories }) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (isLoading)
-    return (
-      <p>loading...</p>
-    );
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setIsLoading(false);
+    }
+  }, [categories]);
+
+  if (isLoading) {
+    return <CategorySectionSkeleton />;
+  }
 
   return (
     <section aria-labelledby="categories">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 py-15">
-      <h2
-        id="categories"
-        className="text-2xl font-semibold mb-2 text-gray-800"
-      >
-        {title}
-      </h2>
-      <p className="mb-6 text-gray-700">{description}</p>
-      <div className="grid sm:grid-cols-2 gap-6">
-        {/* Render each category */}
-        {categories.map((category) => {
-          return (
+        <h2
+          id="categories"
+          className="text-2xl font-semibold mb-2 text-gray-800"
+        >
+          {title}
+        </h2>
+        <p className="mb-6 text-gray-700">{description}</p>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {/* Render each category */}
+          {categories.map((category) => (
             <CategoryCard
               key={category.title}
               title={category.title}
@@ -30,9 +38,8 @@ const CategorySection = ({ title, description, categories, isLoading }) => {
               image={category.thumbnail}
               alt={category.alt}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
       </div>
     </section>
   );

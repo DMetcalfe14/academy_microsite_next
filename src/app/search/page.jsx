@@ -18,6 +18,7 @@ function Search() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedProgrammes, setSelectedProgrammes] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedDurations, setSelectedDurations] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [pageCount, setPageCount] = useState(1);
@@ -26,6 +27,7 @@ function Search() {
     types: true,
     programmes: true,
     locations: true,
+    durations: true,
   });
 
   const { data, isLoading } = useJsonData();
@@ -48,17 +50,32 @@ function Search() {
     ),
   ];
 
+  const durations = [
+    { label: "0 - 15 mins", min: 0, max: 15 },
+    { label: "15 - 30 mins", min: 15, max: 30 },
+    { label: "30 - 60 mins", min: 30, max: 60 },
+    { label: "1hr - 2hrs", min: 60, max: 120 },
+    { label: "Over 2hrs", min: 120, max: Infinity },
+  ];
+
   useEffect(() => {
     const query = searchParams.get("query") || "";
     const category = searchParams.get("category");
     const type = searchParams.get("type");
     const programme = searchParams.get("programme");
     const location = searchParams.get("location");
+    const duration = searchParams.get("duration");
 
     if (category) setSelectedCategories(category.split(","));
     if (type) setSelectedTypes(type.split(","));
     if (programme) setSelectedProgrammes(programme.split(","));
     if (location) setSelectedLocation(location);
+    if (duration) {
+      // duration query param is comma-separated min values, reconstruct objects
+      const minValues = duration.split(",").map(Number);
+      const selected = durations.filter(d => minValues.includes(d.min));
+      setSelectedDurations(selected);
+    }
     setSearchInput(query);
     setDebouncedQuery(query);
   }, []);
@@ -66,10 +83,6 @@ function Search() {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchInput);
-      if (searchInput != "") {
-        let msg = `Searching with query: ${searchInput}`;
-        setLocation(msg);
-      }
       resetPageCount();
     }, 1000);
 
@@ -110,9 +123,35 @@ function Search() {
     resetPageCount();
   };
 
+  const handleDurationChange = (duration) => {
+    setSelectedDurations((prev) => {
+      const exists = prev.some(
+        (d) => d.min === duration.min && d.max === duration.max
+      );
+      if (exists) {
+        return prev.filter(
+          (d) => !(d.min === duration.min && d.max === duration.max)
+        );
+      } else {
+        return [...prev, duration];
+      }
+    });
+    resetPageCount();
+  };
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
+
+  // Calculate min and max duration for filter
+  const minDuration =
+    selectedDurations.length > 0
+      ? Math.min(...selectedDurations.map((d) => d.min))
+      : undefined;
+  const maxDuration =
+    selectedDurations.length > 0
+      ? Math.max(...selectedDurations.map((d) => d.max))
+      : undefined;
 
   return (
     <main aria-label="Search results">
@@ -176,6 +215,34 @@ function Search() {
                     )))}
             </div>
 
+            {/* Durations Section */}
+            <div className="mb-6" id="durations">
+              <button
+                onClick={() => toggleSection("durations")}
+                className="flex items-center justify-between w-full text-md font-semibold mb-2"
+              >
+                Durations
+                {expandedSections.durations ? <NavArrowUp /> : <NavArrowDown />}
+              </button>
+              {expandedSections.durations &&
+                (isLoading
+                  ? Array.from({ length: 5 }).map((_, index) => (
+                      <CheckboxSkeleton key={index} />
+                    ))
+                  : durations.map((duration) => (
+                      <Checkbox
+                        key={duration.label}
+                        label={duration.label}
+                        checked={selectedDurations.some(
+                          (selected) =>
+                            selected.min === duration.min &&
+                            selected.max === duration.max
+                        )}
+                        onChange={() => handleDurationChange(duration)}
+                      />
+                    )))}
+            </div>
+
             {/* Programmes Section */}
             <div className="mb-6" id="programmes">
               <button
@@ -191,7 +258,7 @@ function Search() {
                       <CheckboxSkeleton key={index} />
                     ))
                   : programmes
-                      .filter((programme) => programme) // Filter out null or undefined values
+                      .filter((programme) => programme)
                       .sort()
                       .map((programme) => (
                         <Checkbox
@@ -262,7 +329,11 @@ function Search() {
                 byCategory: selectedCategories,
                 byType: selectedTypes,
                 byLocation: selectedLocation,
-                byProgramme: selectedProgrammes
+                byProgramme: selectedProgrammes,
+                ...(selectedDurations.length > 0 && {
+                  byMinDuration: minDuration,
+                  byMaxDuration: maxDuration,
+                }),
               }}
               paginated={true}
               perRow={3}
