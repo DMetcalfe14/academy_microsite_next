@@ -10,6 +10,7 @@ import Accordion from "@/components/accordion";
 import { formatDuration } from "@/app/utilities";
 import EventDetails from "@/components/event_details";
 import Button from "@/components/button";
+import { LinkXmark } from "iconoir-react";
 
 function CourseDetails({ id }) {
   const { data } = useJsonData();
@@ -124,6 +125,10 @@ function CourseDetails({ id }) {
                     </ul>
                   </>
                 )}
+                <div className="mt-2 text-slate-500 flex gap-2">
+                  <LinkXmark></LinkXmark>
+                  <a href={`mailto:leadershipdevelopment@hmrc.gov.uk?subject=${encodeURIComponent(course.title)}&body=${encodeURIComponent("The link to the resource: " + course.title + " is broken." )}`}>Report a broken link</a>
+                </div>
               </aside>
             </div>
           </div>

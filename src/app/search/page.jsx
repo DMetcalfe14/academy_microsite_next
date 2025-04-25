@@ -142,7 +142,7 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : categories.map((category) => (
+                  : categories.sort().map((category) => (
                       <Checkbox
                         key={category}
                         label={category}
@@ -166,7 +166,7 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : types.map((type) => (
+                  : types.sort().map((type) => (
                       <Checkbox
                         key={type}
                         label={type}
@@ -190,7 +190,7 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : programmes.map((programme) => (
+                  : programmes.sort().map((programme) => (
                       <Checkbox
                         key={programme}
                         label={programme}
@@ -219,7 +219,7 @@ function Search() {
                     ? Array.from({ length: 5 }).map((_, index) => (
                         <CheckboxSkeleton key={index} />
                       ))
-                    : locations.map((location) => (
+                    : locations.sort().map((location) => (
                         <Checkbox
                           key={location}
                           label={location}

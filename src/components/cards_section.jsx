@@ -5,6 +5,7 @@ import { NavArrowLeft, NavArrowRight } from "iconoir-react";
 import CardCarousel from "./card_carousel";
 import Card from "@/components/card";
 import CardSectionSkeleton from "./card_section_skeleton";
+import Button from "@/components/button";
 import { tokenize, jaccard, fuzzyScore } from "@/app/utilities";
 
 const filterRules = {
@@ -193,6 +194,13 @@ const CardSection = ({
           ))}
         </div>
       )}
+
+      {!useCarousel && onViewAll && (
+        <div className="mt-6">
+        <Button href={onViewAll}>View All</Button>
+        </div>
+        )
+      }
 
       {/* Conditionally Render Pagination */}
       {!useCarousel && paginated && filtered.length > cardsPerPage && (

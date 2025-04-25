@@ -13,7 +13,6 @@
               "topN": 4,
               "byId": [3]
             },
-            "useCarousel": true,
             "onViewAll": "search.html?category=Change"
         },
         {

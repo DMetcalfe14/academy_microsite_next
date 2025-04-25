@@ -272,6 +272,10 @@ const Navigation = () => {
                 className="w-full flex gap-3 relative"
                 action="search.html"
                 aria-label="Search form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitForm(searchQuery);
+                }}
               >
                 <input
                   id="search"
@@ -280,7 +284,14 @@ const Navigation = () => {
                   autoComplete="off"
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  onKeyDown={handleKeyDown}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      submitForm(searchQuery);
+                    } else {
+                      handleKeyDown(event);
+                    }
+                  }}
                   className="w-full rounded-md bg-white px-3.5 py-2 text-sm placeholder:text-gray-500 focus:outline-primary"
                   placeholder="Search for articles, learning and more..."
                   role="combobox"
