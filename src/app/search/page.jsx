@@ -190,14 +190,17 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : programmes.sort().map((programme) => (
-                      <Checkbox
-                        key={programme}
-                        label={programme}
-                        checked={selectedProgrammes.includes(programme)}
-                        onChange={() => handleProgrammeChange(programme)}
-                      />
-                    )))}
+                  : programmes
+                      .filter((programme) => programme) // Filter out null or undefined values
+                      .sort()
+                      .map((programme) => (
+                        <Checkbox
+                          key={programme}
+                          label={programme}
+                          checked={selectedProgrammes.includes(programme)}
+                          onChange={() => handleProgrammeChange(programme)}
+                        />
+                      )))}
             </div>
 
             {/* Locations Section */}

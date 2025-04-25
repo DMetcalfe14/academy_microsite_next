@@ -40,7 +40,7 @@
     "duration": 120,
     "type": "Skill Benchmark",
     "href": "https://google.com",
-    "programmes": []
+    "programmes": [null]
   },
   {
     "id": 3,
