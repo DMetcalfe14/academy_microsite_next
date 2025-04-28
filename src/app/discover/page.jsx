@@ -1,23 +1,24 @@
 "use client";
 
-import { useJsonData } from '@/context/json_context';
+import { useEffect } from "react";
+import { useJsonData } from "@/context/json_context";
 import { useSearchParams, notFound } from "next/navigation";
 import Banner from "@/components/banner";
 import CardSection from "@/components/cards_section";
 import { Suspense } from "react";
 
 export function DiscoverSection({ id }) {
-  
   const { data, isLoading, isError } = useJsonData();
 
-  const {
-    courses = [],
-    discover = [],
-  } = data;
+  const { courses = [], discover = [] } = data;
 
   // Handle loading state
   if (isLoading) {
-    return <div role="status" aria-live="polite">Loading data...</div>;
+    return (
+      <div role="status" aria-live="polite">
+        Loading data...
+      </div>
+    );
   }
 
   // Handle error state
@@ -36,18 +37,35 @@ export function DiscoverSection({ id }) {
 
   const { title, image, description, htmlDescription, cardSections } = section;
 
+  useEffect(() => {
+    if (title !== undefined) {
+      window.parent.postMessage(
+        {
+          type: "VIEW_DISCOVERY",
+          title: title
+        },
+        "*"
+      );
+    }
+  }, [title]);
+
   return (
     <main aria-labelledby="discover-heading">
-      <Banner fullScreen={false} heading={title} body={description} image={image} />
+      <Banner
+        fullScreen={false}
+        heading={title}
+        body={description}
+        image={image}
+      />
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 id="discover-heading" className="sr-only">
           {title}
         </h1>
-          {htmlDescription ? (
-      <div dangerouslySetInnerHTML={{ __html: htmlDescription }} />
-    ) : (
-      <p className="mt-6">{description}</p>
-    )}
+        {htmlDescription ? (
+          <div dangerouslySetInnerHTML={{ __html: htmlDescription }} />
+        ) : (
+          <p className="mt-6">{description}</p>
+        )}
       </section>
 
       {/* Dynamically render CardSections */}

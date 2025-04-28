@@ -59,6 +59,16 @@ function Search() {
   ];
 
   useEffect(() => {
+    window.parent.postMessage(
+      {
+        type: "PATH_CHANGE",
+        path: "Search",
+      },
+      "*"
+    );
+  }, []);
+
+  useEffect(() => {
     const query = searchParams.get("query") || "";
     const category = searchParams.get("category");
     const type = searchParams.get("type");
@@ -73,7 +83,7 @@ function Search() {
     if (duration) {
       // duration query param is comma-separated min values, reconstruct objects
       const minValues = duration.split(",").map(Number);
-      const selected = durations.filter(d => minValues.includes(d.min));
+      const selected = durations.filter((d) => minValues.includes(d.min));
       setSelectedDurations(selected);
     }
     setSearchInput(query);
@@ -84,6 +94,7 @@ function Search() {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchInput);
       resetPageCount();
+      registerSearch(searchInput);
     }, 1000);
 
     return () => clearTimeout(handler);
@@ -111,7 +122,9 @@ function Search() {
 
   const handleProgrammeChange = (programme) => {
     setSelectedProgrammes((prev) =>
-      prev.includes(programme) ? prev.filter((p) => p !== programme) : [...prev, programme]
+      prev.includes(programme)
+        ? prev.filter((p) => p !== programme)
+        : [...prev, programme]
     );
     resetPageCount();
   };
@@ -181,14 +194,16 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : categories.sort().map((category) => (
-                      <Checkbox
-                        key={category}
-                        label={category}
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCategoryChange(category)}
-                      />
-                    )))}
+                  : categories
+                      .sort()
+                      .map((category) => (
+                        <Checkbox
+                          key={category}
+                          label={category}
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => handleCategoryChange(category)}
+                        />
+                      )))}
             </div>
 
             {/* Types Section */}
@@ -205,14 +220,16 @@ function Search() {
                   ? Array.from({ length: 5 }).map((_, index) => (
                       <CheckboxSkeleton key={index} />
                     ))
-                  : types.sort().map((type) => (
-                      <Checkbox
-                        key={type}
-                        label={type}
-                        checked={selectedTypes.includes(type)}
-                        onChange={() => handleTypeChange(type)}
-                      />
-                    )))}
+                  : types
+                      .sort()
+                      .map((type) => (
+                        <Checkbox
+                          key={type}
+                          label={type}
+                          checked={selectedTypes.includes(type)}
+                          onChange={() => handleTypeChange(type)}
+                        />
+                      )))}
             </div>
 
             {/* Durations Section */}
@@ -250,7 +267,11 @@ function Search() {
                 className="flex items-center justify-between w-full text-md font-semibold mb-2"
               >
                 Programmes
-                {expandedSections.programmes ? <NavArrowUp /> : <NavArrowDown />}
+                {expandedSections.programmes ? (
+                  <NavArrowUp />
+                ) : (
+                  <NavArrowDown />
+                )}
               </button>
               {expandedSections.programmes &&
                 (isLoading
@@ -289,14 +310,16 @@ function Search() {
                     ? Array.from({ length: 5 }).map((_, index) => (
                         <CheckboxSkeleton key={index} />
                       ))
-                    : locations.sort().map((location) => (
-                        <Checkbox
-                          key={location}
-                          label={location}
-                          checked={selectedLocation === location}
-                          onChange={() => handleLocationChange(location)}
-                        />
-                      )))}
+                    : locations
+                        .sort()
+                        .map((location) => (
+                          <Checkbox
+                            key={location}
+                            label={location}
+                            checked={selectedLocation === location}
+                            onChange={() => handleLocationChange(location)}
+                          />
+                        )))}
               </div>
             )}
           </aside>
@@ -353,4 +376,16 @@ export default function SearchSuspense() {
       <Search />
     </Suspense>
   );
+}
+
+function registerSearch(query) {
+  if (query !== "") {
+    window.parent.postMessage(
+      {
+        type: "SEARCHED_FOR",
+        query: query,
+      },
+      "*"
+    );
+  }
 }

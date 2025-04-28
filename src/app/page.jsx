@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useJsonData } from "@/context/json_context";
 import { usePathname } from "next/navigation";
 import { useTour } from "@/context/tour_context";
@@ -24,6 +24,13 @@ function PageContent() {
   const { setTourConfig } = useTour();
   const pathname = usePathname();
   const { banner, featured, category } = landing;
+
+  useEffect(() => {
+    window.parent.postMessage({
+      type: 'PATH_CHANGE',
+      path: "Home"
+    }, '*');
+  }, []);
 
   useEffect(() => {
     const matchingTour = Object.keys(tours).find((key) =>

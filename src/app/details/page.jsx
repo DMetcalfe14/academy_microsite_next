@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, notFound } from "next/navigation";
 
-import { useJsonData } from '@/context/json_context';
+import { useJsonData } from "@/context/json_context";
 
 import Banner from "@/components/banner";
 import Accordion from "@/components/accordion";
@@ -15,11 +15,21 @@ import { LinkXmark } from "iconoir-react";
 function CourseDetails({ id }) {
   const { data } = useJsonData();
   const [course, setCourse] = useState(undefined);
-  
+
   useEffect(() => {
-    const {
-      courses = [],
-    } = data;
+    if (course) {
+      window.parent.postMessage(
+        {
+          type: "VIEW_DETAILS",
+          resource: course.title,
+        },
+        "*"
+      );
+    }
+  }, [course]);
+
+  useEffect(() => {
+    const { courses = [] } = data;
 
     const result = courses.find((course) => course.id == id);
     setCourse(result || null);
@@ -28,8 +38,7 @@ function CourseDetails({ id }) {
       notFound();
       return;
     }
-  }
-  , [data, id]);
+  }, [data, id]);
 
   // Delay rendering child components until data is fetched
   if (course === undefined || course === null) {
@@ -66,13 +75,16 @@ function CourseDetails({ id }) {
                   </>
                 )}
                 {course.type === "Event" && (
-                  <EventDetails events={course.events} />
+                  <EventDetails events={course.events} title={course.title} />
                 )}
               </div>
 
               {/* Sidebar Content */}
               <aside className="col-span-1" aria-labelledby="details-heading">
-                <h2 id="details-heading" className="text-2xl font-semibold mb-4">
+                <h2
+                  id="details-heading"
+                  className="text-2xl font-semibold mb-4"
+                >
                   Details
                 </h2>
                 <ul>
@@ -88,17 +100,18 @@ function CourseDetails({ id }) {
                 </ul>
                 {course.href && (
                   <div className="mt-2 flex">
-                  <Button
-                    className="w-full text-center"
-                    as="a"
-                    href={course.href}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    aria-label={`Launch resource: ${course.title}`}
-                  >
-                    Launch Resource
-                  </Button>
-                </div>
+                    <Button
+                      className="w-full text-center"
+                      as="a"
+                      href={course.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Launch resource: ${course.title}`}
+                      onClick={() => registerClick(course.title)}
+                    >
+                      Launch Resource
+                    </Button>
+                  </div>
                 )}
                 {course.instructors && course.instructors.length > 0 && (
                   <>
@@ -119,7 +132,9 @@ function CourseDetails({ id }) {
                             alt={`Profile picture of ${instructor.name}`}
                             className="w-10 h-10 rounded-full"
                           />
-                          <span className="font-semibold">{instructor.name}</span>
+                          <span className="font-semibold">
+                            {instructor.name}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -127,7 +142,17 @@ function CourseDetails({ id }) {
                 )}
                 <div className="mt-2 text-slate-500 flex gap-2">
                   <LinkXmark></LinkXmark>
-                  <a href={`mailto:leadershipdevelopment@hmrc.gov.uk?subject=${encodeURIComponent(course.title)}&body=${encodeURIComponent("The link to the resource: " + course.title + " is broken." )}`}>Report a broken link</a>
+                  <a
+                    href={`mailto:leadershipdevelopment@hmrc.gov.uk?subject=${encodeURIComponent(
+                      course.title
+                    )}&body=${encodeURIComponent(
+                      "The link to the resource: " +
+                        course.title +
+                        " is broken."
+                    )}`}
+                  >
+                    Report a broken link
+                  </a>
                 </div>
               </aside>
             </div>
@@ -156,4 +181,14 @@ function DetailsWithSearchParams() {
   }
 
   return <CourseDetails id={id} />;
+}
+
+function registerClick(resource) {
+  window.parent.postMessage(
+    {
+      type: "LAUNCHED_RESOURCE",
+      resource: resource,
+    },
+    "*"
+  );
 }

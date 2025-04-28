@@ -37,7 +37,7 @@ const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
 
   return (
     <section className={sectionClass} aria-labelledby={sectionId} style={{ position: "relative" }}>
-      <div className="relative h-full rounded-lg overflow-hidden" style={{ minHeight: "320px" }}>
+      <div className="relative h-full rounded-lg overflow-hidden">
         {/* Skeleton overlays the whole banner until image is loaded */}
         {loading && (
           <div className="absolute inset-0 w-full h-full z-30">

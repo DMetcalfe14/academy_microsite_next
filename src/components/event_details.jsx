@@ -2,7 +2,7 @@ import { formatPlainDate, isBeforeToday } from "@/app/utilities";
 
 import Button from "@/components/button";
 
-const EventDetails = ({ location, date, href }) => {
+const EventDetails = ({ title, location, date, href }) => {
   const plainDate = formatPlainDate(date);
   const isPastEvent = isBeforeToday(date);
 
@@ -31,6 +31,7 @@ const EventDetails = ({ location, date, href }) => {
         className="focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
         aria-label={`Book event at ${location} on ${plainDate}`}
         disabled={isPastEvent}
+        onClick={() => registerClick(title)}
       >
         Book
       </Button>
@@ -38,7 +39,7 @@ const EventDetails = ({ location, date, href }) => {
   );
 };
 
-const EventDetailSection = ({ events }) => {
+const EventDetailSection = ({ events, title }) => {
   return (
     <section aria-labelledby="event-details">
       <h2
@@ -54,6 +55,7 @@ const EventDetailSection = ({ events }) => {
       {events.map((event, index) => (
         <EventDetails
           key={index}
+          title={title}
           location={event.location}
           date={event.start_date}
           href={event.href}
@@ -63,5 +65,15 @@ const EventDetailSection = ({ events }) => {
     </section>
   );
 };
+
+function registerClick(title) {
+  window.parent.postMessage(
+    {
+      type: "BOOKING_EVENT",
+      event: title,
+    },
+    "*"
+  );
+}
 
 export default EventDetailSection;

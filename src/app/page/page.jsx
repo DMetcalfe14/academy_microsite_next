@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import { useJsonData } from '@/context/json_context';
 import { useSearchParams, notFound } from "next/navigation";
 
@@ -16,6 +16,19 @@ export function Article({ id }) {
   const {
     articles = [],
   } = data;
+
+  useEffect(() => {
+    const article = articles.find((article) => article.id == id)
+    if (article) {
+      window.parent.postMessage(
+        {
+          type: "VIEW_ARTICLE",
+          page: article.title,
+        },
+        "*"
+      );
+    }
+  }, [articles]);
 
 
   // Always call useSWR for HTML content, but provide a default key

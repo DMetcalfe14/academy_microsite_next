@@ -76,8 +76,8 @@
     </organization>
   </organizations>
   <resources>
-    <resource identifier="resource_1" adlcp:scormType="sco" href="index.html" type="webcontent">
-      <file href="index.html" />
+    <resource identifier="resource_1" adlcp:scormType="sco" href="player.html" type="webcontent">
+      <file href="player.html" />
     </resource>
   </resources>
 </manifest>

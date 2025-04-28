@@ -8,15 +8,21 @@ export default function Footer() {
     <footer className="bg-black text-white w-full">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex space-x-4">
-          {footer.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-white hover:underline"
-            >
-              {item.label}
-            </a>
-          ))}
+          {footer.map((item) => {
+            const isExternal = item.href.startsWith("http");
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-white hover:underline"
+                target={isExternal ? "_blank" : "_self"}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                aria-label={`Navigate to ${item.label}`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>
