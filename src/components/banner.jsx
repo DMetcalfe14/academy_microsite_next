@@ -3,7 +3,7 @@ import Button from "./button";
 import BannerSkeleton from "./banner_skeleton";
 
 const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(image ? true : false);
 
   // Shared content for both layouts
   const BannerContent = (sectionId) => (
@@ -40,11 +40,10 @@ const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
       <div className="relative h-full rounded-lg overflow-hidden">
         {/* Skeleton overlays the whole banner until image is loaded */}
         {loading && (
-          <div className="absolute inset-0 w-full h-full z-30">
             <BannerSkeleton fullScreen={fullScreen} />
-          </div>
         )}
         {/* Always mount the image so onLoad can fire */}
+        {image && (
         <img
           alt={alt || "Banner background"}
           src={image}
@@ -53,6 +52,7 @@ const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
           role="presentation"
           style={{ display: loading ? "none" : "block" }}
         />
+        )}
         {/* Only show content when not loading */}
         {!loading && BannerContent(sectionId)}
       </div>
