@@ -67,7 +67,7 @@ function recordInteraction({id, type, learner_response = '', result = 'neutral',
     const basePath = `cmi.interactions.${interactionIndex}`;
     scorm.set(`${basePath}.id`, id);
     scorm.set(`${basePath}.type`, type);
-    // scorm.set(`${basePath}.timestamp`, new Date().toISOString());
+    scorm.set(`${basePath}.timestamp`, new Date().toISOString());
     scorm.set(`${basePath}.learner_response`, learner_response);
     scorm.set(`${basePath}.result`, result);
     if (description) scorm.set(`${basePath}.description`, description);
