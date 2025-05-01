@@ -10,143 +10,140 @@
     </style>
 </head>
 <body>
-<iframe id="scorm-frame" src="index.html" style="width: 100vw; height: 100vh; border: none;"></iframe>
+<iframe id="scorm-frame" src="index.html" style="width: 100%; height: 100vh; border: none;"></iframe>
 
 <script>
-// --------- Minimal ISO 8601 Duration Formatter for SCORM 2004 ---------
-function msToISODuration(ms) {
-    // SCORM 2004 expects PT#H#M#S with up to two decimals for seconds
-    let totalSeconds = Math.floor(ms / 1000);
-    let hours = Math.floor(totalSeconds / 3600);
-    let minutes = Math.floor((totalSeconds % 3600) / 60);
-    let seconds = (ms % 60000) / 1000 + (totalSeconds % 60);
-    // Format seconds to 2 decimal places if needed
-    let secondsStr = seconds.toFixed(2).replace(/\.00$/, '');
-    return `PT${hours}H${minutes}M${secondsStr}S`;
-}
-
-// --------- SCORM Setup ---------
-const scorm = pipwerks.SCORM;
-scorm.handleCompletionStatus = false;
-let isInitialized = scorm.init();
-
-// Set initial status (optional, for SCORM 2004)
-if (scorm.get("cmi.completion_status") === "not attempted") {
-    scorm.set("cmi.completion_status", "incomplete");
-}
-
-// --------- Time Tracking ---------
-let interactionIndex = 0;
-let startTime = Date.now();
-let totalTime = 0;
-
-function updateSCORMTime() {
-    const currentTime = Date.now();
-    const elapsed = currentTime - startTime;
-    totalTime += elapsed;
-    startTime = currentTime;
-
-    if (scorm.version === "2004") {
-        const isoDuration = msToISODuration(totalTime);
-        scorm.set("cmi.session_time", isoDuration);
-    } else if (scorm.version === "1.2") {
-        // SCORM 1.2 expects HH:MM:SS or HH:MM:SS.ss
-        let totalSeconds = Math.floor(totalTime / 1000);
-        let hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-        let minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-        let seconds = (totalSeconds % 60).toString().padStart(2, '0');
-        scorm.set("cmi.core.session_time", `${hours}:${minutes}:${seconds}`);
+    // --------- Minimal ISO 8601 Duration Formatter for SCORM 2004 ---------
+    function msToISODuration(ms) {
+        let totalSeconds = Math.floor(ms / 1000);
+        let hours = Math.floor(totalSeconds / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = (ms % 60000) / 1000 + (totalSeconds % 60);
+        let secondsStr = seconds.toFixed(2).replace(/\.00$/, '');
+        return `PT${hours}H${minutes}M${secondsStr}S`;
     }
-    scorm.save();
-}
-
-setInterval(updateSCORMTime, 5000);
-
-// --------- Interaction Tracking ---------
-function recordInteraction({id, type, learner_response = '', result = 'neutral', description = ''}) {
-    const basePath = `cmi.interactions.${interactionIndex}`;
-    scorm.set(`${basePath}.id`, id);
-    scorm.set(`${basePath}.type`, type);
-    scorm.set(`${basePath}.timestamp`, new Date().toISOString());
-    scorm.set(`${basePath}.learner_response`, learner_response);
-    scorm.set(`${basePath}.result`, result);
-    if (description) scorm.set(`${basePath}.description`, description);
-    interactionIndex++;
-    scorm.save();
-}
-
-window.addEventListener('message', (event) => {
-    switch(event.data.type) {
-        case 'PATH_CHANGE':
-            recordInteraction({
-                id: `nav_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.path || '',
-                description: `Navigated to ${event.data.path || ''}`
-            });
-            break;
-        case 'VIEW_DETAILS':
-            recordInteraction({
-                id: `details_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.resource || '',
-                description: `Viewed details for ${event.data.resource || ''}`
-            });
-            break;
-        case 'VIEW_DISCOVERY':
-            recordInteraction({
-                id: `discovery_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.title || '',
-                description: `Explored ${event.data.title || ''}`
-            });
-            break;
-        case 'VIEW_ARTICLE':
-            recordInteraction({
-                id: `article_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.page || '',
-                description: `Read article: ${event.data.page || ''}`
-            });
-            break;
-        case 'LAUNCHED_RESOURCE':
-            recordInteraction({
-                id: `launched_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.resource || '',
-                description: `Launched resource: ${event.data.resource || ''}`
-            });
-            break;
-        case 'BOOKING_EVENT':
-            recordInteraction({
-                id: `booking_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.event || '',
-                description: `Booking event: ${event.data.event || ''}`
-            });
-            break;
-        case 'SEARCHED_FOR':
-            recordInteraction({
-                id: `search_${Date.now()}`,
-                type: 'other',
-                learner_response: event.data.query || '',
-                description: `Searched for: ${event.data.query || ''}`
-            });
-            break;
+    
+    // --------- SCORM Setup ---------
+    const scorm = pipwerks.SCORM;
+    scorm.handleCompletionStatus = false;
+    let isInitialized = scorm.init();
+    
+    if (scorm.get("cmi.completion_status") === "not attempted") {
+        scorm.set("cmi.completion_status", "incomplete");
     }
-});
-
-// --------- Session Cleanup ---------
-window.addEventListener('beforeunload', () => {
-    updateSCORMTime(); // Final time update
-    if (scorm.version === "2004") {
-        scorm.set("cmi.exit", "suspend");
-    } else if (scorm.version === "1.2") {
-        scorm.set("cmi.core.exit", "suspend");
+    
+    // --------- Time Tracking ---------
+    let startTime = Date.now();
+    let totalTime = 0;
+    
+    function updateSCORMTime() {
+        const currentTime = Date.now();
+        const elapsed = currentTime - startTime;
+        totalTime += elapsed;
+        startTime = currentTime;
+    
+        if (scorm.version === "2004") {
+            const isoDuration = msToISODuration(totalTime);
+            scorm.set("cmi.session_time", isoDuration);
+        } else if (scorm.version === "1.2") {
+            let totalSeconds = Math.floor(totalTime / 1000);
+            let hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            let minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            let seconds = (totalSeconds % 60).toString().padStart(2, '0');
+            scorm.set("cmi.core.session_time", `${hours}:${minutes}:${seconds}`);
+        }
+        scorm.save();
     }
-    scorm.save();
-    scorm.quit();
-});
-</script>
+    setInterval(updateSCORMTime, 5000);
+    
+    // --------- Interaction Tracking ---------
+    function recordInteraction({id, type, learner_response = '', result = 'neutral', description = ''}) {
+        let count = parseInt(scorm.get("cmi.interactions._count"), 10);
+        if (isNaN(count)) count = 0;
+    
+        const basePath = `cmi.interactions.${count}`;
+        scorm.set(`${basePath}.id`, id);
+        scorm.set(`${basePath}.type`, type);
+        scorm.set(`${basePath}.timestamp`, new Date().toISOString().slice(0, 19));
+        scorm.set(`${basePath}.learner_response`, learner_response);
+        scorm.set(`${basePath}.result`, result);
+        if (description) scorm.set(`${basePath}.description`, description);
+    
+        scorm.save();
+    }
+    
+    window.addEventListener('message', (event) => {
+        switch(event.data.type) {
+            case 'PATH_CHANGE':
+                recordInteraction({
+                    id: `nav_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.path || '',
+                    description: `Navigated to ${event.data.path || ''}`
+                });
+                break;
+            case 'VIEW_DETAILS':
+                recordInteraction({
+                    id: `details_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.resource || '',
+                    description: `Viewed details for ${event.data.resource || ''}`
+                });
+                break;
+            case 'VIEW_DISCOVERY':
+                recordInteraction({
+                    id: `discovery_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.title || '',
+                    description: `Explored ${event.data.title || ''}`
+                });
+                break;
+            case 'VIEW_ARTICLE':
+                recordInteraction({
+                    id: `article_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.page || '',
+                    description: `Read article: ${event.data.page || ''}`
+                });
+                break;
+            case 'LAUNCHED_RESOURCE':
+                recordInteraction({
+                    id: `launched_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.resource || '',
+                    description: `Launched resource: ${event.data.resource || ''}`
+                });
+                break;
+            case 'BOOKING_EVENT':
+                recordInteraction({
+                    id: `booking_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.event || '',
+                    description: `Booking event: ${event.data.event || ''}`
+                });
+                break;
+            case 'SEARCHED_FOR':
+                recordInteraction({
+                    id: `search_${Date.now()}`,
+                    type: 'other',
+                    learner_response: event.data.query || '',
+                    description: `Searched for: ${event.data.query || ''}`
+                });
+                break;
+        }
+    });
+    
+    // --------- Session Cleanup ---------
+    window.addEventListener('beforeunload', () => {
+        updateSCORMTime(); // Final time update
+        if (scorm.version === "2004") {
+            scorm.set("cmi.exit", "suspend");
+        } else if (scorm.version === "1.2") {
+            scorm.set("cmi.core.exit", "suspend");
+        }
+        scorm.save();
+        scorm.quit();
+    });
+    </script>    
 </body>
 </html>

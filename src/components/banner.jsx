@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import Button from "./button";
 import BannerSkeleton from "./banner_skeleton";
+import { useEffect } from "react";
 
 const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
   const [loading, setLoading] = useState(image ? true : false);
+
+  useEffect(() => {
+    if (image) {
+      const timeout = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+  
+      return () => clearTimeout(timeout);
+    }
+  }, [image]);
 
   // Shared content for both layouts
   const BannerContent = (sectionId) => (
