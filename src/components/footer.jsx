@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { useJsonData } from "@/context/json_context";
 
 export default function Footer() {
@@ -24,7 +26,7 @@ export default function Footer() {
             );
           })}
         </div>
-        <img src="academy_branding_white.svg" alt="Capability Academy strapline" />
+        <Image src="academy_branding_white.svg" alt="Capability Academy strapline" width="194" height="15" />
       </div>
     </footer>
   );

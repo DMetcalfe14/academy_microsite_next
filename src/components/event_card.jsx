@@ -35,7 +35,7 @@ const EventCard = ({
 
       {/* Event Details */}
       <div className="p-6">
-        <span className="text-primary font-semibold text-sm">
+        <span className="text-gray-700 font-semibold text-sm">
           {location + " | " + duration}
         </span>
         <h3
