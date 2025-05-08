@@ -162,7 +162,7 @@ const CardSection = ({
         </h2>
       )}
       {description && <p className="mb-6 text-gray-700">{description}</p>}
-      {filtered?.length > 0 && paginated && !useCarousel && (
+      {paginated && !useCarousel && (
         <p className="text-sm mb-4 text-gray-600">
           <span>{filtered.length}</span> results
         </p>

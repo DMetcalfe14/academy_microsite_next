@@ -32,8 +32,14 @@
 
 .shepherd-button.shepherd-button-primary {
   background-color: var(--primary-colour) !important;
+  color: var(--primary-label) !important;
 }
 
 .shepherd-button.shepherd-button-cancel {
   background-color: var(--primary-colour) !important;
+  color: var(--primary-label) !important;
+}
+
+.shepherd-cancel-icon {
+  color: var(--primary-label) !important;
 }

@@ -332,7 +332,7 @@ function Search() {
             {/* Search Bar */}
             <div className="mb-6">
               <label htmlFor="search-bar" className="sr-only">
-                Search
+                Search catalogue
               </label>
               <input
                 id="search-bar"

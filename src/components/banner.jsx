@@ -20,18 +20,18 @@ const Banner = ({ heading, body, image, alt, cta, fullScreen }) => {
   const BannerContent = (sectionId) => (
     <div className="relative z-20 pt-40 pb-10 h-full flex flex-col justify-end bg-gradient-to-t from-black to-transparent">
       <div className="mx-auto max-w-7xl px-8 w-full">
-        <h2
+        <h1
           id={sectionId}
           className="text-4xl font-semibold tracking-tight text-white"
         >
           {heading}
-        </h2>
+        </h1>
         {!fullScreen && body && <p className="text-white mt-4 mb-6">{body}</p>}
         {!fullScreen && cta && (
           <Button
             as="a"
             href={cta.href}
-            aria-label={`Call to action: ${cta.label}`}
+            aria-label={cta.label}
           >
             {cta.label}
           </Button>

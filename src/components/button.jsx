@@ -25,8 +25,8 @@ const Button = forwardRef(
         "bg-primary text-label hover:bg-primary_hover " +
         "focus-visible:outline-primary",
       white:
-        "bg-white text-label hover:bg-gray-50 " +
-        "border-2 border-gray-100 focus-visible:outline-white",
+        "bg-white text-label hover:bg-gray-300 hover:border-transparent" +
+        "border-2 border-gray-100",
     };
 
     const disabledStyles = "!bg-gray-400 cursor-not-allowed";

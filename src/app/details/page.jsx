@@ -106,7 +106,7 @@ function CourseDetails({ id }) {
                       href={course.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Launch resource: ${course.title}`}
+                      aria-label={`Launch resource: ${course.title} in new tab`}
                       onClick={() => registerClick(course.title)}
                     >
                       Launch Resource

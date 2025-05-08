@@ -126,7 +126,7 @@ const Navigation = () => {
               <a
                 href="index.html"
                 className="cursor-pointer text-label font-semibold flex items-center gap-3"
-                aria-label="Go to homepage"
+                aria-label="Leadership & Management Capability Academy homepage"
               >
                 <Image src="logo.png" alt="HMRC logo" width="30" height="30" />
                 <span className="whitespace-nowrap text-sm text-black">
@@ -168,7 +168,7 @@ const Navigation = () => {
                               ? category.href
                               : `search.html?category=${category.title}`
                           }
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-300"
                           role="menuitem"
                           tabIndex={0}
                         >
@@ -277,6 +277,9 @@ const Navigation = () => {
                   submitForm(searchQuery);
                 }}
               >
+                <label htmlFor="search" className="sr-only">
+                  Search catalogue
+                </label>
                 <input
                   id="search"
                   name="query"
@@ -292,7 +295,7 @@ const Navigation = () => {
                       handleKeyDown(event);
                     }
                   }}
-                  className="w-full rounded-md bg-white px-3.5 py-2 text-sm placeholder:text-gray-500 focus:outline-primary"
+                  className="w-full rounded-md bg-white px-3.5 py-2 text-sm placeholder:text-gray-500"
                   placeholder="Search for articles, learning and more..."
                   role="combobox"
                   aria-controls="suggestions-list"
@@ -314,8 +317,8 @@ const Navigation = () => {
                       <div
                         key={index}
                         id={`suggestion-${index}`}
-                        className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                          selectedIndex === index ? "bg-gray-100" : ""
+                        className={`p-2 cursor-pointer hover:bg-gray-300 ${
+                          selectedIndex === index ? "bg-gray-300" : ""
                         }`}
                         role="option"
                         aria-selected={selectedIndex === index}

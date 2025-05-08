@@ -31,9 +31,9 @@ const CategoryCard = ({
           </h3>
 
           {/* Count */}
-          <span class="text-primary text-sm font-semibold">
+          {/* <span class="text-gray-700 text-sm font-semibold">
             {count} resources
-          </span>
+          </span> */}
 
           {/* Description */}
           <p className="mb-4 line-clamp-3 text-gray-700">{description}</p>

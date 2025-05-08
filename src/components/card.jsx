@@ -16,6 +16,16 @@ const Card = ({
   ariaHidden = false,
 }) => {
   const plainDuration = formatDuration(duration);
+  const categoryString = categories.length > 1
+    ? "Multiple"
+    : categories[0] || "";
+
+  // Modified srLabel without thumbnail
+  const srLabel = [
+    categoryString && `Category: ${categoryString}`,
+    `Type: ${type}`,
+    `Duration: ${plainDuration}`
+  ].filter(Boolean).join(", ");
 
   return (
     <article
@@ -26,11 +36,10 @@ const Card = ({
     >
       <a
         href={page_href ? page_href : `details.html?id=${id}`}
-        aria-label={`View details of ${title} (${type}, ${plainDuration})`}
         tabIndex={inactive ? -1 : 0}
         className="h-full rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
-        {/* Thumbnail Section */}
+        {/* Thumbnail Section - alt text read separately */}
         <div className="relative aspect-video overflow-hidden rounded-t-lg">
           {thumbnail ? (
             <img
@@ -40,7 +49,6 @@ const Card = ({
               loading="lazy"
             />
           ) : (
-            // Fallback for missing thumbnail
             <div
               className="bg-gray-300 w-full h-full animate-pulse"
               aria-hidden="true"
@@ -50,10 +58,24 @@ const Card = ({
 
         {/* Content Section */}
         <div className="p-4 flex flex-col flex-1">
-          {/* Details */}
-          <span className="mb-2 text-primary font-semibold text-sm">
-            {categories.length > 0 ? categories.length > 1 ? "Multiple" + " | " : categories[0] + " | " : undefined} {type} |{" "}
-            {formatDuration(duration)}
+          {/* Screen reader label without thumbnail */}
+          <span className="sr-only" id={`card-details-sr-${id}`}>
+            {srLabel}
+          </span>
+          
+          {/* Visible details with conditional | */}
+          <span
+            className="mb-2 text-gray-700 font-semibold text-sm"
+            id={`card-details-${id}`}
+            aria-hidden="true"
+          >
+            {categoryString && (
+              <>
+                {categoryString}
+                <span> | </span>
+              </>
+            )}
+            {type} | {plainDuration}
           </span>
 
           {/* Title */}
@@ -65,7 +87,6 @@ const Card = ({
               {title}
             </h3>
           ) : (
-            // Fallback for missing title
             <div
               className="bg-gray-300 animate-pulse h-[24px] w-[80%] mb-[16px]"
               aria-hidden="true"
@@ -74,11 +95,13 @@ const Card = ({
 
           {/* Description */}
           {description ? (
-            <p className="mb-4 line-clamp-3 flex-1 text-gray-700">
+            <p
+              className="mb-4 line-clamp-3 flex-1 text-gray-700"
+              id={`card-desc-${id}`}
+            >
               {description}
             </p>
           ) : (
-            // Fallback for missing description
             <div
               className="bg-gray-300 animate-pulse h-[16px] w-[90%] mb-[16px]"
               aria-hidden="true"
