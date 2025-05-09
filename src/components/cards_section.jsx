@@ -11,7 +11,7 @@ import { tokenize, jaccard, fuzzyScore } from "@/app/utilities";
 const filterRules = {
   topN: (courses, n) => (n ? courses?.slice(0, n) : courses),
   byId: (courses, ids) =>
-    ids ? courses.filter((course) => ids.includes(course.id)) : courses,
+    ids ? ids.map(id => courses.find(course => course.id === id)).filter(Boolean) : courses,
   byCategory: (courses, categories) =>
     categories.length > 0
       ? courses.filter((course) =>
