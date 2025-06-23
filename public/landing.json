@@ -9,9 +9,13 @@
             "href": ""
         }
     },
+    "latest": {
+        "title": "Latest",
+        "body": "The latest news, updates, thinking, and initiatives across government and wider, that directly impact leadership and management development."
+    },
     "featured": {
-        "title": "Featured",
-        "body": "Featured content brings you the latest news, updates, thinking, and initiatives across government and wider, that directly impact leadership and management development."
+        "title": "Programmes",
+        "body": "Explore our programmes designed to enhance your leadership and management skills."
     },
     "category": {
         "title": "Explore the Leadership Capabilities",

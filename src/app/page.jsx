@@ -15,6 +15,7 @@ function PageContent() {
   const { data } = useJsonData();
   const {
     courses = [],
+    latest_home = [],
     featured_home = [],
     tours = [],
     categories = [],
@@ -23,7 +24,7 @@ function PageContent() {
 
   const { setTourConfig } = useTour();
   const pathname = usePathname();
-  const { banner, featured, category } = landing;
+  const { banner, featured, category, latest } = landing;
 
   useEffect(() => {
     window.parent.postMessage({
@@ -51,6 +52,14 @@ function PageContent() {
         alt={banner?.alt}
         cta={banner?.cta}
         fullScreen={false}
+      />
+
+      {/* Latest Section */}
+      <CardSection
+        id="latest"
+        title="Latest Courses"
+        cards={courses}
+        filters={latest_home}
       />
 
       {/* Category Section */}

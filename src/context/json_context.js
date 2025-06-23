@@ -17,6 +17,7 @@ export const JsonProvider = ({ children }) => {
           'discover.json',
           'featured.json',
           'featured_home.json',
+          'latest_home.json',
           'footer.json',
           'landing.json',
           'links.json',
